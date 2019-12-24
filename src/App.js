@@ -1,10 +1,12 @@
 import React from 'react';
 import logo from './logo.svg';
+import APHeader from './components/header/Header';
 import './App.css';
 
 function App() {
   return (
     <div className="App">
+      <APHeader />
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
