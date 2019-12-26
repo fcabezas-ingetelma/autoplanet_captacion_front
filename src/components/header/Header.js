@@ -4,9 +4,11 @@ import './Header.css';
 
 function APHeader() {
     return (
-        <header className="AP-app-header">
-            <img src={logo} className="AP-app-logo" alt="logo" />
-        </header>
+        <div className="AP-app-header">
+            <header>
+                <img src={logo} className="AP-app-logo" alt="logo" />
+            </header>
+        </div>
     );
 }
 
