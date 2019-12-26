@@ -13,7 +13,11 @@ function validaRut(rutCompleto) {
 	var tmp 	= rutCompleto.split('-');
 	var digv	= tmp[1].toLowerCase(); 
 	var rut 	= tmp[0];
-	return (validaDV(rut) === digv );
+	return (validaDV(rut) + '' === digv );
 }
 
-export default validaRut;
+function validaPhoneLength(phone) {
+    return phone.length >= 8;
+}
+
+export { validaRut, validaPhoneLength };

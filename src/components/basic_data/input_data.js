@@ -2,7 +2,7 @@
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { Button, Container, Row, Col } from 'reactstrap';
-import validaRut from '../../utils/utils'
+import { validaRut, validaPhoneLength } from '../../utils/utils'
 import './InputData.css';
 
 const InputData = () => (
@@ -22,7 +22,7 @@ const InputData = () => (
         //Validate phone number
         if(!values.cellphone) {
             errors.cellphone = 'Campo Requerido';
-        } else if (values.cellphone.length < 8) {
+        } else if (!validaPhoneLength(values.cellphone)) {
             errors.cellphone = 'Debe ingresar 8 dígitos';
         }
 
