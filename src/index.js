@@ -4,6 +4,7 @@ import { Route, BrowserRouter as Router } from 'react-router-dom'
 import './index.css';
 import App from './screens/input_data/App';
 import Sms from './screens/sms_send/Sms';
+import Confirmation from './screens/confirmation/Confirmation';
 import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -12,6 +13,7 @@ const routing = (
       <div>
         <Route exact path="/" component={App} />
         <Route path="/sms" component={Sms} />
+        <Route path="/confirmation" component={Confirmation} />
       </div>
     </Router>
   )
