@@ -18,8 +18,8 @@ class InputData extends React.Component {
                     <p id="attendedText">{(this.state.attenderRut !== '' && this.state.attenderRut !== undefined) ? 'Ejecutivo Comercial: ' + this.state.attenderRut : ''}</p>
                 </div>
                 <Formik
-                initialValues={{ rut: '', cellphone: '', clientType: '', attenderRut: this.state.attenderRut }}
-                validate={values => {
+                initialValues = {{ rut: '', cellphone: '', clientType: '', attenderRut: this.state.attenderRut }}
+                validate = {values => {
                     const errors = {};
 
                     //Validate rut
