@@ -9,6 +9,15 @@
   color: black;
 }
 
+.Form-spacing {
+  margin-top: 30px;
+}
+
+.attender-text {
+  width: fit-content;
+  font-size: calc(10px + 1vmin);
+}
+
 .Rut-row {
   margin-top: 0px;
 }

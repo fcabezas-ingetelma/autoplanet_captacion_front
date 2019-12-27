@@ -20,4 +20,20 @@ function validaPhoneLength(phone) {
     return phone.length >= 8;
 }
 
-export { validaRut, validaPhoneLength };
+function getUrlVars(url) {
+    var vars = {};
+    var parts = url.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+        vars[key] = value;
+    });
+    return vars;
+}
+
+function getUrlParam(url, parameter, defaultvalue){
+    var urlparameter = defaultvalue;
+    if(url.indexOf(parameter) > -1){
+        urlparameter = getUrlVars(url)[parameter];
+    }
+    return urlparameter;
+}
+
+export { validaRut, validaPhoneLength, getUrlParam };
