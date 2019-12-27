@@ -15,7 +15,7 @@ class InputData extends React.Component {
         return (
             <div className="InputForm">
                 <div className="attender-text">
-                    <p id="attendedText">{this.state.attenderRut !== '' ? 'Ejecutivo Comercial: ' + this.state.attenderRut : ''}</p>
+                    <p id="attendedText">{(this.state.attenderRut !== '' && this.state.attenderRut !== undefined) ? 'Ejecutivo Comercial: ' + this.state.attenderRut : ''}</p>
                 </div>
                 <Formik
                 initialValues={{ rut: '', cellphone: '', clientType: '', attenderRut: this.state.attenderRut }}

@@ -1,6 +1,6 @@
 import React from 'react';
-import APHeader from './components/header/Header';
-import InputData from './components/basic_data/input_data';
+import APHeader from '../../components/header/Header';
+import InputData from '../../components/basic_data/input_data';
 import './App.css';
 
 function App() {
