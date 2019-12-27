@@ -2,7 +2,7 @@
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { Button, Container, Row, Col } from 'reactstrap';
-import { validaRut, validaPhoneLength, getUrlParam } from '../../utils/utils'
+import { validaRut, validaPhoneLength, getUrlParam } from '../../utils/utils';
 import './InputData.css';
 
 class InputData extends React.Component {
