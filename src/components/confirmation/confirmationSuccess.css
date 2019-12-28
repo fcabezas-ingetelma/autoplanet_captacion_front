@@ -17,6 +17,12 @@
     width: fit-content;
     font-size: calc(10px + 1vmin);
   }
+
+  .attender-field-spacing {
+    width: fit-content;
+    font-size: calc(6px + 1vmin);
+    margin-left: 150px;
+  }
   
   .Phone-row {
     margin-top: 80px;

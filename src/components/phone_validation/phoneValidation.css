@@ -10,12 +10,18 @@
   }
   
   .Form-spacing {
-    margin-top: 30px;
+    margin-top: 50px;
   }
   
   .attender-text {
     width: fit-content;
-    font-size: calc(10px + 1vmin);
+    font-size: calc(6px + 1vmin);
+  }
+
+  .attender-field-spacing {
+    width: fit-content;
+    font-size: calc(6px + 1vmin);
+    margin-left: 150px;
   }
   
   .Phone-row {

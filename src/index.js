@@ -1,21 +1,28 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Route, BrowserRouter as Router } from 'react-router-dom'
+import { Route, Switch, BrowserRouter as Router } from 'react-router-dom'
+import { Provider } from 'react-redux';
+import dataStore from './store';
+
 import './index.css';
+
 import App from './screens/input_data/App';
 import Sms from './screens/sms_send/Sms';
 import Confirmation from './screens/confirmation/Confirmation';
+
 import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const routing = (
-    <Router>
-      <div>
-        <Route exact path="/" component={App} />
-        <Route path="/sms" component={Sms} />
-        <Route path="/confirmation" component={Confirmation} />
-      </div>
-    </Router>
+    <Provider store={dataStore}>
+        <Router>
+            <Switch>
+                <Route exact path="/" component={App} />
+                <Route path="/sms" component={Sms} />
+                <Route path="/confirmation" component={Confirmation} />
+            </Switch>
+        </Router>
+    </Provider>
   )
 
 ReactDOM.render(routing, document.getElementById('root'));

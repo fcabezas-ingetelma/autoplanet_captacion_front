@@ -2,7 +2,12 @@
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { Button, Container, Row, Col } from 'reactstrap';
+import { withRouter } from 'react-router-dom';
 import { validaRut, validaPhoneLength, getUrlParam } from '../../utils/utils';
+
+import { connect } from "react-redux";
+import addUserBasicData from '../../actions/addUserBasicData';
+
 import './InputData.css';
 
 class InputData extends React.Component {
@@ -39,10 +44,14 @@ class InputData extends React.Component {
                     return errors;
                 }}
                 onSubmit={(values, { setSubmitting }) => {
-                    setTimeout(() => {
-                    alert(JSON.stringify(values, null, 2));
-                    setSubmitting(false);
-                    }, 400);
+                    if(!this.errors) {
+                        this.props.addUserBasicData(values);
+                        setSubmitting(false);
+                        this.props.history.push("/sms");
+                    } else {
+                        alert('Uno o más campos tienen inconsistencias. Por favor, intente nuevamente');
+                        setSubmitting(false);
+                    } 
                 }}
                 >
                 {({ isSubmitting }) => (
@@ -105,4 +114,12 @@ class InputData extends React.Component {
     }
 }
 
-export default InputData;
+const mapStateToProps = state => ({
+    ...state
+});
+  
+const mapDispatchToProps = dispatch => ({
+    addUserBasicData: (payload) => dispatch(addUserBasicData(payload))
+});
+  
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(InputData));
