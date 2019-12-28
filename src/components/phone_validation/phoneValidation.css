@@ -1,0 +1,63 @@
+.InputForm {
+    background-color: white;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: black;
+  }
+  
+  .Form-spacing {
+    margin-top: 50px;
+  }
+  
+  .attender-text {
+    width: fit-content;
+    font-size: calc(6px + 1vmin);
+  }
+
+  .attender-field-spacing {
+    width: fit-content;
+    font-size: calc(6px + 1vmin);
+    margin-left: 150px;
+  }
+  
+  .Phone-row {
+    margin-top: 80px;
+  }
+
+  .Phone-description-label {
+    display: flex;
+    align-items: center;
+    margin-top: 30px;
+    width: 60vh;
+    font-size: calc(10px + 1vmin);
+  }
+  
+  .Phone-label {
+    display: flex;
+    align-items: center;
+    margin-top: 8px;
+    width: 20vh;
+    font-size: calc(10px + 1vmin);
+  }
+  
+  .Phone-field {
+    height: 4vh;
+    width: 30vh;
+    font-size: calc(5px + 1vmin);
+  }
+  
+  .error-label {
+    margin-top: 12px;
+    font-size: calc(3px + 1vmin);
+    color: red;
+  }
+  
+  .Submit-button {
+    margin-top: 100px;
+    margin-left: 100px;
+    width: 30vh;
+  }
