@@ -36,7 +36,7 @@ class ConfirmationSuccess extends React.Component {
                             </Col>
                             <Col>
                                 <div className="attender-field-spacing">
-                                    <p id="userText">{(this.state.rut !== '' && this.state.rut !== undefined) ? 'Identificado como: ' + this.state.rut : ''}</p>
+                                    <p id="userText">{(this.state.rut !== '' && this.state.rut !== undefined) ? 'Cliente: ' + this.state.rut : ''}</p>
                                 </div>
                             </Col>
                         </Row>
@@ -55,7 +55,11 @@ class ConfirmationSuccess extends React.Component {
                     onSubmit={(values, { setSubmitting }) => {
                         this.props.confirmOptions(values);
                         setSubmitting(false);
-                        window.location.href = 'https://www.autoplanet.cl/'; 
+                        var suffix = '';
+                        if(values.attenderRut) {
+                            suffix = '?rut=' + values.attenderRut;
+                        }
+                        window.location.href = 'https://dev.easycredit.gq/autoplanet/index.html' + suffix; 
                     }}
                     >
                     {({ isSubmitting }) => (

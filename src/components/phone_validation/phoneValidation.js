@@ -36,7 +36,7 @@ class PhoneValidation extends React.Component {
                             </Col>
                             <Col>
                                 <div className="attender-field-spacing">
-                                    <p id="userText">{(this.state.rut !== '' && this.state.rut !== undefined) ? 'Identificado como: ' + this.state.rut : ''}</p>
+                                    <p id="userText">{(this.state.rut !== '' && this.state.rut !== undefined) ? 'Cliente: ' + this.state.rut : ''}</p>
                                 </div>
                             </Col>
                         </Row>
