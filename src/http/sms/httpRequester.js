@@ -6,7 +6,7 @@ dotenv.config();
 
 class HttpRequester {
     constructor() {
-        this.url = 'http://localhost:4000';
+        this.url = 'http://ec2-35-167-42-164.us-west-2.compute.amazonaws.com:4000';
         this.config = {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
