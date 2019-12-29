@@ -75,16 +75,20 @@ class InputData extends React.Component {
                         <Container>
                             <Row className="Rut-row">
                                 <Col><label className="Rut-label">RUN</label></Col>
-                                <Col><Field className="Rut-field" type="text" name="rut" placeholder="Ingrese Rut sin puntos y con guión"/></Col>
-                                <Col><ErrorMessage className="error-label" name="rut" component="div" /></Col>
+                                <Col>
+                                    <Field className="Rut-field" type="text" name="rut" placeholder="Ingrese Rut sin puntos y con guión"/>
+                                    <ErrorMessage className="error-label" name="rut" component="div" />
+                                </Col>
                             </Row>
                             <Row className="Cellphone-row">
                                 <Col><label className="Cellphone-label">Teléfono Celular</label></Col>
-                                <Row>
-                                    <span className="Cellphone-span">+569</span>
-                                    <Field className="Cellphone-field" type="phone" name="cellphone" placeholder="Ingrese los últimos 8 digitos" />
-                                </Row>
-                                <Col><ErrorMessage className="spaced-error-label" name="cellphone" component="div" /></Col>
+                                <Col>
+                                    <Row>
+                                        <span className="Cellphone-span">+569</span>
+                                        <Field className="Cellphone-field" type="phone" name="cellphone" placeholder="Ingrese los últimos 8 digitos" />
+                                    </Row>
+                                    <ErrorMessage className="error-label" name="cellphone" component="div" />
+                                </Col>
                             </Row>
                             <Row className="Client-type-row">
                                 <Col><label className="Client-type-title">Tipo de Cliente</label></Col>

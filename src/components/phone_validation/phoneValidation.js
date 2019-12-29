@@ -83,8 +83,10 @@ class PhoneValidation extends React.Component {
                                 </Row>
                                 <Row className="Phone-row">
                                     <Col><label className="Phone-label">Ingrese Código</label></Col>
-                                    <Col><Field className="Phone-field" type="text" name="code" placeholder="1234"/></Col>
-                                    <Col><ErrorMessage className="error-label" name="code" component="div" /></Col>
+                                    <Col>
+                                        <Field className="Phone-field" type="text" name="code" placeholder="1234"/>
+                                        <ErrorMessage className="error-label" name="code" component="div" />
+                                    </Col>
                                 </Row>
                                 <Row>
                                     <Col><Button className="Submit-button" type="submit" disabled={isSubmitting} color="danger">

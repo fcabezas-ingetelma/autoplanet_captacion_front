@@ -42,21 +42,14 @@
   color: red;
 }
 
-.spaced-error-label {
-  margin-top: 12px;
-  margin-left: 27px;
-  font-size: calc(3px + 1vmin);
-  color: red;
-}
-
 .Cellphone-row {
   margin-top: 20px;
 }
 
 .Cellphone-span {
   height: 4vh;
-  margin-left: 3vh;
-  margin-top: 5px;
+  margin-top: 10px;
+  margin-left: -4vh;
   font-size: calc(7px + 1vmin);
 }
 
@@ -72,6 +65,7 @@
   height: 4vh;
   width: 25vh;
   margin-left: 1vh;
+  margin-top: 5px;
   font-size: calc(5px + 1vmin);
 }
 
