@@ -7,6 +7,7 @@ import { validaRut, validaPhoneLength, getUrlParam } from '../../utils/utils';
 
 import { connect } from "react-redux";
 import addUserBasicData from '../../actions/addUserBasicData';
+import HttpRequester from '../../http/sms/httpRequester';
 
 import './InputData.css';
 
@@ -23,7 +24,7 @@ class InputData extends React.Component {
                     <p id="attendedText">{(this.state.attenderRut !== '' && this.state.attenderRut !== undefined) ? 'Ejecutivo Comercial: ' + this.state.attenderRut : ''}</p>
                 </div>
                 <Formik
-                initialValues = {{ rut: '', cellphone: '', clientType: '', attenderRut: this.state.attenderRut }}
+                initialValues = {{ rut: '', cellphone: '', clientType: '', attenderRut: this.state.attenderRut, codeToValidate: '', expires_at: '' }}
                 validate = {values => {
                     const errors = {};
 
@@ -45,9 +46,24 @@ class InputData extends React.Component {
                 }}
                 onSubmit={(values, { setSubmitting }) => {
                     if(!this.errors) {
-                        this.props.addUserBasicData(values);
-                        setSubmitting(false);
-                        this.props.history.push("/sms");
+                        values.codeToValidate = Math.floor(1000 + Math.random() * 9000);
+                        values.expires_at = Date.now() + 900000;
+
+                        let requestBody = {
+                            phone: '569' + values.cellphone,
+                            code: values.codeToValidate
+                        }
+
+                        sendSms(requestBody, () => {
+                            //Success
+                            this.props.addUserBasicData(values);
+                            setSubmitting(false);
+                            this.props.history.push("/sms");
+                        }, () => {
+                            //Error
+                            alert('Hubo un error al procesar la solicitud. Por favor, intente nuevamente');
+                            setSubmitting(false);
+                        });
                     } else {
                         alert('Uno o más campos tienen inconsistencias. Por favor, intente nuevamente');
                         setSubmitting(false);
@@ -100,7 +116,11 @@ class InputData extends React.Component {
                                 </Col>
                             </Row>
                             <Row>
-                                <input type="hidden" value="" name="attender_rut" id="hiddenRut" />
+                                <Row>
+                                    <input type="hidden" value="" name="attender_rut" id="hiddenRut" />
+                                    <input type="hidden" value="" name="codeToValidate" id="hiddenCode" />
+                                    <input type="hidden" value="" name="expires_at" id="hiddenExpiration" />
+                                </Row>
                                 <Col><Button className="Submit-button" type="submit" disabled={isSubmitting} color="danger">
                                     Ingresar
                                 </Button></Col>
@@ -111,6 +131,20 @@ class InputData extends React.Component {
                 </Formik>
             </div>
         )
+    }
+}
+
+const sendSms = async (requestBody, onSuccess, onFailure) => {
+    let requester = new HttpRequester();
+    const response = await requester.sendSMS(requestBody);
+    if(response.status == 200) {
+        if(response.data.message === 'BAD PARAMETERS INVALID PHONE') {
+            onFailure();
+        } else {
+            onSuccess();
+        }
+    } else {
+        onFailure();
     }
 }
 

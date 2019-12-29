@@ -16,7 +16,8 @@ class PhoneValidation extends React.Component {
                            cellphone: dataStore.getState().userData.cellphone !== '' ? dataStore.getState().userData.cellphone : '', 
                            clientType: dataStore.getState().userData.clientType !== '' ? dataStore.getState().userData.clientType : '', 
                            attenderRut: dataStore.getState().userData.attenderRut !== '' ? dataStore.getState().userData.attenderRut : '', 
-                           code: '' };
+                           codeToValidate: dataStore.getState().userData.codeToValidate !== '' ? dataStore.getState().userData.codeToValidate : '',
+                           expires_at: dataStore.getState().userData.expires_at !== '' ? dataStore.getState().userData.expires_at : '' };
         } else {
             this.props.history.push("/");
         }
@@ -44,16 +45,31 @@ class PhoneValidation extends React.Component {
                     initialValues = {{ rut: this.state.rut, 
                                     cellphone: this.state.cellphone, 
                                     clientType: this.state.clientType, 
-                                    attenderRut: this.state.attenderRut, 
+                                    attenderRut: this.state.attenderRut,
+                                    expires_at: this.state.expires_at,
                                     code: '' }}
                     validate = {values => {
                         const errors = {};
+
+                        //Validate sms
+                        if (values.code != this.state.codeToValidate) {
+                            errors.code = 'El código ingresado no coincide. Intente nuevamente.';
+                        }
+
                         return errors;
                     }}
                     onSubmit={(values, { setSubmitting }) => {
-                        this.props.validateCode(values);
-                        setSubmitting(false);
-                        this.props.history.push("/confirmation");
+                        if(values.expires_at >= Date.now()) {
+                            this.props.validateCode(values);
+                            setSubmitting(false);
+                            this.props.history.push("/confirmation");
+                        } else {
+                            setTimeout(() => {
+                                alert('El código ha expirado. Por favor, intente nuevamente.');
+                                setSubmitting(false);
+                                this.props.history.push("/");
+                            }, 400);
+                        } 
                     }}
                     >
                     {({ isSubmitting }) => (

@@ -54,10 +54,8 @@ class ConfirmationSuccess extends React.Component {
                     }}
                     onSubmit={(values, { setSubmitting }) => {
                         this.props.confirmOptions(values);
-                        setTimeout(() => {
-                        alert(JSON.stringify(values, null, 2));
                         setSubmitting(false);
-                        }, 400);
+                        window.location.href = 'https://www.autoplanet.cl/'; 
                     }}
                     >
                     {({ isSubmitting }) => (
