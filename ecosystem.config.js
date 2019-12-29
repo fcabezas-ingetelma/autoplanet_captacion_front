@@ -21,7 +21,8 @@ module.exports = {
       host : '18.236.82.147',
       ref  : 'origin/master',
       repo : 'git@github.com:fcabezas-ingetelma/autoplanet_captacion_front.git',
-      path : '/var/www/production',
+      path : '/home/ec2-user/autoplanet_captacion_front',
+      key  : '../aws_keys/autoplanet_front.pem',
       'post-deploy' : 'npm install && pm2 reload ecosystem.config.js --env production'
     }
   }
