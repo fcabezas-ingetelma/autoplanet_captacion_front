@@ -6,7 +6,7 @@ dotenv.config();
 
 class HttpRequester {
     constructor() {
-        this.url = 'http://ec2-35-167-42-164.us-west-2.compute.amazonaws.com:4000';
+        this.url = process.env.REACT_APP_AP_BACKEND_URL;
         this.config = {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
