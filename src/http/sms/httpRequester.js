@@ -16,7 +16,7 @@ class HttpRequester {
 
     async sendSMS(requestBody) {
         try {
-            return await axios.post(this.url + '/v1/sms/send_sms', qs.stringify(requestBody), this.config);
+            return await axios.post(this.url + '/v1/sms/send-sms', qs.stringify(requestBody), this.config);
         } catch (error) {
             console.log(error);
         }
