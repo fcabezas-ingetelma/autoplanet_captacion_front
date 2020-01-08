@@ -24,7 +24,13 @@ class InputData extends React.Component {
                     <p id="attendedText">{(this.state.attenderRut !== '' && this.state.attenderRut !== undefined) ? 'Ejecutivo Comercial: ' + this.state.attenderRut : ''}</p>
                 </div>
                 <Formik
-                initialValues = {{ rut: '', cellphone: '', clientType: '', attenderRut: this.state.attenderRut, codeToValidate: '', expires_at: '' }}
+                initialValues = {{  rut: '', 
+                                    cellphone: '', 
+                                    clientType: '', 
+                                    attenderRut: this.state.attenderRut, 
+                                    codeToValidate: '', 
+                                    expires_at: '',
+                                    confirmationChoice: '' }}
                 validate = {values => {
                     const errors = {};
 
@@ -115,6 +121,22 @@ class InputData extends React.Component {
                                         <div className="clientType">
                                             <Field className="Client-type-field" type="radio" value="Persona Natural" name="clientType" id="personaNatural" />
                                             <label className="Client-type-label">Persona Natural</label>
+                                        </div>
+                                    </Row>
+                                </Col>
+                            </Row>
+                            <Row className="Client-selection-row">
+                                <Col>
+                                    <Row>
+                                        <div className="confirmationChoice">
+                                            <Field className="Client-type-field" type="radio" value="Si" name="confirmationChoice" id="si" />
+                                            <label className="Client-type-label">Sí, deseo participar en futuras campañas promocionales</label>
+                                        </div>
+                                    </Row>
+                                    <Row>
+                                        <div className="confirmationChoice">
+                                            <Field className="Client-type-field" type="radio" value="No" name="confirmationChoice" id="no" />
+                                            <label className="Client-type-label">No deseo participar</label>
                                         </div>
                                     </Row>
                                 </Col>

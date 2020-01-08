@@ -17,7 +17,8 @@ class PhoneValidation extends React.Component {
                            clientType: dataStore.getState().userData.clientType !== '' ? dataStore.getState().userData.clientType : '', 
                            attenderRut: dataStore.getState().userData.attenderRut !== '' ? dataStore.getState().userData.attenderRut : '', 
                            codeToValidate: dataStore.getState().userData.codeToValidate !== '' ? dataStore.getState().userData.codeToValidate : '',
-                           expires_at: dataStore.getState().userData.expires_at !== '' ? dataStore.getState().userData.expires_at : '' };
+                           expires_at: dataStore.getState().userData.expires_at !== '' ? dataStore.getState().userData.expires_at : '', 
+                           confirmationChoice: dataStore.getState().userData.confirmationChoice !== '' ? dataStore.getState().userData.confirmationChoice : '' };
         } else {
             this.props.history.push("/");
         }
@@ -47,6 +48,7 @@ class PhoneValidation extends React.Component {
                                     clientType: this.state.clientType, 
                                     attenderRut: this.state.attenderRut,
                                     expires_at: this.state.expires_at,
+                                    confirmationChoice: this.state.confirmationChoice, 
                                     code: '' }}
                     validate = {values => {
                         const errors = {};

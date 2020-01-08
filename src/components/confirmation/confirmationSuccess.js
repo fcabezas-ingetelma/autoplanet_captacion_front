@@ -17,7 +17,7 @@ class ConfirmationSuccess extends React.Component {
                            clientType: dataStore.getState().userData.clientType !== '' ? dataStore.getState().userData.clientType : '', 
                            attenderRut: dataStore.getState().userData.attenderRut !== '' ? dataStore.getState().userData.attenderRut : '', 
                            code: dataStore.getState().userData.code !== '' ? dataStore.getState().userData.code : '',
-                           confirmationChoice: '' };
+                           confirmationChoice: dataStore.getState().userData.confirmationChoice !== '' ? dataStore.getState().userData.confirmationChoice : '' };
         } else {
             this.props.history.push("/");
         }
@@ -47,7 +47,7 @@ class ConfirmationSuccess extends React.Component {
                                     clientType: this.state.clientType, 
                                     attenderRut: this.state.attenderRut, 
                                     code: this.state.code,
-                                    confirmationChoice: '' }}
+                                    confirmationChoice: this.state.confirmationChoice }}
                     validate = {values => {
                         const errors = {};
                         return errors;
@@ -55,11 +55,7 @@ class ConfirmationSuccess extends React.Component {
                     onSubmit={(values, { setSubmitting }) => {
                         this.props.confirmOptions(values);
                         setSubmitting(false);
-                        var suffix = '';
-                        if(values.attenderRut) {
-                            suffix = '?rut=' + values.attenderRut;
-                        }
-                        window.location.href = 'https://dev.easycredit.gq/autoplanet/index.html' + suffix; 
+                        window.location.href = 'https://www.autoplanet.cl/'; 
                     }}
                     >
                     {({ isSubmitting }) => (
@@ -69,27 +65,11 @@ class ConfirmationSuccess extends React.Component {
                                     <h2>FELICITACIONES</h2>
                                 </Row>
                                 <Row>
-                                    <label className="Phone-description-label">Usted ya puede acceder a descuentos por esta compra. Le invitamos a participar en futuras campañas promocionales donde habrán mayores descuentos y beneficios.</label>
-                                </Row>
-                                <Row className="Client-type-row">
-                                    <Col>
-                                        <Row>
-                                            <div className="confirmationChoice">
-                                                <Field className="Client-type-field" type="radio" value="Si" name="confirmationChoice" id="si" />
-                                                <label className="Client-type-label">Sí, deseo participar en futuras campañas promocionales</label>
-                                            </div>
-                                        </Row>
-                                        <Row>
-                                            <div className="confirmationChoice">
-                                                <Field className="Client-type-field" type="radio" value="No" name="confirmationChoice" id="no" />
-                                                <label className="Client-type-label">No deseo participar</label>
-                                            </div>
-                                        </Row>
-                                    </Col>
+                                    <h5 className="Phone-description-label">Bienvenido(a) al Club Autoplanet. Usted podrá acceder a promociones y descuentos presentando su RUT en las cajas de nuestras sucursales.</h5>
                                 </Row>
                                 <Row>
                                     <Col><Button className="Submit-button" type="submit" disabled={isSubmitting} color="danger">
-                                        Confirmar
+                                        Finalizar
                                     </Button></Col>
                                 </Row>
                             </Container>

@@ -19,7 +19,7 @@
 }
 
 .Rut-row {
-  margin-top: 0px;
+  margin-top: 60px;
 }
 
 .Rut-label {
@@ -74,6 +74,10 @@
   margin-top: 20px;
 }
 
+.Client-selection-row {
+    margin-top: 40px;
+  }
+
 .Client-type-title {
   display: flex;
   align-items: center;
@@ -93,6 +97,6 @@
 }
 
 .Submit-button {
-  margin-top: 60px;
+  margin-top: 30px;
   width: 30vh;
 }
