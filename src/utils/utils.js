@@ -45,7 +45,8 @@ function getPhoneValidationState(dataStore) {
         attenderRut: dataStore.getState().userData.attenderRut !== '' ? dataStore.getState().userData.attenderRut : '', 
         codeToValidate: dataStore.getState().userData.codeToValidate !== '' ? dataStore.getState().userData.codeToValidate : '',
         expires_at: dataStore.getState().userData.expires_at !== '' ? dataStore.getState().userData.expires_at : '', 
-        confirmationChoice: dataStore.getState().userData.confirmationChoice !== '' ? dataStore.getState().userData.confirmationChoice : '' 
+        confirmationChoice: dataStore.getState().userData.confirmationChoice !== '' ? dataStore.getState().userData.confirmationChoice : '', 
+        estados: dataStore.getState().userData.estados !== '' ? dataStore.getState().userData.estados : ''
     };
 }
 
@@ -57,7 +58,8 @@ function getConfirmationState(dataStore) {
         clientType: dataStore.getState().userData.clientType !== '' ? dataStore.getState().userData.clientType : '', 
         attenderRut: dataStore.getState().userData.attenderRut !== '' ? dataStore.getState().userData.attenderRut : '', 
         code: dataStore.getState().userData.code !== '' ? dataStore.getState().userData.code : '',
-        confirmationChoice: dataStore.getState().userData.confirmationChoice !== '' ? dataStore.getState().userData.confirmationChoice : '' 
+        confirmationChoice: dataStore.getState().userData.confirmationChoice !== '' ? dataStore.getState().userData.confirmationChoice : '', 
+        estados: dataStore.getState().userData.estados !== '' ? dataStore.getState().userData.estados : ''
     };
 }
 

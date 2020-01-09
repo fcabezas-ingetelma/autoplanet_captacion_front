@@ -23,9 +23,9 @@ class HttpRequester {
         }
     }
 
-    async sendGetRequest(path, requestBody) {
+    async sendGetRequest(path) {
         try {
-            return await axios.get(this.url + path, qs.stringify(requestBody), this.config);
+            return await axios.get(this.url + path, this.config);
         } catch (error) {
             console.log(error);
             return error;

@@ -34,7 +34,8 @@ class ConfirmationSuccess extends React.Component {
                                         clientType: this.state.clientType, 
                                         attenderRut: this.state.attenderRut, 
                                         code: this.state.code,
-                                        confirmationChoice: this.state.confirmationChoice }}
+                                        confirmationChoice: this.state.confirmationChoice, 
+                                        estados: this.state.estados }}
                         validate = {values => {
                             const errors = {};
                             return errors;

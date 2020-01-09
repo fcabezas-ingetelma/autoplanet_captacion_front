@@ -8,6 +8,8 @@ import publicIp from 'public-ip';
 
 import { connect } from "react-redux";
 import addUserBasicData from '../../actions/addUserBasicData';
+import getEstados from '../../actions/getEstados';
+import setEstados from '../../actions/setEstados';
 
 import SessionHeader from '../session/session';
 
@@ -18,7 +20,8 @@ class InputData extends React.Component {
         super(props);
         this.state = {
                         attenderRut: getUrlParam(window.location.href, 'r', ''), 
-                        ip: ''
+                        ip: '', 
+                        estados: undefined
                      };
     }
 
@@ -27,6 +30,11 @@ class InputData extends React.Component {
             let ipv4 = await publicIp.v4();
             this.setState({ ip: ipv4 });
         })();
+
+        this.props.getEstados((estados) => {
+            this.setState({ estados: estados });
+            this.props.setEstados(this.state);
+        }, () => {});
     }
 
     render() {
@@ -41,7 +49,8 @@ class InputData extends React.Component {
                                         attenderRut: this.state.attenderRut, 
                                         codeToValidate: '', 
                                         expires_at: '',
-                                        confirmationChoice: '' }}
+                                        confirmationChoice: '', 
+                                        estados: this.state.estados }}
                     validate = {values => {
                         const errors = {};
 
@@ -64,6 +73,7 @@ class InputData extends React.Component {
                     onSubmit = {(values, { setSubmitting }) => {
                         if(!this.errors) {
                             values.ip = this.state.ip;
+                            values.estados = this.state.estados;
                             this.props.addUserBasicData(values, 
                                 () => {
                                     //Success
@@ -170,7 +180,9 @@ const mapStateToProps = state => ({
 });
   
 const mapDispatchToProps = dispatch => ({
-    addUserBasicData: (payload, onSuccess, onFailure) => dispatch(addUserBasicData(payload, onSuccess, onFailure))
+    addUserBasicData: (payload, onSuccess, onFailure) => dispatch(addUserBasicData(payload, onSuccess, onFailure)), 
+    getEstados: (onSuccess, onFailure) => dispatch(getEstados(onSuccess, onFailure)), 
+    setEstados: (payload) => dispatch(setEstados(payload))
 });
   
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(InputData));
