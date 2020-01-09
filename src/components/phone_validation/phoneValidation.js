@@ -30,6 +30,7 @@ class PhoneValidation extends React.Component {
                     <Formik
                         initialValues = {{ rut: this.state.rut, 
                                         cellphone: this.state.cellphone, 
+                                        ip: this.state.ip, 
                                         clientType: this.state.clientType, 
                                         attenderRut: this.state.attenderRut,
                                         expires_at: this.state.expires_at,

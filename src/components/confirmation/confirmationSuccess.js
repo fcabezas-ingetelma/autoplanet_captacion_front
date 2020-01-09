@@ -30,6 +30,7 @@ class ConfirmationSuccess extends React.Component {
                     <Formik
                         initialValues = {{ rut: this.state.rut, 
                                         cellphone: this.state.cellphone, 
+                                        ip: this.state.ip, 
                                         clientType: this.state.clientType, 
                                         attenderRut: this.state.attenderRut, 
                                         code: this.state.code,

@@ -4,6 +4,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { Button, Container, Row, Col } from 'reactstrap';
 import { withRouter } from 'react-router-dom';
 import { validaRut, validaPhoneLength, getUrlParam } from '../../utils/utils';
+import publicIp from 'public-ip';
 
 import { connect } from "react-redux";
 import addUserBasicData from '../../actions/addUserBasicData';
@@ -15,7 +16,17 @@ import './InputData.css';
 class InputData extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {attenderRut: getUrlParam(window.location.href, 'r', '')};
+        this.state = {
+                        attenderRut: getUrlParam(window.location.href, 'r', ''), 
+                        ip: ''
+                     };
+    }
+
+    componentDidMount() {
+        (async () => {
+            let ipv4 = await publicIp.v4();
+            this.setState({ ip: ipv4 });
+        })();
     }
 
     render() {
@@ -25,6 +36,7 @@ class InputData extends React.Component {
                 <Formik
                     initialValues = {{  rut: '', 
                                         cellphone: '', 
+                                        ip: this.state.ip, 
                                         clientType: '', 
                                         attenderRut: this.state.attenderRut, 
                                         codeToValidate: '', 
@@ -51,6 +63,7 @@ class InputData extends React.Component {
                     }}
                     onSubmit = {(values, { setSubmitting }) => {
                         if(!this.errors) {
+                            values.ip = this.state.ip;
                             this.props.addUserBasicData(values, 
                                 () => {
                                     //Success

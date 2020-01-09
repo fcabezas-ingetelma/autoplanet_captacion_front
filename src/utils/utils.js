@@ -40,6 +40,7 @@ function getPhoneValidationState(dataStore) {
     return { 
         rut: dataStore.getState().userData.rut !== '' ? dataStore.getState().userData.rut : '', 
         cellphone: dataStore.getState().userData.cellphone !== '' ? dataStore.getState().userData.cellphone : '', 
+        ip: dataStore.getState().userData.ip !== '' ? dataStore.getState().userData.ip : '',
         clientType: dataStore.getState().userData.clientType !== '' ? dataStore.getState().userData.clientType : '', 
         attenderRut: dataStore.getState().userData.attenderRut !== '' ? dataStore.getState().userData.attenderRut : '', 
         codeToValidate: dataStore.getState().userData.codeToValidate !== '' ? dataStore.getState().userData.codeToValidate : '',
@@ -52,6 +53,7 @@ function getConfirmationState(dataStore) {
     return { 
         rut: dataStore.getState().userData.rut !== '' ? dataStore.getState().userData.rut : '', 
         cellphone: dataStore.getState().userData.cellphone !== '' ? dataStore.getState().userData.cellphone : '', 
+        ip: dataStore.getState().userData.ip !== '' ? dataStore.getState().userData.ip : '',
         clientType: dataStore.getState().userData.clientType !== '' ? dataStore.getState().userData.clientType : '', 
         attenderRut: dataStore.getState().userData.attenderRut !== '' ? dataStore.getState().userData.attenderRut : '', 
         code: dataStore.getState().userData.code !== '' ? dataStore.getState().userData.code : '',

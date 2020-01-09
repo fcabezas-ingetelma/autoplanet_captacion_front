@@ -23,7 +23,8 @@ const addUserBasicData = (payload, onSuccess, onFailure) => {
 const sendSms = async (payload, onSuccess, onFailure) => {
     let requester = new HttpRequester();
     const phoneValidationResponse = await requester.sendGetRequest('/v1/user/validations/phone/' + payload.cellphone, null);
-    if(phoneValidationResponse && !phoneValidationResponse.data.exists) {
+    if(phoneValidationResponse &&
+        phoneValidationResponse.data && !phoneValidationResponse.data.exists) {
         let requestBody = {
             phone: '569' + payload.cellphone,
             code: payload.codeToValidate
@@ -47,7 +48,12 @@ const createUser = async (payload, onSuccess, onFailure) => {
         dv: rutData[1], 
         cellphone: payload.cellphone, 
         type: payload.clientType, 
-        sended_sms_code: payload.codeToValidate
+        sended_sms_code: payload.codeToValidate, 
+        ip: payload.ip
+    }
+
+    if(payload.attenderRut) {
+        requestBody.rut_captador = payload.attenderRut.split('-')[0];
     }
 
     const response = await requester.sendPutRequest('/v1/user/set-client', requestBody);
