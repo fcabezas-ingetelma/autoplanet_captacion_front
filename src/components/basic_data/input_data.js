@@ -7,7 +7,6 @@ import { validaRut, validaPhoneLength, getUrlParam } from '../../utils/utils';
 
 import { connect } from "react-redux";
 import addUserBasicData from '../../actions/addUserBasicData';
-import HttpRequester from '../../http/sms/httpRequester';
 
 import SessionHeader from '../session/session';
 
@@ -52,24 +51,17 @@ class InputData extends React.Component {
                     }}
                     onSubmit = {(values, { setSubmitting }) => {
                         if(!this.errors) {
-                            values.codeToValidate = Math.floor(1000 + Math.random() * 9000);
-                            values.expires_at = Date.now() + 900000;
-
-                            let requestBody = {
-                                phone: '569' + values.cellphone,
-                                code: values.codeToValidate
-                            }
-
-                            sendSms(requestBody, () => {
-                                //Success
-                                this.props.addUserBasicData(values);
-                                setSubmitting(false);
-                                this.props.history.push("/sms");
-                            }, () => {
-                                //Error
-                                alert('Hubo un error al procesar la solicitud. Por favor, intente nuevamente');
-                                setSubmitting(false);
-                            });
+                            this.props.addUserBasicData(values, 
+                                () => {
+                                    //Success
+                                    setSubmitting(false);
+                                    this.props.history.push("/sms");
+                                }, (error) => {
+                                    //Error
+                                    alert(error ? error : 'Hubo un error al procesar la solicitud. Por favor, intente nuevamente');
+                                    setSubmitting(false);
+                                }
+                            );
                         } else {
                             alert('Uno o más campos tienen inconsistencias. Por favor, intente nuevamente');
                             setSubmitting(false);
@@ -160,26 +152,12 @@ class InputData extends React.Component {
     }
 }
 
-const sendSms = async (requestBody, onSuccess, onFailure) => {
-    let requester = new HttpRequester();
-    const response = await requester.sendSMS(requestBody);
-    if(response.status == 200) {
-        if(response.data.message === 'BAD PARAMETERS INVALID PHONE') {
-            onFailure();
-        } else {
-            onSuccess();
-        }
-    } else {
-        onFailure();
-    }
-}
-
 const mapStateToProps = state => ({
     ...state
 });
   
 const mapDispatchToProps = dispatch => ({
-    addUserBasicData: (payload) => dispatch(addUserBasicData(payload))
+    addUserBasicData: (payload, onSuccess, onFailure) => dispatch(addUserBasicData(payload, onSuccess, onFailure))
 });
   
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(InputData));
