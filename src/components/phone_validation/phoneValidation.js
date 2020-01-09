@@ -8,17 +8,15 @@ import './phoneValidation.css';
 import { connect } from "react-redux";
 import validateCode from '../../actions/validateCode';
 
+import { getPhoneValidationState } from '../../utils/utils';
+
+import SessionHeader from '../session/session';
+
 class PhoneValidation extends React.Component {
     constructor(props) {
         super(props);
         if(dataStore.getState()) {
-            this.state = { rut: dataStore.getState().userData.rut !== '' ? dataStore.getState().userData.rut : '', 
-                           cellphone: dataStore.getState().userData.cellphone !== '' ? dataStore.getState().userData.cellphone : '', 
-                           clientType: dataStore.getState().userData.clientType !== '' ? dataStore.getState().userData.clientType : '', 
-                           attenderRut: dataStore.getState().userData.attenderRut !== '' ? dataStore.getState().userData.attenderRut : '', 
-                           codeToValidate: dataStore.getState().userData.codeToValidate !== '' ? dataStore.getState().userData.codeToValidate : '',
-                           expires_at: dataStore.getState().userData.expires_at !== '' ? dataStore.getState().userData.expires_at : '', 
-                           confirmationChoice: dataStore.getState().userData.confirmationChoice !== '' ? dataStore.getState().userData.confirmationChoice : '' };
+            this.state = getPhoneValidationState(dataStore);
         } else {
             this.props.history.push("/");
         }
@@ -28,51 +26,38 @@ class PhoneValidation extends React.Component {
         if(dataStore.getState()) {
             return (
                 <div className="InputForm">
-                    <Container>
-                        <Row>
-                            <Col>
-                                <div className="attender-field-spacing">
-                                    <p id="attendedText">{(this.state.attenderRut !== '' && this.state.attenderRut !== undefined) ? 'Ejecutivo Comercial: ' + this.state.attenderRut : ''}</p>
-                                </div>
-                            </Col>
-                            <Col>
-                                <div className="attender-field-spacing">
-                                    <p id="userText">{(this.state.rut !== '' && this.state.rut !== undefined) ? 'Cliente: ' + this.state.rut : ''}</p>
-                                </div>
-                            </Col>
-                        </Row>
-                    </Container>
+                    <SessionHeader attenderRut={this.state.attenderRut} rut={this.state.rut} />
                     <Formik
-                    initialValues = {{ rut: this.state.rut, 
-                                    cellphone: this.state.cellphone, 
-                                    clientType: this.state.clientType, 
-                                    attenderRut: this.state.attenderRut,
-                                    expires_at: this.state.expires_at,
-                                    confirmationChoice: this.state.confirmationChoice, 
-                                    code: '' }}
-                    validate = {values => {
-                        const errors = {};
+                        initialValues = {{ rut: this.state.rut, 
+                                        cellphone: this.state.cellphone, 
+                                        clientType: this.state.clientType, 
+                                        attenderRut: this.state.attenderRut,
+                                        expires_at: this.state.expires_at,
+                                        confirmationChoice: this.state.confirmationChoice, 
+                                        code: '' }}
+                        validate = {values => {
+                            const errors = {};
 
-                        //Validate sms
-                        if (values.code != this.state.codeToValidate) {
-                            errors.code = 'El código ingresado no coincide. Intente nuevamente.';
-                        }
+                            //Validate sms
+                            if (values.code != this.state.codeToValidate) {
+                                errors.code = 'El código ingresado no coincide. Intente nuevamente.';
+                            }
 
-                        return errors;
-                    }}
-                    onSubmit={(values, { setSubmitting }) => {
-                        if(values.expires_at >= Date.now()) {
-                            this.props.validateCode(values);
-                            setSubmitting(false);
-                            this.props.history.push("/confirmation");
-                        } else {
-                            setTimeout(() => {
-                                alert('El código ha expirado. Por favor, intente nuevamente.');
+                            return errors;
+                        }}
+                        onSubmit = {(values, { setSubmitting }) => {
+                            if(values.expires_at >= Date.now()) {
+                                this.props.validateCode(values);
                                 setSubmitting(false);
-                                this.props.history.push("/");
-                            }, 400);
-                        } 
-                    }}
+                                this.props.history.push("/confirmation");
+                            } else {
+                                setTimeout(() => {
+                                    alert('El código ha expirado. Por favor, intente nuevamente.');
+                                    setSubmitting(false);
+                                    this.props.history.push("/");
+                                }, 400);
+                            } 
+                        }}
                     >
                     {({ isSubmitting }) => (
                         <Form className="Form-spacing">

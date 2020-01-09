@@ -9,6 +9,8 @@ import { connect } from "react-redux";
 import addUserBasicData from '../../actions/addUserBasicData';
 import HttpRequester from '../../http/sms/httpRequester';
 
+import SessionHeader from '../session/session';
+
 import './InputData.css';
 
 class InputData extends React.Component {
@@ -20,61 +22,59 @@ class InputData extends React.Component {
     render() {
         return (
             <div className="InputForm">
-                <div className="attender-text">
-                    <p id="attendedText">{(this.state.attenderRut !== '' && this.state.attenderRut !== undefined) ? 'Ejecutivo Comercial: ' + this.state.attenderRut : ''}</p>
-                </div>
+                <SessionHeader attenderRut={this.state.attenderRut} />
                 <Formik
-                initialValues = {{  rut: '', 
-                                    cellphone: '', 
-                                    clientType: '', 
-                                    attenderRut: this.state.attenderRut, 
-                                    codeToValidate: '', 
-                                    expires_at: '',
-                                    confirmationChoice: '' }}
-                validate = {values => {
-                    const errors = {};
+                    initialValues = {{  rut: '', 
+                                        cellphone: '', 
+                                        clientType: '', 
+                                        attenderRut: this.state.attenderRut, 
+                                        codeToValidate: '', 
+                                        expires_at: '',
+                                        confirmationChoice: '' }}
+                    validate = {values => {
+                        const errors = {};
 
-                    //Validate rut
-                    if (!values.rut) {
-                    errors.rut = 'Campo Requerido';
-                    } else if (!validaRut(values.rut)) {
-                    errors.rut = 'Rut Inválido';
-                    }
-                    
-                    //Validate phone number
-                    if(!values.cellphone) {
-                        errors.cellphone = 'Campo Requerido';
-                    } else if (!validaPhoneLength(values.cellphone)) {
-                        errors.cellphone = 'Debe ingresar 8 dígitos';
-                    }
-
-                    return errors;
-                }}
-                onSubmit={(values, { setSubmitting }) => {
-                    if(!this.errors) {
-                        values.codeToValidate = Math.floor(1000 + Math.random() * 9000);
-                        values.expires_at = Date.now() + 900000;
-
-                        let requestBody = {
-                            phone: '569' + values.cellphone,
-                            code: values.codeToValidate
+                        //Validate rut
+                        if (!values.rut) {
+                        errors.rut = 'Campo Requerido';
+                        } else if (!validaRut(values.rut)) {
+                        errors.rut = 'Rut Inválido';
+                        }
+                        
+                        //Validate phone number
+                        if(!values.cellphone) {
+                            errors.cellphone = 'Campo Requerido';
+                        } else if (!validaPhoneLength(values.cellphone)) {
+                            errors.cellphone = 'Debe ingresar 8 dígitos';
                         }
 
-                        sendSms(requestBody, () => {
-                            //Success
-                            this.props.addUserBasicData(values);
+                        return errors;
+                    }}
+                    onSubmit = {(values, { setSubmitting }) => {
+                        if(!this.errors) {
+                            values.codeToValidate = Math.floor(1000 + Math.random() * 9000);
+                            values.expires_at = Date.now() + 900000;
+
+                            let requestBody = {
+                                phone: '569' + values.cellphone,
+                                code: values.codeToValidate
+                            }
+
+                            sendSms(requestBody, () => {
+                                //Success
+                                this.props.addUserBasicData(values);
+                                setSubmitting(false);
+                                this.props.history.push("/sms");
+                            }, () => {
+                                //Error
+                                alert('Hubo un error al procesar la solicitud. Por favor, intente nuevamente');
+                                setSubmitting(false);
+                            });
+                        } else {
+                            alert('Uno o más campos tienen inconsistencias. Por favor, intente nuevamente');
                             setSubmitting(false);
-                            this.props.history.push("/sms");
-                        }, () => {
-                            //Error
-                            alert('Hubo un error al procesar la solicitud. Por favor, intente nuevamente');
-                            setSubmitting(false);
-                        });
-                    } else {
-                        alert('Uno o más campos tienen inconsistencias. Por favor, intente nuevamente');
-                        setSubmitting(false);
-                    } 
-                }}
+                        } 
+                    }}
                 >
                 {({ isSubmitting }) => (
                     <Form className="Form-spacing">

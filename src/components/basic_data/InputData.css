@@ -19,7 +19,7 @@
 }
 
 .Rut-row {
-  margin-top: 60px;
+  margin-top: 10px;
 }
 
 .Rut-label {
@@ -98,5 +98,6 @@
 
 .Submit-button {
   margin-top: 30px;
+  margin-bottom: 50px;
   width: 30vh;
 }

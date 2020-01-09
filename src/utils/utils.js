@@ -36,4 +36,27 @@ function getUrlParam(url, parameter, defaultvalue){
     return urlparameter;
 }
 
-export { validaRut, validaPhoneLength, getUrlParam };
+function getPhoneValidationState(dataStore) {
+    return { 
+        rut: dataStore.getState().userData.rut !== '' ? dataStore.getState().userData.rut : '', 
+        cellphone: dataStore.getState().userData.cellphone !== '' ? dataStore.getState().userData.cellphone : '', 
+        clientType: dataStore.getState().userData.clientType !== '' ? dataStore.getState().userData.clientType : '', 
+        attenderRut: dataStore.getState().userData.attenderRut !== '' ? dataStore.getState().userData.attenderRut : '', 
+        codeToValidate: dataStore.getState().userData.codeToValidate !== '' ? dataStore.getState().userData.codeToValidate : '',
+        expires_at: dataStore.getState().userData.expires_at !== '' ? dataStore.getState().userData.expires_at : '', 
+        confirmationChoice: dataStore.getState().userData.confirmationChoice !== '' ? dataStore.getState().userData.confirmationChoice : '' 
+    };
+}
+
+function getConfirmationState(dataStore) {
+    return { 
+        rut: dataStore.getState().userData.rut !== '' ? dataStore.getState().userData.rut : '', 
+        cellphone: dataStore.getState().userData.cellphone !== '' ? dataStore.getState().userData.cellphone : '', 
+        clientType: dataStore.getState().userData.clientType !== '' ? dataStore.getState().userData.clientType : '', 
+        attenderRut: dataStore.getState().userData.attenderRut !== '' ? dataStore.getState().userData.attenderRut : '', 
+        code: dataStore.getState().userData.code !== '' ? dataStore.getState().userData.code : '',
+        confirmationChoice: dataStore.getState().userData.confirmationChoice !== '' ? dataStore.getState().userData.confirmationChoice : '' 
+    };
+}
+
+export { validaRut, validaPhoneLength, getUrlParam, getPhoneValidationState, getConfirmationState };
