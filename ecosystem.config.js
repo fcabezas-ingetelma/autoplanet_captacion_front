@@ -18,8 +18,8 @@ module.exports = {
   deploy : {
     production : {
       user : 'ec2-user',
-      host : '18.236.82.147',
-      ref  : 'origin/master',
+      host : '54.213.163.10',
+      ref  : 'origin/feature/fase1',
       repo : 'git@github.com:fcabezas-ingetelma/autoplanet_captacion_front.git',
       path : '/home/ec2-user/autoplanet_captacion_front',
       key  : '../aws_keys/autoplanet_front.pem',
