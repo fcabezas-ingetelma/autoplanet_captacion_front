@@ -6,7 +6,7 @@ dotenv.config();
 
 class HttpRequester {
     constructor() {
-        this.url = process.env.REACT_APP_AP_BACKEND_URL;
+        this.url = 'http://54.191.66.41:4000';
         this.config = {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
