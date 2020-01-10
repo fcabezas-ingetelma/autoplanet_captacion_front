@@ -7,6 +7,8 @@ import './phoneValidation.css';
 
 import { connect } from "react-redux";
 import validateCode from '../../actions/validateCode';
+import createSolicitud from '../../actions/createSolicitud';
+import updateSMSData from '../../actions/updateSMSData';
 
 import { getPhoneValidationState } from '../../utils/utils';
 
@@ -43,20 +45,26 @@ class PhoneValidation extends React.Component {
                             //Validate sms
                             if (values.code != this.state.codeToValidate) {
                                 errors.code = 'El código ingresado no coincide. Intente nuevamente.';
+                                this.props.createSolicitud(values, 6, () => {}, () => {});
                             }
 
                             return errors;
                         }}
                         onSubmit = {(values, { setSubmitting }) => {
                             if(values.expires_at >= Date.now()) {
-                                this.props.validateCode(values);
                                 setSubmitting(false);
-                                this.props.history.push("/confirmation");
+                                this.props.validateCode(values);
+                                this.props.updateSMSData(values, () => {}, () => {});
+                                this.props.createSolicitud(values, 5, () => {
+                                    this.props.history.push("/confirmation");
+                                }, () => {});
                             } else {
                                 setTimeout(() => {
                                     alert('El código ha expirado. Por favor, intente nuevamente.');
                                     setSubmitting(false);
-                                    this.props.history.push("/");
+                                    this.props.createSolicitud(values, 6, () => {
+                                        this.props.history.push("/");
+                                    }, () => {});
                                 }, 400);
                             } 
                         }}
@@ -99,7 +107,9 @@ const mapStateToProps = state => ({
 });
   
 const mapDispatchToProps = dispatch => ({
-    validateCode: (payload) => dispatch(validateCode(payload))
+    validateCode: (payload) => dispatch(validateCode(payload)), 
+    createSolicitud: (payload, estado_id, onSuccess, onFailure) => dispatch(createSolicitud(payload, estado_id, onSuccess, onFailure)), 
+    updateSMSData: (payload, onSuccess, onFailure) => dispatch(updateSMSData(payload, onSuccess, onFailure))
 });
   
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(PhoneValidation));

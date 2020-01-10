@@ -49,6 +49,7 @@ const createUser = async (payload, onSuccess, onFailure) => {
         cellphone: payload.cellphone, 
         type: payload.clientType, 
         sended_sms_code: payload.codeToValidate, 
+        client_response: payload.confirmationChoice, 
         ip: payload.ip
     }
 
@@ -59,6 +60,7 @@ const createUser = async (payload, onSuccess, onFailure) => {
     const response = await requester.sendPutRequest('/v1/user/set-client', requestBody);
     if(response) { 
         if(response.status == 200) {
+            const updateDataWithSinacofi = await requester.sendGetRequest('/v1/user/get-sinacofi-data/' + payload.rut.replace('-', ''));
             onSuccess();
         } else {
             onFailure(CONSTANTS.USER_EXISTS_ERROR_MESSAGE);

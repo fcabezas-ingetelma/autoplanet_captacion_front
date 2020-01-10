@@ -10,6 +10,7 @@ import { connect } from "react-redux";
 import addUserBasicData from '../../actions/addUserBasicData';
 import getEstados from '../../actions/getEstados';
 import setEstados from '../../actions/setEstados';
+import createSolicitud from '../../actions/createSolicitud';
 
 import SessionHeader from '../session/session';
 
@@ -74,11 +75,30 @@ class InputData extends React.Component {
                         if(!this.errors) {
                             values.ip = this.state.ip;
                             values.estados = this.state.estados;
+                            
                             this.props.addUserBasicData(values, 
                                 () => {
                                     //Success
                                     setSubmitting(false);
-                                    this.props.history.push("/sms");
+                                    if(values.cellphone) {
+                                        this.props.createSolicitud(values, 4, () => {}, () => {});
+                                    }
+                                    if(values.confirmationChoice) {
+                                        switch (values.confirmationChoice) {
+                                            case 'Si': this.props.createSolicitud(values, 7, () => {}, () => {});
+                                                       break;
+                                            case 'No': this.props.createSolicitud(values, 8, () => {}, () => {});
+                                                       break;
+                                        }
+                                    }
+                                    this.props.createSolicitud(values, 3, () => {
+                                        //Solicitud created successfully
+                                        this.props.history.push("/sms");
+                                    }, () => {
+                                        //Solicitud creation error
+                                        //TODO Manage this state
+                                        this.props.history.push("/sms");
+                                    });
                                 }, (error) => {
                                     //Error
                                     alert(error ? error : 'Hubo un error al procesar la solicitud. Por favor, intente nuevamente');
@@ -182,7 +202,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
     addUserBasicData: (payload, onSuccess, onFailure) => dispatch(addUserBasicData(payload, onSuccess, onFailure)), 
     getEstados: (onSuccess, onFailure) => dispatch(getEstados(onSuccess, onFailure)), 
-    setEstados: (payload) => dispatch(setEstados(payload))
+    setEstados: (payload) => dispatch(setEstados(payload)), 
+    createSolicitud: (payload, estado_id, onSuccess, onFailure) => dispatch(createSolicitud(payload, estado_id, onSuccess, onFailure))
 });
   
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(InputData));

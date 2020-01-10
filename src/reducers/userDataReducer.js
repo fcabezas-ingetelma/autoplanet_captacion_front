@@ -1,5 +1,13 @@
 export default (state, action) => {
     switch (action.type) {
+      case "update_sms_data":
+        return {
+          userData: action.payload
+        };
+      case "create_solicitud":
+        return {
+          userData: action.payload
+        };
       case "set_estados":
         return {
           userData: action.payload
