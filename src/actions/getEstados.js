@@ -10,7 +10,7 @@ const getEstados = (onSuccess, onFailure) => {
 const getEstadosService = async (onSuccess, onFailure) => {
     let requester = new HttpRequester();
     const response = await requester.sendGetRequest('/v1/user/estados');
-    if(response) {
+    if(response && response.data) {
         onSuccess(response.data.message);
     } else {
         onFailure();

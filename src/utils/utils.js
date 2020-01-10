@@ -46,6 +46,7 @@ function getPhoneValidationState(dataStore) {
         codeToValidate: dataStore.getState().userData.codeToValidate !== '' ? dataStore.getState().userData.codeToValidate : '',
         expires_at: dataStore.getState().userData.expires_at !== '' ? dataStore.getState().userData.expires_at : '', 
         confirmationChoice: dataStore.getState().userData.confirmationChoice !== '' ? dataStore.getState().userData.confirmationChoice : '', 
+        email: dataStore.getState().userData.email !== '' ? dataStore.getState().userData.email : '', 
         estados: dataStore.getState().userData.estados !== '' ? dataStore.getState().userData.estados : ''
     };
 }
@@ -59,6 +60,7 @@ function getConfirmationState(dataStore) {
         attenderRut: dataStore.getState().userData.attenderRut !== '' ? dataStore.getState().userData.attenderRut : '', 
         code: dataStore.getState().userData.code !== '' ? dataStore.getState().userData.code : '',
         confirmationChoice: dataStore.getState().userData.confirmationChoice !== '' ? dataStore.getState().userData.confirmationChoice : '', 
+        email: dataStore.getState().userData.email !== '' ? dataStore.getState().userData.email : '', 
         estados: dataStore.getState().userData.estados !== '' ? dataStore.getState().userData.estados : ''
     };
 }

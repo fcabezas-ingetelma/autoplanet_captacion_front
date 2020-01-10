@@ -51,6 +51,7 @@ class InputData extends React.Component {
                                         codeToValidate: '', 
                                         expires_at: '',
                                         confirmationChoice: '', 
+                                        email: '', 
                                         estados: this.state.estados }}
                     validate = {values => {
                         const errors = {};
@@ -80,7 +81,9 @@ class InputData extends React.Component {
                                 () => {
                                     //Success
                                     setSubmitting(false);
-                                    if(values.cellphone) {
+                                    //This commented code has no sense since solcitud don't keep track of states
+                                    //In the near future we should have a 'move_to' table
+                                    /*if(values.cellphone) {
                                         this.props.createSolicitud(values, 4, () => {}, () => {});
                                     }
                                     if(values.confirmationChoice) {
@@ -90,7 +93,7 @@ class InputData extends React.Component {
                                             case 'No': this.props.createSolicitud(values, 8, () => {}, () => {});
                                                        break;
                                         }
-                                    }
+                                    }*/
                                     this.props.createSolicitud(values, 3, () => {
                                         //Solicitud created successfully
                                         this.props.history.push("/sms");
@@ -131,6 +134,13 @@ class InputData extends React.Component {
                                     <ErrorMessage className="error-label" name="cellphone" component="div" />
                                 </Col>
                             </Row>
+                            <Row className="Rut-row">
+                                <Col><label className="Rut-label">Email</label></Col>
+                                <Col>
+                                    <Field className="Rut-field" type="text" name="email" placeholder="Ingrese Email"/>
+                                    <ErrorMessage className="error-label" name="email" component="div" />
+                                </Col>
+                            </Row>
                             <Row className="Client-type-row">
                                 <Col><label className="Client-type-title">Tipo de Cliente</label></Col>
                                 <Col>
@@ -163,16 +173,21 @@ class InputData extends React.Component {
                             <Row className="Client-selection-row">
                                 <Col>
                                     <Row>
-                                        <div className="confirmationChoice">
-                                            <Field className="Client-type-field" type="radio" value="Si" name="confirmationChoice" id="si" />
-                                            <label className="Client-type-label">Sí, deseo participar en futuras campañas promocionales</label>
-                                        </div>
+                                        <label className="Client-type-label">¿Desea participar en campañas promocionales?</label>
                                     </Row>
                                     <Row>
-                                        <div className="confirmationChoice">
-                                            <Field className="Client-type-field" type="radio" value="No" name="confirmationChoice" id="no" />
-                                            <label className="Client-type-label">No deseo participar</label>
-                                        </div>
+                                        <Col>
+                                            <div className="confirmationChoice">
+                                                <Field className="Client-type-field" type="radio" value="Si" name="confirmationChoice" id="si" />
+                                                <label className="Client-type-label">Sí</label>
+                                            </div>
+                                        </Col>
+                                        <Col>
+                                            <div className="confirmationChoice">
+                                                <Field className="Client-type-field" type="radio" value="No" name="confirmationChoice" id="no" />
+                                                <label className="Client-type-label">No</label>
+                                            </div>
+                                        </Col>
                                     </Row>
                                 </Col>
                             </Row>

@@ -37,6 +37,7 @@ class PhoneValidation extends React.Component {
                                         attenderRut: this.state.attenderRut,
                                         expires_at: this.state.expires_at,
                                         confirmationChoice: this.state.confirmationChoice, 
+                                        email: this.state.email, 
                                         code: '', 
                                         estados: this.state.estados }}
                         validate = {values => {

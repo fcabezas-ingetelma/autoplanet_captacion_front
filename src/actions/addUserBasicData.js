@@ -47,6 +47,7 @@ const createUser = async (payload, onSuccess, onFailure) => {
         rut: rutData[0],
         dv: rutData[1], 
         cellphone: payload.cellphone, 
+        email: payload.email, 
         type: payload.clientType, 
         sended_sms_code: payload.codeToValidate, 
         client_response: payload.confirmationChoice, 
