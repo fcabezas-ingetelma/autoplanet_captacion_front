@@ -5,9 +5,9 @@ const addUserBasicData = (payload, onSuccess, onFailure) => {
     payload.codeToValidate = Math.floor(1000 + Math.random() * 9000);
     payload.expires_at = Date.now() + 900000;
 
-    sendSms(payload, 
+    createUser(payload, 
         () => {
-            createUser(payload, onSuccess, onFailure);
+            sendSms(payload, onSuccess, onFailure);
         }, 
         (error) => {
             onFailure(error);
