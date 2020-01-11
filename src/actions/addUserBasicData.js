@@ -58,6 +58,10 @@ const createUser = async (payload, onSuccess, onFailure) => {
         requestBody.rut_captador = payload.attenderRut.split('-')[0];
     }
 
+    if(payload.canal) {
+        requestBody.canal = payload.canal;
+    }
+
     const response = await requester.sendPutRequest('/v1/user/set-client', requestBody);
     if(response) { 
         if(response.status == 200) {

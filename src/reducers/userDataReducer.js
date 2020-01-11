@@ -1,5 +1,9 @@
 export default (state, action) => {
     switch (action.type) {
+      case "set_tracker":
+        return {
+          userData: action.payload
+        };
       case "update_attendance_info":
         return {
           userData: action.payload

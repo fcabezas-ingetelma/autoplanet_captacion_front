@@ -11,6 +11,7 @@ import addUserBasicData from '../../actions/addUserBasicData';
 import getEstados from '../../actions/getEstados';
 import setEstados from '../../actions/setEstados';
 import createSolicitud from '../../actions/createSolicitud';
+import setTracker from '../../actions/setTracker';
 
 import SessionHeader from '../session/session';
 
@@ -31,6 +32,8 @@ class InputData extends React.Component {
         (async () => {
             let ipv4 = await publicIp.v4();
             this.setState({ ip: ipv4 });
+
+            this.props.setTracker(this.state, () => {}, () => {});
         })();
 
         this.props.getEstados((estados) => {
@@ -220,7 +223,8 @@ const mapDispatchToProps = dispatch => ({
     addUserBasicData: (payload, onSuccess, onFailure) => dispatch(addUserBasicData(payload, onSuccess, onFailure)), 
     getEstados: (onSuccess, onFailure) => dispatch(getEstados(onSuccess, onFailure)), 
     setEstados: (payload) => dispatch(setEstados(payload)), 
-    createSolicitud: (payload, estado_id, onSuccess, onFailure) => dispatch(createSolicitud(payload, estado_id, onSuccess, onFailure))
+    createSolicitud: (payload, estado_id, onSuccess, onFailure) => dispatch(createSolicitud(payload, estado_id, onSuccess, onFailure)), 
+    setTracker: (payload, onSuccess, onFailure) => dispatch(setTracker(payload, onSuccess, onFailure))
 });
   
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(InputData));
