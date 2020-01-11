@@ -108,8 +108,15 @@ class InputData extends React.Component {
                                         this.props.history.push("/sms");
                                     });
                                 }, (error) => {
-                                    //Error
-                                    alert(error ? error : 'Hubo un error al procesar la solicitud. Por favor, intente nuevamente');
+                                    if(error == '160') {
+                                        //SMS Sended and validated, must finish process
+                                        this.props.history.push("/confirmation");
+                                    } else if(error.split('-')[0] == '170') {
+                                        alert(error.split('-')[1]);
+                                    } else {
+                                        //Error
+                                        alert(error ? error : 'Hubo un error al procesar la solicitud. Por favor, intente nuevamente');
+                                    }
                                     setSubmitting(false);
                                 }
                             );
