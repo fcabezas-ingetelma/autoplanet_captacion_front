@@ -1,5 +1,9 @@
 export default (state, action) => {
     switch (action.type) {
+      case "update_attendance_info":
+        return {
+          userData: action.payload
+        };
       case "update_sms_data":
         return {
           userData: action.payload
@@ -17,10 +21,6 @@ export default (state, action) => {
           userData: action.payload
         };
       case "add_user_basic_data":
-        return {
-          userData: action.payload
-        };
-      case "confirm_options":
         return {
           userData: action.payload
         };

@@ -21,6 +21,7 @@ class InputData extends React.Component {
         super(props);
         this.state = {
                         attenderRut: getUrlParam(window.location.href, 'r', ''), 
+                        canal: getUrlParam(window.location.href, 'c', ''), 
                         ip: '', 
                         estados: undefined
                      };
@@ -48,6 +49,7 @@ class InputData extends React.Component {
                                         ip: this.state.ip, 
                                         clientType: '', 
                                         attenderRut: this.state.attenderRut, 
+                                        canal: this.state.canal, 
                                         codeToValidate: '', 
                                         expires_at: '',
                                         confirmationChoice: '', 

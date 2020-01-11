@@ -6,7 +6,7 @@ import dataStore from '../../store';
 import './confirmationSuccess.css';
 
 import { connect } from "react-redux";
-import confirmOptions from '../../actions/confirmOptions';
+import updateAttendanceInfo from '../../actions/updateAttendanceInfo'
 
 import { getConfirmationState } from '../../utils/utils';
 
@@ -33,6 +33,7 @@ class ConfirmationSuccess extends React.Component {
                                         ip: this.state.ip, 
                                         clientType: this.state.clientType, 
                                         attenderRut: this.state.attenderRut, 
+                                        canal: this.state.canal, 
                                         code: this.state.code,
                                         confirmationChoice: this.state.confirmationChoice, 
                                         email: this.state.email, 
@@ -42,8 +43,10 @@ class ConfirmationSuccess extends React.Component {
                             return errors;
                         }}
                         onSubmit={(values, { setSubmitting }) => {
-                            this.props.confirmOptions(values);
                             setSubmitting(false);
+                            if(values.attenderRut || values.canal) {
+                                this.props.updateAttendanceInfo(values, () => {}, () => {});
+                            }
                             window.location.href = 'https://www.autoplanet.cl/'; 
                         }}
                     >
@@ -78,7 +81,7 @@ const mapStateToProps = state => ({
 });
   
 const mapDispatchToProps = dispatch => ({
-    confirmOptions: (payload) => dispatch(confirmOptions(payload))
+    updateAttendanceInfo: (payload, onSuccess, onFailure) => dispatch(updateAttendanceInfo(payload, onSuccess, onFailure))
 });
   
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ConfirmationSuccess));
