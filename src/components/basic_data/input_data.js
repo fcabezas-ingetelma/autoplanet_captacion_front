@@ -1,10 +1,11 @@
 // Render Prop
 import React from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { Button, Container, Row, Col } from 'reactstrap';
+import { Formik, Field, ErrorMessage } from 'formik';
+import { Button } from 'reactstrap';
 import { withRouter } from 'react-router-dom';
 import { validaRut, validaPhoneLength, getUrlParam } from '../../utils/utils';
 import publicIp from 'public-ip';
+import {Form, Row, Col, Container, InputGroup} from 'react-bootstrap'
 
 import { connect } from "react-redux";
 import addUserBasicData from '../../actions/addUserBasicData';
@@ -44,7 +45,7 @@ class InputData extends React.Component {
 
     render() {
         return (
-            <div className="InputForm">
+            <div>
                 <SessionHeader attenderRut={this.state.attenderRut} />
                 <Formik
                     initialValues = {{  rut: '', 
@@ -127,94 +128,115 @@ class InputData extends React.Component {
                     }}
                 >
                 {({ isSubmitting }) => (
-                    <Form className="Form-spacing">
-                        <Container>
-                            <Row className="Rut-row">
-                                <Col><label className="Rut-label">RUN</label></Col>
-                                <Col>
-                                    <Field className="Rut-field" type="text" name="rut" placeholder="Ingrese Rut sin puntos y con guión"/>
-                                    <ErrorMessage className="error-label" name="rut" component="div" />
+                    <Container >
+                    <Form >
+                        <Form.Group as={Row} controlId='Rut'>
+                            <Col align='left'>
+                            <Form.Label sm={2}  >
+                                RUT
+                            </Form.Label>
+                            </Col>
+                            <Col sm={10}>
+                                <Form.Control 
+                                    required
+                                    type="text" 
+                                    name="rut" 
+                                    placeholder="Ingrese Rut sin puntos y con guión"
+                                />
+                            </Col>
+                        </Form.Group>
+
+                        <Form.Group as={Row} controlId='cellphone'>
+                            <Col align='left'>
+                            <Form.Label sm={2} >
+                                Teléfono Celular
+                            </Form.Label>
+                            </Col>
+                            <Col sm={10}>
+                            <InputGroup>
+                                    <InputGroup.Prepend id="inputGroupPrepend">
+                                        <InputGroup.Text>+569</InputGroup.Text>
+                                    </InputGroup.Prepend>
+                                    <Form.Control 
+                                        maxlength='8'
+                                        aria-describedby="inputGroupPrepend"
+                                        required
+                                        type="phone" 
+                                        name="cellphone" 
+                                        placeholder="Ingrese los últimos 8 digitos" 
+                                   />
+                            </InputGroup>
                                 </Col>
-                            </Row>
-                            <Row className="Cellphone-row">
-                                <Col><label className="Cellphone-label">Teléfono Celular</label></Col>
-                                <Col>
-                                    <Row>
-                                        <span className="Cellphone-span">+569</span>
-                                        <Field className="Cellphone-field" type="phone" name="cellphone" placeholder="Ingrese los últimos 8 digitos" />
-                                    </Row>
-                                    <ErrorMessage className="error-label" name="cellphone" component="div" />
-                                </Col>
-                            </Row>
-                            <Row className="Rut-row">
-                                <Col><label className="Rut-label">Email</label></Col>
-                                <Col>
-                                    <Field className="Rut-field" type="text" name="email" placeholder="Ingrese Email"/>
-                                    <ErrorMessage className="error-label" name="email" component="div" />
-                                </Col>
-                            </Row>
-                            <Row className="Client-type-row">
-                                <Col><label className="Client-type-title">Tipo de Cliente</label></Col>
-                                <Col>
-                                    <Row>
-                                        <div className="clientType">
-                                            <Field className="Client-type-field" type="radio" value="Taller" name="clientType" id="taller" />
-                                            <label className="Client-type-label">Taller</label>
-                                        </div>
-                                    </Row>
-                                    <Row>
-                                        <div className="clientType">
-                                            <Field className="Client-type-field" type="radio" value="Uber" name="clientType" id="uber" />
-                                            <label className="Client-type-label">Uber</label>
-                                        </div>
-                                    </Row>
-                                    <Row>
-                                        <div className="clientType">
-                                            <Field className="Client-type-field" type="radio" value="Empresa" name="clientType" id="empresa" />
-                                            <label className="Client-type-label">Empresa</label>
-                                        </div>
-                                    </Row>
-                                    <Row>
-                                        <div className="clientType">
-                                            <Field className="Client-type-field" type="radio" value="Persona Natural" name="clientType" id="personaNatural" />
-                                            <label className="Client-type-label">Persona Natural</label>
-                                        </div>
-                                    </Row>
-                                </Col>
-                            </Row>
-                            <Row className="Client-selection-row">
-                                <Col>
-                                    <Row>
-                                        <label className="Client-type-label">¿Desea participar en campañas promocionales?</label>
-                                    </Row>
-                                    <Row>
-                                        <Col>
-                                            <div className="confirmationChoice">
-                                                <Field className="Client-type-field" type="radio" value="Si" name="confirmationChoice" id="si" />
-                                                <label className="Client-type-label">Sí</label>
+                            <ErrorMessage name="cellphone" component="div" />
+                        </Form.Group>
+
+                        <Form.Group as={Row} controlId='Rut'>
+                            <Col align='left'>
+                            <Form.Label >
+                                Email 
+                            </Form.Label>
+                            </Col>
+                            <Col sm={10}>
+                                <Form.Control 
+                                    type="text" 
+                                    name="email" 
+                                    placeholder="Ingrese Email"
+                                />
+                                <Form.Text className="text-muted" align='left'>
+                                    (Opcional)
+                                </Form.Text>
+                            </Col>
+                            <ErrorMessage name="email" component="div" />
+                        </Form.Group>
+
+                        
+                        <Form.Group as={Row} controlId='ClientType'>
+                            <Col align='left'>
+                            <Form.Label >
+                                Tipo de Cliente
+                            </Form.Label>
+                            </Col>
+                            <Col align='left' sm={10}>
+                            {['Cabify','Cornershop','Empleado','Taller','Otro'].map(type =>(
+                                    <Form.Check
+                                        type='radio'
+                                        id={`${type}`}
+                                        label={`${type}`}
+                                    />
+                                    ))}
+                            </Col>
+                        </Form.Group>
+
+                            <Form.Group as={Row} controlId='ClientSelection'>
+                                <Form.Label column sm={2}>
+                                    ¿Desea participar en campañas promocionales?
+                                </Form.Label>
+                                
+                                    {['Sí','No'].map(type=>(
+                                        <Col align='center'>
+                                            <div key={`${type}`} className='mx-3'>
+                                                <Form.Check
+                                                    inline
+                                                    type='radio'
+                                                    id={`${type}`}
+                                                    label={`${type}`}
+                                                    name='confirmationChoice'
+                                                />
                                             </div>
                                         </Col>
-                                        <Col>
-                                            <div className="confirmationChoice">
-                                                <Field className="Client-type-field" type="radio" value="No" name="confirmationChoice" id="no" />
-                                                <label className="Client-type-label">No</label>
-                                            </div>
-                                        </Col>
-                                    </Row>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Row>
+                                    ))}        
+                            </Form.Group>
+                            
+                                
                                     <input type="hidden" value="" name="attender_rut" id="hiddenRut" />
                                     <input type="hidden" value="" name="codeToValidate" id="hiddenCode" />
                                     <input type="hidden" value="" name="expires_at" id="hiddenExpiration" />
-                                </Row>
-                                <Col><Button className="Submit-button" type="submit" disabled={isSubmitting} color="danger">
+                                
+                                <Button block type="submit" disabled={isSubmitting} color="danger">
                                     Ingresar
-                                </Button></Col>
-                            </Row>
-                        </Container>
+                                </Button>
                     </Form>
+                    </Container>
                 )}
                 </Formik>
             </div>

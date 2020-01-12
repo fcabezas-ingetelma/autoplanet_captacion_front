@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Row, Col } from 'reactstrap';
+import {Form, Row, Col, Container, Navbar} from 'react-bootstrap'
 import './session.css';
 
 class SessionHeader extends React.Component {
@@ -10,20 +10,18 @@ class SessionHeader extends React.Component {
     render() {
         return (
             <Container>
-                <Row>
-                    <Col>
-                        <div className="attender-field-spacing">
-                            <p id="attendedText">{(this.props.attenderRut !== '' && this.props.attenderRut !== undefined) ? 'Ejecutivo Comercial: ' + this.props.attenderRut : ''}</p>
-                        </div>
-                    </Col>
+                <Navbar >
+                  <Navbar.Collapse className="justify-content-end">
+                    <Navbar.Text>
+                    <p id="attendedText">{(this.props.attenderRut !== '' && this.props.attenderRut !== undefined) ? 'Ejecutivo Comercial: ' + this.props.attenderRut : ''}</p>
                     {this.props.rut && 
-                        <Col>
-                            <div className="attender-field-spacing">
+                            <div >
                                 <p id="userText">{(this.props.rut !== '' && this.props.rut !== undefined) ? 'Cliente: ' + this.props.rut : ''}</p>
                             </div>
-                        </Col>
                     }
-                </Row>
+                    </Navbar.Text>
+                  </Navbar.Collapse>
+                </Navbar>   
             </Container>
         )
     }

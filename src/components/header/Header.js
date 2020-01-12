@@ -1,14 +1,22 @@
 import React from 'react';
 import logo from './ap-logo.svg';
+import {Row, Container} from 'react-bootstrap'
 import './Header.css';
 
 function APHeader() {
     return (
-        <div className="AP-app-header">
-            <header>
-                <img src={logo} className="AP-app-logo" alt="logo" />
-            </header>
-        </div>
+        <Container>
+            <Row>
+            <div >
+                <header>
+                    <img src={logo} alt="logo" />
+                </header>
+            </div>
+            </Row>
+            <Row>
+                
+            </Row>
+        </Container>
     );
 }
 

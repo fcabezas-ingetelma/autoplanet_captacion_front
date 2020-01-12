@@ -1,6 +1,9 @@
 import React from 'react';
-import { Formik, Form, Field } from 'formik';
-import { Button, Container, Row, Col } from 'reactstrap';
+import { Formik, Field } from 'formik';
+import { Button} from 'reactstrap';
+import {Form, Row, Col, Container, InputGroup} from 'react-bootstrap'
+
+
 import { withRouter } from 'react-router-dom';
 import dataStore from '../../store';
 import './confirmationSuccess.css';
@@ -51,21 +54,19 @@ class ConfirmationSuccess extends React.Component {
                         }}
                     >
                     {({ isSubmitting }) => (
-                        <Form className="Form-spacing">
-                            <Container>
-                                <Row>
-                                    <h2>FELICITACIONES</h2>
-                                </Row>
-                                <Row>
-                                    <h5 className="Phone-description-label">Bienvenido(a) al Club Autoplanet. Usted podrá acceder a promociones y descuentos presentando su RUT en las cajas de nuestras sucursales.</h5>
-                                </Row>
-                                <Row>
-                                    <Col><Button className="Submit-button" type="submit" disabled={isSubmitting} color="danger">
+                        <Container>
+                            <h2>FELICITACIONES</h2>
+                                
+                            <h5 >Bienvenido(a) al Club Autoplanet. Usted podrá acceder a promociones y descuentos presentando su RUT en las cajas de nuestras sucursales.</h5>
+                                
+                            <Form >
+                                <Row align="center">
+                                    <Col><Button type="submit" disabled={isSubmitting} color="danger">
                                         Finalizar
                                     </Button></Col>
                                 </Row>
-                            </Container>
-                        </Form>
+                            </Form>
+                        </Container>
                     )}
                     </Formik>
                 </div>
