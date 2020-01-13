@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Container} from 'react-bootstrap'
+import {Button, Container, Row, Col} from 'react-bootstrap'
 import { connect } from "react-redux";
 import { withRouter } from 'react-router-dom';
 
@@ -30,7 +30,7 @@ class SessionHeader extends React.Component {
                         <Col className="my-auto" >
                             <div align='right' >
                                 <label id="userText" >{(this.props.rut !== '' && this.props.rut !== undefined) ? 'Cliente: ' + this.props.rut : ''  }</label>
-                                <Button variant='danger'>Salir</Button>
+                                <Button variant='danger' onClick={this.handleDeleteSession.bind(this)}>Salir</Button>
                             </div>
                         </Col>
                     }
