@@ -218,11 +218,13 @@ class InputData extends React.Component {
                                 </Col>
                                 <Col align='left' sm={10}>
                                 {['Cabify','Cornershop','Empleado','Taller','Otro'].map(type =>(
+                                    <div key={`${type}`}>
                                         <Form.Check
                                             type='radio'
                                             id={`${type}`}
                                             label={`${type}`}
                                         />
+                                        </div>
                                         ))}
                                 </Col>
                             </Form.Group>
