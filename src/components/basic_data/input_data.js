@@ -1,11 +1,10 @@
 // Render Prop
 import React from 'react';
 import { Formik, Field, ErrorMessage } from 'formik';
-import { Button } from 'reactstrap';
 import { withRouter } from 'react-router-dom';
 import { validaRut, validaPhoneLength, getUrlParam } from '../../utils/utils';
 import publicIp from 'public-ip';
-import {Form, Row, Col, Container, InputGroup} from 'react-bootstrap'
+import {Form, Row, Col, Container, InputGroup, Button} from 'react-bootstrap'
 
 import { connect } from "react-redux";
 import addUserBasicData from '../../actions/addUserBasicData';
@@ -77,25 +76,6 @@ class InputData extends React.Component {
                                         confirmationChoice: '', 
                                         email: '', 
                                         estados: this.state.estados }}
-                    validate = {values => {
-                        const errors = {};
-
-                        //Validate rut
-                        if (!values.rut) {
-                        errors.rut = 'Campo Requerido';
-                        } else if (!validaRut(values.rut)) {
-                        errors.rut = 'Rut Inválido';
-                        }
-                        
-                        //Validate phone number
-                        if(!values.cellphone) {
-                            errors.cellphone = 'Campo Requerido';
-                        } else if (!validaPhoneLength(values.cellphone)) {
-                            errors.cellphone = 'Debe ingresar 8 dígitos';
-                        }
-
-                        return errors;
-                    }}
                     onSubmit = {(values, { setSubmitting }) => {
                         if(!this.errors) {
                             values.ip = this.state.ip;
@@ -145,10 +125,10 @@ class InputData extends React.Component {
                         } 
                     }}
                 >
-                {({ isSubmitting }) => (
-                    <Form >
-                        <Container >
-                            <Form.Group as={Row} controlId='Rut'>
+                {({ isSubmitting, handleSubmit, values, handleChange }) => (
+                    <Container >
+                        <Form onSubmit={handleSubmit}>
+                            <Form.Group as={Row} controlId='rut'>
                                 <Col align='left'>
                                 <Form.Label sm={2}  >
                                     RUT
@@ -159,7 +139,8 @@ class InputData extends React.Component {
                                         required
                                         maxLength='12'
                                         type="text" 
-                                        onChange={validRut}
+                                        onChange={validRut, handleChange}
+                                        value={values.rut}
                                         name="rut" 
                                         placeholder="Ingrese Rut sin puntos y sin guión"
                                     />
@@ -183,6 +164,8 @@ class InputData extends React.Component {
                                             required
                                             type="tel" 
                                             name="cellphone" 
+                                            value={values.cellphone}
+                                            onChange={handleChange}
                                             placeholder="Ingrese los últimos 8 digitos" 
                                     />
                                 </InputGroup>
@@ -190,7 +173,7 @@ class InputData extends React.Component {
                                 <ErrorMessage name="cellphone" component="div" />
                             </Form.Group>
 
-                            <Form.Group as={Row} controlId='Email'>
+                            <Form.Group as={Row} controlId='email'>
                                 <Col align='left'>
                                 <Form.Label >
                                     Email 
@@ -200,6 +183,8 @@ class InputData extends React.Component {
                                     <Form.Control 
                                         type="email" 
                                         name="email" 
+                                        value={values.email}
+                                        onChange={handleChange}
                                         placeholder="Ingrese Email"
                                     />
                                     <Form.Text className="text-muted" align='left'>
@@ -210,7 +195,7 @@ class InputData extends React.Component {
                             </Form.Group>
 
                             
-                            <Form.Group as={Row} controlId='ClientType'>
+                            <Form.Group as={Row} controlId='clientType' value={values.clientType}>
                                 <Col align='left'>
                                 <Form.Label >
                                     Tipo de Cliente
@@ -222,12 +207,15 @@ class InputData extends React.Component {
                                             type='radio'
                                             id={`${type}`}
                                             label={`${type}`}
+                                            value={`${type}`}
+                                            onChange={handleChange}
+                                            name="clientType"
                                         />
                                         ))}
                                 </Col>
                             </Form.Group>
 
-                                <Form.Group as={Row} controlId='ClientSelection'>
+                                <Form.Group as={Row} controlId='confirmationChoice' value={values.confirmationChoice}>
                                     <Form.Label column sm={2}>
                                         ¿Desea participar en campañas promocionales?
                                     </Form.Label>
@@ -238,6 +226,8 @@ class InputData extends React.Component {
                                             id='no'
                                             label='No'
                                             name='confirmationChoice'
+                                            value='No'
+                                            onChange={handleChange}
                                         />
                                     </Col>
                                     <Col>
@@ -247,6 +237,8 @@ class InputData extends React.Component {
                                             id='si'
                                             label='Sí'
                                             name='confirmationChoice'
+                                            value='Si'
+                                            onChange={handleChange}
                                         />
                                     </Col>
                                     
@@ -258,11 +250,11 @@ class InputData extends React.Component {
                                         <input type="hidden" value="" name="codeToValidate" id="hiddenCode" />
                                         <input type="hidden" value="" name="expires_at" id="hiddenExpiration" />
                                     
-                                    <Button block type="submit" disabled={isSubmitting} color="danger">
+                                    <Button block type="submit" disabled={isSubmitting} variant="danger">
                                         Continuar
                                     </Button>
-                        </Container>
-                    </Form>
+                        </Form>
+                    </Container>
                 )}
                 </Formik>
             </div>
