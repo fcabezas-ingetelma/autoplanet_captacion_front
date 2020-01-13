@@ -32,10 +32,9 @@ class InputData extends React.Component {
         (async () => {
             let ipv4 = await publicIp.v4();
             this.setState({ ip: ipv4 });
-
+            this.props.setTracker(this.state, () => {}, () => {});
         })();
-        
-        this.props.setTracker(this.state, () => {}, () => {});
+
         this.props.getEstados((estados) => {
             this.setState({ estados: estados });
             this.props.setEstados(this.state);
