@@ -75,6 +75,11 @@ class InputData extends React.Component {
                                         confirmationChoice: '', 
                                         email: '', 
                                         estados: this.state.estados }}
+                    validate = {values => {
+                        if(!values.rut && !validaRut(values.rut)) {
+                            
+                        }
+                    }}
                     onSubmit = {(values, { setSubmitting }) => {
                         if(!this.errors) {
                             values.ip = this.state.ip;
