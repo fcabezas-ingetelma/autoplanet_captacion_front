@@ -48,9 +48,14 @@ class ConfirmationSuccess extends React.Component {
                         onSubmit={(values, { setSubmitting }) => {
                             setSubmitting(false);
                             if(values.attenderRut || values.canal) {
-                                this.props.updateAttendanceInfo(values, () => {}, () => {});
+                                this.props.updateAttendanceInfo(values, () => {
+                                    window.location.href = 'https://www.autoplanet.cl/'; 
+                                }, () => {
+                                    window.location.href = 'https://www.autoplanet.cl/'; 
+                                });
+                            } else {
+                                window.location.href = 'https://www.autoplanet.cl/'; 
                             }
-                            window.location.href = 'https://www.autoplanet.cl/'; 
                         }}
                     >
                     {({ isSubmitting, handleSubmit }) => (
