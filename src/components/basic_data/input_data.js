@@ -190,7 +190,7 @@ class InputData extends React.Component {
                                 <ErrorMessage name="cellphone" component="div" />
                             </Form.Group>
 
-                            <Form.Group as={Row} controlId='Rut'>
+                            <Form.Group as={Row} controlId='Email'>
                                 <Col align='left'>
                                 <Form.Label >
                                     Email 
