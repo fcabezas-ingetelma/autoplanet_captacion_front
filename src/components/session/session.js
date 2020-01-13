@@ -9,13 +9,21 @@ class SessionHeader extends React.Component {
 
     render() {
         return (
-            <Container align='right' >
-                    <label id="attendedText">{(this.props.attenderRut !== '' && this.props.attenderRut !== undefined) ? 'Ejecutivo Comercial: ' + this.props.attenderRut : ''}</label>
+            <Container nameClass='align-middle'>
+                <Row >
+                    <Col>
+                    <div align='left' nameClass='align-middle'>
+                        <label id="attendedText" >{(this.props.attenderRut !== '' && this.props.attenderRut !== undefined) ? 'Ejecutivo Comercial: ' + this.props.attenderRut : ''}</label>
+                    </div>
+                    </Col>
                     {this.props.rut && 
-                            <div >
-                                <label id="userText">{(this.props.rut !== '' && this.props.rut !== undefined) ? 'Cliente: ' + this.props.rut : ''  } <Button variant='danger'>Salir</Button></label>
-                            </div>
+                        <Col>
+                        <div align='right'>
+                            <label id="userText" >{(this.props.rut !== '' && this.props.rut !== undefined) ? 'Cliente: ' + this.props.rut : ''  } <Button variant='danger'>Salir</Button></label>
+                        </div>
+                        </Col>
                     }
+                </Row>
             </Container>
         )
     }
