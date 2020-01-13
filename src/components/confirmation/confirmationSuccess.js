@@ -29,7 +29,7 @@ class ConfirmationSuccess extends React.Component {
         if(dataStore.getState()) {
             return(
                 <div className="InputForm">
-                    <SessionHeader attenderRut={this.state.attenderRut} rut={this.state.rut} />
+                    <SessionHeader attenderRut={this.state.attenderRut} rut={this.state.rut} canal={this.state.canal} />
                     <Formik
                         initialValues = {{ rut: this.state.rut, 
                                         cellphone: this.state.cellphone, 

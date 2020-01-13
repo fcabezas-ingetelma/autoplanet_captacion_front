@@ -13,8 +13,17 @@ class SessionHeader extends React.Component {
     }
 
     handleDeleteSession() {
+        var path = '/';
+        if(this.props.attenderRut) {
+            path = path + '?r=' + this.props.attenderRut;
+            if(this.props.canal) {
+                path = path + '&c=' + this.props.canal;
+            }
+        } else if(this.props.canal) {
+            path = path + '?c=' + this.props.canal;
+        }
         this.props.deleteSession();
-        this.props.history.push("/");
+        this.props.history.push(path);
     }
 
     render() {
