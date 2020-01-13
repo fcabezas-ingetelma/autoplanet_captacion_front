@@ -136,9 +136,10 @@ class InputData extends React.Component {
                                 <Col sm={10}>
                                     <Form.Control 
                                         required
-                                        maxLength='12'
+                                        maxLength='10'
                                         type="text" 
-                                        onChange={validRut, handleChange}
+                                        onChange={handleChange}
+                                        onInput={validRut}
                                         value={values.rut}
                                         name="rut" 
                                         placeholder="Ingrese Rut sin puntos y sin guión"
@@ -158,6 +159,7 @@ class InputData extends React.Component {
                                             <InputGroup.Text>+569</InputGroup.Text>
                                         </InputGroup.Prepend>
                                         <Form.Control 
+                                            required
                                             maxLength='8'
                                             aria-describedby="inputGroupPrepend"
                                             required
@@ -175,8 +177,9 @@ class InputData extends React.Component {
                             <Form.Group as={Row} controlId='email'>
                                 <Col align='left'>
                                 <Form.Label >
-                                    Email 
+                                    Email  <label className="text-muted">(Opcional)</label>
                                 </Form.Label>
+                                
                                 </Col>
                                 <Col sm={10}>
                                     <Form.Control 
@@ -186,9 +189,6 @@ class InputData extends React.Component {
                                         onChange={handleChange}
                                         placeholder="Ingrese Email"
                                     />
-                                    <Form.Text className="text-muted" align='left'>
-                                        (Opcional)
-                                    </Form.Text>
                                 </Col>
                                 <ErrorMessage name="email" component="div" />
                             </Form.Group>
@@ -204,6 +204,7 @@ class InputData extends React.Component {
                                 {['Cabify','Cornershop','Empleado','Taller','Otro'].map(type =>(
                                     <div key={`${type}`}>
                                         <Form.Check
+                                            required
                                             type='radio'
                                             id={`${type}`}
                                             label={`${type}`}
@@ -223,9 +224,10 @@ class InputData extends React.Component {
                                     <Col>
                                         <Form.Check
                                             inline
+                                            required
                                             type='radio'
-                                            id='no'
-                                            label='No'
+                                            id='si'
+                                            label='Sí'
                                             name='confirmationChoice'
                                             value='No'
                                             onChange={handleChange}
@@ -234,9 +236,10 @@ class InputData extends React.Component {
                                     <Col>
                                         <Form.Check
                                             inline
+                                            required
                                             type='radio'
-                                            id='si'
-                                            label='Sí'
+                                            id='no'
+                                            label='No'
                                             name='confirmationChoice'
                                             value='Si'
                                             onChange={handleChange}
