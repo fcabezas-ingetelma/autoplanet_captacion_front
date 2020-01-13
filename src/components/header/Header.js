@@ -10,7 +10,6 @@ function APHeader() {
                 <Navbar.Brand href="#home" >
                 <img
                     src={logo}
-                    fluid
                     alt="logo"
                 />
                 </Navbar.Brand>

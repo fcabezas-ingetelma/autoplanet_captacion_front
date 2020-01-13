@@ -157,7 +157,7 @@ class InputData extends React.Component {
                             <Col sm={10}>
                                 <Form.Control 
                                     required
-                                    maxlength='12'
+                                    maxLength='12'
                                     type="text" 
                                     onChange={validRut}
                                     name="rut" 
@@ -178,7 +178,7 @@ class InputData extends React.Component {
                                         <InputGroup.Text>+569</InputGroup.Text>
                                     </InputGroup.Prepend>
                                     <Form.Control 
-                                        maxlength='8'
+                                        maxLength='8'
                                         aria-describedby="inputGroupPrepend"
                                         required
                                         type="tel" 
@@ -195,6 +195,9 @@ class InputData extends React.Component {
                             <Form.Label >
                                 Email 
                             </Form.Label>
+                            <label className="text-muted" align='right'>
+                                    (Opcional)
+                                </label>
                             </Col>
                             <Col sm={10}>
                                 <Form.Control 
@@ -202,9 +205,7 @@ class InputData extends React.Component {
                                     name="email" 
                                     placeholder="Ingrese Email"
                                 />
-                                <Form.Text className="text-muted" align='left'>
-                                    (Opcional)
-                                </Form.Text>
+                                
                             </Col>
                             <ErrorMessage name="email" component="div" />
                         </Form.Group>
@@ -218,11 +219,13 @@ class InputData extends React.Component {
                             </Col>
                             <Col align='left' sm={10}>
                             {['Cabify','Cornershop','Empleado','Taller','Otro'].map(type =>(
+                                    <div key={`${type}`}>
                                     <Form.Check
                                         type='radio'
                                         id={`${type}`}
                                         label={`${type}`}
                                     />
+                                    </div>
                                     ))}
                             </Col>
                         </Form.Group>
@@ -231,23 +234,26 @@ class InputData extends React.Component {
                                 <Form.Label column sm={2}>
                                     ¿Desea participar en campañas promocionales?
                                 </Form.Label>
-                                
-                                    {['Sí','No'].map(type=>(
-                                        <Col align='center'>
-                                            <div key={`${type}`} className='mx-3'>
-                                                <Form.Check
-                                                    inline
-                                                    type='radio'
-                                                    id={`${type}`}
-                                                    label={`${type}`}
-                                                    name='confirmationChoice'
-                                                />
-                                            </div>
-                                        </Col>
-                                    ))}        
+                                <Col > 
+                                    <Form.Check
+                                        type='radio'
+                                        id='si'
+                                        label='Sí'
+                                        name='confirmationChoice'
+                                        inline
+                                    />
+                                </Col>
+                                <Col>
+                                    <Form.Check
+                                        type='radio'
+                                        inline
+                                        id='no'
+                                        label='No'
+                                        name='confirmationChoice'
+                                    />
+                                    </Col>
                             </Form.Group>
                             
-                                
                                     <input type="hidden" value="" name="attender_rut" id="hiddenRut" />
                                     <input type="hidden" value="" name="codeToValidate" id="hiddenCode" />
                                     <input type="hidden" value="" name="expires_at" id="hiddenExpiration" />
