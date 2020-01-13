@@ -157,7 +157,7 @@ class InputData extends React.Component {
                             <Col sm={10}>
                                 <Form.Control 
                                     required
-                                    maxlength='12'
+                                    maxLength='12'
                                     type="text" 
                                     onChange={validRut}
                                     name="rut" 
@@ -178,7 +178,7 @@ class InputData extends React.Component {
                                         <InputGroup.Text>+569</InputGroup.Text>
                                     </InputGroup.Prepend>
                                     <Form.Control 
-                                        maxlength='8'
+                                        maxLength='8'
                                         aria-describedby="inputGroupPrepend"
                                         required
                                         type="tel" 
