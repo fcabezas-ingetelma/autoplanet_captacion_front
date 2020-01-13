@@ -238,7 +238,7 @@ class InputData extends React.Component {
                                         id='si'
                                         label='Sí'
                                         name='confirmationChoice'
-                                        value='No'
+                                        value='Si'
                                         onChange={handleChange}
                                     />
                                 </Col>
@@ -250,7 +250,7 @@ class InputData extends React.Component {
                                         id='no'
                                         label='No'
                                         name='confirmationChoice'
-                                        value='Si'
+                                        value='No'
                                         onChange={handleChange}
                                     />
                                 </Col> 
