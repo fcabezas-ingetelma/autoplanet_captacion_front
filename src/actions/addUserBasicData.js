@@ -5,18 +5,42 @@ const addUserBasicData = (payload, onSuccess, onFailure) => {
     payload.codeToValidate = Math.floor(1000 + Math.random() * 9000);
     payload.expires_at = Date.now() + 900000;
 
-    createUser(payload, 
+    validatePhoneUsage(payload, 
         () => {
-            sendSms(payload, onSuccess, onFailure);
+            createUser(payload, 
+                () => {
+                    sendSms(payload, onSuccess, onFailure);
+                }, 
+                () => {
+                    validateUserStatus(payload, onSuccess, onFailure);
+                }
+            );
         }, 
-        () => {
-            validateUserStatus(payload, onSuccess, onFailure);
-        }
-    );
+        (error) => {
+            onFailure(error);
+        });
 
     return {
         type: 'add_user_basic_data',
         payload
+    }
+}
+
+const validatePhoneUsage = async (payload, onSuccess, onFailure) => {
+    let requester = new HttpRequester();
+    const response = await requester.sendGetRequest('/v1/user/validations/phone/' + payload.rut.split('-')[0] + "/" + payload.cellphone);
+    if(response && response.status == 200) {
+        var isValid = response.data.isValid;
+        var match = response.data.match;
+        if(!isValid && !match) {
+            //Rut doesn't match, another client is trying to put your phone
+            onFailure(CONSTANTS.PHONE_EXISTS_ERROR_MESSAGE);
+        } else {
+            //Available to change
+            onSuccess();
+        }
+    } else {
+        onFailure(CONSTANTS.PHONE_EXISTS_ERROR_MESSAGE);
     }
 }
 
@@ -35,25 +59,48 @@ const sendSms = async (payload, onSuccess, onFailure) => {
 }
 
 const reSendSms = async (payload, onSuccess, onFailure) => {
-    payload.codeToValidate = Math.floor(1000 + Math.random() * 9000);
-    payload.expires_at = Date.now() + 900000;
-
     let requester = new HttpRequester();
-    let requestBody = {
-        code: payload.codeToValidate, 
-        rut: payload.rut.split('-')[0]
-    }
-    const response = await requester.sendPostRequest('/v1/sms/re-send-sms', requestBody);
-    if(response && response.status == 200) {
-        onSuccess();
+
+    //Update client basic data
+    const updateResponse = updateUserBasicData(payload);
+
+    if(updateResponse) {
+        payload.codeToValidate = Math.floor(1000 + Math.random() * 9000);
+        payload.expires_at = Date.now() + 900000;
+
+        let requestBody = {
+            code: payload.codeToValidate, 
+            rut: payload.rut.split('-')[0]
+        }
+        const response = await requester.sendPostRequest('/v1/sms/re-send-sms', requestBody);
+        if(response && response.status == 200) {
+            onSuccess();
+        } else {
+            onFailure();
+        }
     } else {
         onFailure();
     }
 }
 
+const updateUserBasicData = async (payload) => {
+    let requester = new HttpRequester();
+
+    let updateRequestBody = {
+        rut: payload.rut.split('-')[0],
+        cellphone: payload.cellphone, 
+        email: payload.email, 
+        type: payload.clientType, 
+        client_response: payload.confirmationChoice
+    }
+
+    //Update client basic data
+    return await requester.sendPatchRequest('/v1/user/set-client', updateRequestBody);
+}
+
 const validateUserStatus = async (payload, onSuccess, onFailure) => {
     let requester = new HttpRequester();
-    const userStatusResponse = await requester.sendGetRequest('/v1/user/validations/status/' + payload.rut.split('-')[0], null);
+    const userStatusResponse = await requester.sendGetRequest('/v1/user/validations/status/' + payload.rut.split('-')[0]);
     if(userStatusResponse && 
         userStatusResponse.data && userStatusResponse.data.code) {
         switch (userStatusResponse.data.code) {
@@ -61,7 +108,12 @@ const validateUserStatus = async (payload, onSuccess, onFailure) => {
                 reSendSms(payload, onSuccess, onFailure);
                 break;
             case 160: //SMS Sended and validated, must finish process
-                onFailure(userStatusResponse.data.code);
+                const updateResponse = updateUserBasicData(payload);
+                if(updateResponse) {
+                    onFailure(userStatusResponse.data.code);
+                } else {
+                    onFailure();
+                }
                 break;
             case 170: //Process finished
                 onFailure(userStatusResponse.data.code + "-" + userStatusResponse.data.message);
@@ -86,14 +138,6 @@ const createUser = async (payload, onSuccess, onFailure) => {
         sended_sms_code: payload.codeToValidate, 
         client_response: payload.confirmationChoice, 
         ip: payload.ip
-    }
-
-    if(payload.attenderRut) {
-        requestBody.rut_captador = payload.attenderRut.split('-')[0];
-    }
-
-    if(payload.canal) {
-        requestBody.canal = payload.canal;
     }
 
     const response = await requester.sendPutRequest('/v1/user/set-client', requestBody);
