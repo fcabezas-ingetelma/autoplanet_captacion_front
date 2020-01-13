@@ -190,9 +190,6 @@ class InputData extends React.Component {
                                         onChange={handleChange}
                                         placeholder="Ingrese Email"
                                     />
-                                    <Form.Text className="text-muted" align='left'>
-                                        (Opcional)
-                                    </Form.Text>
                                 </Col>
                                 <ErrorMessage name="email" component="div" />
                             </Form.Group>
