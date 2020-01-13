@@ -4,7 +4,7 @@ import { Formik, Field, ErrorMessage } from 'formik';
 import { withRouter } from 'react-router-dom';
 import { validaRut, validaPhoneLength, getUrlParam } from '../../utils/utils';
 import publicIp from 'public-ip';
-import {Form, Row, Col, Container, InputGroup, Button} from 'react-bootstrap'
+import {Form, Row, Col, Container, InputGroup, Button, Alert} from 'react-bootstrap'
 
 import { connect } from "react-redux";
 import addUserBasicData from '../../actions/addUserBasicData';
@@ -76,9 +76,13 @@ class InputData extends React.Component {
                                         email: '', 
                                         estados: this.state.estados }}
                     validate = {values => {
-                        if(!values.rut && !validaRut(values.rut)) {
-                            
-                        }
+                        const errors = {};
+                        if (!values.rut) {
+                            errors.rut = 'Campo Requerido';
+                        } else if (!validaRut(values.rut)) {
+                            errors.rut = 'Rut Inválido';
+                            }
+                        return errors;
                     }}
                     onSubmit = {(values, { setSubmitting }) => {
                         if(!this.errors) {
@@ -145,10 +149,14 @@ class InputData extends React.Component {
                                         type="text" 
                                         onChange={handleChange}
                                         onInput={validRut}
+                                        onBlur={this.validate}
                                         value={values.rut}
                                         name="rut" 
                                         placeholder="Ingrese Rut sin puntos y sin guión"
                                     />
+                                    <Form.Text>
+                                            <ErrorMessage name="rut" component="div" />
+                                    </Form.Text>
                                 </Col>
                             </Form.Group>
 
@@ -173,10 +181,10 @@ class InputData extends React.Component {
                                             value={values.cellphone}
                                             onChange={handleChange}
                                             placeholder="Ingrese los últimos 8 digitos" 
-                                    />
+                                        />
                                 </InputGroup>
                                     </Col>
-                                <ErrorMessage name="cellphone" component="div" />
+                                
                             </Form.Group>
 
                             <Form.Group as={Row} controlId='email'>
@@ -195,7 +203,6 @@ class InputData extends React.Component {
                                         placeholder="Ingrese Email"
                                     />
                                 </Col>
-                                <ErrorMessage name="email" component="div" />
                             </Form.Group>
 
                             
