@@ -1,5 +1,10 @@
 import React from 'react';
-import { Container, Row, Col } from 'reactstrap';
+import {Button, Container, Row, Col} from 'react-bootstrap'
+import { connect } from "react-redux";
+import { withRouter } from 'react-router-dom';
+
+import deleteSession from '../../actions/deleteSession';
+
 import './session.css';
 
 class SessionHeader extends React.Component {
@@ -7,19 +12,34 @@ class SessionHeader extends React.Component {
         super(props);
     }
 
+    handleDeleteSession() {
+        var path = '/';
+        if(this.props.attenderRut) {
+            path = path + '?r=' + this.props.attenderRut;
+            if(this.props.canal) {
+                path = path + '&c=' + this.props.canal;
+            }
+        } else if(this.props.canal) {
+            path = path + '?c=' + this.props.canal;
+        }
+        this.props.deleteSession();
+        this.props.history.push(path);
+    }
+
     render() {
         return (
-            <Container>
+            <Container >
                 <Row>
-                    <Col>
-                        <div className="attender-field-spacing">
-                            <p id="attendedText">{(this.props.attenderRut !== '' && this.props.attenderRut !== undefined) ? 'Ejecutivo Comercial: ' + this.props.attenderRut : ''}</p>
-                        </div>
+                    <Col className="my-auto" >
+                    <div align='left' >
+                        <label id="attendedText" >{(this.props.attenderRut !== '' && this.props.attenderRut !== undefined) ? 'Ejecutivo Comercial: ' + this.props.attenderRut : ''}</label>
+                    </div>
                     </Col>
                     {this.props.rut && 
-                        <Col>
-                            <div className="attender-field-spacing">
-                                <p id="userText">{(this.props.rut !== '' && this.props.rut !== undefined) ? 'Cliente: ' + this.props.rut : ''}</p>
+                        <Col className="my-auto" >
+                            <div align='right' >
+                                <label id="userText" >{(this.props.rut !== '' && this.props.rut !== undefined) ? 'Cliente: ' + this.props.rut : ''  }</label>
+                                <Button variant='danger' onClick={this.handleDeleteSession.bind(this)}>Salir</Button>
                             </div>
                         </Col>
                     }
@@ -29,4 +49,12 @@ class SessionHeader extends React.Component {
     }
 }
 
-export default SessionHeader;
+const mapStateToProps = state => ({
+    ...state
+});
+  
+const mapDispatchToProps = dispatch => ({
+    deleteSession: () => dispatch(deleteSession())
+});
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SessionHeader));

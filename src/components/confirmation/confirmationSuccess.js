@@ -1,6 +1,9 @@
 import React from 'react';
-import { Formik, Form, Field } from 'formik';
-import { Button, Container, Row, Col } from 'reactstrap';
+import { Formik, Field } from 'formik';
+import { Button} from 'reactstrap';
+import {Form, Row, Col, Container, InputGroup} from 'react-bootstrap'
+
+
 import { withRouter } from 'react-router-dom';
 import dataStore from '../../store';
 import './confirmationSuccess.css';
@@ -26,7 +29,7 @@ class ConfirmationSuccess extends React.Component {
         if(dataStore.getState()) {
             return(
                 <div className="InputForm">
-                    <SessionHeader attenderRut={this.state.attenderRut} rut={this.state.rut} />
+                    <SessionHeader attenderRut={this.state.attenderRut} rut={this.state.rut} canal={this.state.canal} />
                     <Formik
                         initialValues = {{ rut: this.state.rut, 
                                         cellphone: this.state.cellphone, 
@@ -45,27 +48,30 @@ class ConfirmationSuccess extends React.Component {
                         onSubmit={(values, { setSubmitting }) => {
                             setSubmitting(false);
                             if(values.attenderRut || values.canal) {
-                                this.props.updateAttendanceInfo(values, () => {}, () => {});
+                                this.props.updateAttendanceInfo(values, () => {
+                                    window.location.href = 'https://www.autoplanet.cl/'; 
+                                }, () => {
+                                    window.location.href = 'https://www.autoplanet.cl/'; 
+                                });
+                            } else {
+                                window.location.href = 'https://www.autoplanet.cl/'; 
                             }
-                            window.location.href = 'https://www.autoplanet.cl/'; 
                         }}
                     >
-                    {({ isSubmitting }) => (
-                        <Form className="Form-spacing">
-                            <Container>
-                                <Row>
-                                    <h2>FELICITACIONES</h2>
-                                </Row>
-                                <Row>
-                                    <h5 className="Phone-description-label">Bienvenido(a) al Club Autoplanet. Usted podrá acceder a promociones y descuentos presentando su RUT en las cajas de nuestras sucursales.</h5>
-                                </Row>
-                                <Row>
-                                    <Col><Button className="Submit-button" type="submit" disabled={isSubmitting} color="danger">
+                    {({ isSubmitting, handleSubmit }) => (
+                        <Container>
+                            <h2>FELICITACIONES</h2>
+                                
+                            <h5 >Bienvenido(a) al Club Autoplanet. Usted podrá acceder a promociones y descuentos presentando su RUT en las cajas de nuestras sucursales.</h5>
+                                
+                            <Form onSubmit={handleSubmit} >
+                                <Row align="center">
+                                    <Col><Button type="submit" disabled={isSubmitting} color="danger">
                                         Finalizar
                                     </Button></Col>
                                 </Row>
-                            </Container>
-                        </Form>
+                            </Form>
+                        </Container>
                     )}
                     </Formik>
                 </div>

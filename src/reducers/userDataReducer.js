@@ -32,6 +32,10 @@ export default (state, action) => {
         return {
           userData: action.payload
         };
+      case "delete_session":
+        return {
+          userData: action.payload
+        };
       default:
         return state;
     }

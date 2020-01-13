@@ -1,7 +1,8 @@
 import React from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { Button, Container, Row, Col } from 'reactstrap';
+import { Formik, Field, ErrorMessage } from 'formik';
+import { Button} from 'reactstrap';
 import { withRouter } from 'react-router-dom';
+import {Form, Row, Col, Container, InputGroup} from 'react-bootstrap'
 import dataStore from '../../store';
 import './phoneValidation.css';
 
@@ -27,8 +28,8 @@ class PhoneValidation extends React.Component {
     render() {
         if(dataStore.getState()) {
             return (
-                <div className="InputForm">
-                    <SessionHeader attenderRut={this.state.attenderRut} rut={this.state.rut} />
+                <div>
+                    <SessionHeader attenderRut={this.state.attenderRut} rut={this.state.rut} canal={this.state.canal} />
                     <Formik
                         initialValues = {{ rut: this.state.rut, 
                                         cellphone: this.state.cellphone, 
@@ -71,29 +72,26 @@ class PhoneValidation extends React.Component {
                             } 
                         }}
                     >
-                    {({ isSubmitting }) => (
-                        <Form className="Form-spacing">
-                            <Container>
-                                <Row>
+                    {({ isSubmitting, handleSubmit, values, handleChange }) => (
+                        <Container>
                                     <h2>CONFIRMACIÓN DE TELÉFONO</h2>
-                                </Row>
-                                <Row>
-                                    <label className="Phone-description-label">Se ha enviado un código de 4 dígitos al número {this.state.cellphone}, el cual debe ingresar a continuación:</label>
-                                </Row>
-                                <Row className="Phone-row">
-                                    <Col><label className="Phone-label">Ingrese Código</label></Col>
-                                    <Col>
-                                        <Field className="Phone-field" type="text" name="code" placeholder="1234"/>
-                                        <ErrorMessage className="error-label" name="code" component="div" />
+                                    <label >Se ha enviado un código de 4 dígitos al número {this.state.cellphone}, el cual debe ingresar a continuación:</label>
+                            <Form onSubmit={handleSubmit} >
+                                <Form.Group as={Row} controlID='CodigoSms'>
+                                    <Col align='left'>
+                                    <Form.Label >Ingrese Código</Form.Label>
+                                        <Form.Control  type="text" name="code" placeholder="1234" value={values.code} onChange={handleChange}/>
+                                        <ErrorMessage  name="code" component="div" />
                                     </Col>
-                                </Row>
+                                </Form.Group>
                                 <Row>
-                                    <Col><Button className="Submit-button" type="submit" disabled={isSubmitting} color="danger">
+                                    <Col><Button  type="submit" disabled={isSubmitting} color="danger">
                                         Confirmar
                                     </Button></Col>
                                 </Row>
-                            </Container>
+                                
                         </Form>
+                        </Container>
                     )}
                     </Formik>
                 </div>
