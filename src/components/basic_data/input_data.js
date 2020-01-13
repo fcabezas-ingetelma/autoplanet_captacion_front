@@ -3,7 +3,7 @@ import React from 'react';
 import { Formik, Field, ErrorMessage } from 'formik';
 import { Button } from 'reactstrap';
 import { withRouter } from 'react-router-dom';
-import { validaRut, validaPhoneLength, getUrlParam } from '../../utils/utils';
+import { validaRut, validaPhoneLength, getUrlParam } from '../../utils/utils';
 import publicIp from 'public-ip';
 import {Form, Row, Col, Container, InputGroup} from 'react-bootstrap'
 
@@ -231,20 +231,26 @@ class InputData extends React.Component {
                                     <Form.Label column sm={2}>
                                         ¿Desea participar en campañas promocionales?
                                     </Form.Label>
+                                    <Col>
+                                        <Form.Check
+                                            inline
+                                            type='radio'
+                                            id='no'
+                                            label='No'
+                                            name='confirmationChoice'
+                                        />
+                                    </Col>
+                                    <Col>
+                                        <Form.Check
+                                            inline
+                                            type='radio'
+                                            id='si'
+                                            label='Sí'
+                                            name='confirmationChoice'
+                                        />
+                                    </Col>
                                     
-                                        {['Sí','No'].map(type=>(
-                                            <Col align='center'>
-                                                <div key={`${type}`} className='mx-3'>
-                                                    <Form.Check
-                                                        inline
-                                                        type='radio'
-                                                        id={`${type}`}
-                                                        label={`${type}`}
-                                                        name='confirmationChoice'
-                                                    />
-                                                </div>
-                                            </Col>
-                                        ))}        
+                                               
                                 </Form.Group>
                                 
                                     
