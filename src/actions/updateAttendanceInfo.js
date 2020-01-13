@@ -1,14 +1,14 @@
 import HttpRequester from '../http/sms/httpRequester';
 
 const updateAttendanceInfo = (payload, onSuccess, onFailure) => {
-    gupdateAttendanceInfoService(payload, onSuccess, onFailure);
+    updateAttendanceInfoService(payload, onSuccess, onFailure);
     return {
         type: 'update_attendance_info', 
         payload
     }
 }
 
-const gupdateAttendanceInfoService = async (payload, onSuccess, onFailure) => {
+const updateAttendanceInfoService = async (payload, onSuccess, onFailure) => {
     let requester = new HttpRequester();
     let requestBody = {
         canal: payload.canal, 
