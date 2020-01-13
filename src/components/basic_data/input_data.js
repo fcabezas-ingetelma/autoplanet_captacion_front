@@ -34,9 +34,9 @@ class InputData extends React.Component {
             let ipv4 = await publicIp.v4();
             this.setState({ ip: ipv4 });
 
-            this.props.setTracker(this.state, () => {}, () => {});
         })();
-
+        
+        this.props.setTracker(this.state, () => {}, () => {});
         this.props.getEstados((estados) => {
             this.setState({ estados: estados });
             this.props.setEstados(this.state);
@@ -44,6 +44,24 @@ class InputData extends React.Component {
     }
 
     render() {
+        function validRut(e){
+            let value = e.target.value.replace(/\./g, '').replace('-', '');
+  
+            if (value.match(/^(\d{2})(\d{3}){2}(\w{1})$/)) {
+              value = value.replace(/^(\d{2})(\d{3})(\d{3})(\w{1})$/, '$1.$2.$3-$4');
+            }
+            else if (value.match(/^(\d)(\d{3}){2}(\w{0,1})$/)) {
+              value = value.replace(/^(\d)(\d{3})(\d{3})(\w{0,1})$/, '$1.$2.$3-$4');
+            }
+            else if (value.match(/^(\d)(\d{3})(\d{0,2})$/)) {
+              value = value.replace(/^(\d)(\d{3})(\d{0,2})$/, '$1.$2.$3');
+            }
+            else if (value.match(/^(\d)(\d{0,2})$/)) {
+              value = value.replace(/^(\d)(\d{0,2})$/, '$1.$2');
+            }
+            e.target.value = value;
+        }
+
         return (
             <div>
                 <SessionHeader attenderRut={this.state.attenderRut} />
@@ -139,9 +157,11 @@ class InputData extends React.Component {
                             <Col sm={10}>
                                 <Form.Control 
                                     required
+                                    maxlength='12'
                                     type="text" 
+                                    onChange={validRut}
                                     name="rut" 
-                                    placeholder="Ingrese Rut sin puntos y con guión"
+                                    placeholder="Ingrese Rut sin puntos y sin guión"
                                 />
                             </Col>
                         </Form.Group>
@@ -161,7 +181,7 @@ class InputData extends React.Component {
                                         maxlength='8'
                                         aria-describedby="inputGroupPrepend"
                                         required
-                                        type="phone" 
+                                        type="tel" 
                                         name="cellphone" 
                                         placeholder="Ingrese los últimos 8 digitos" 
                                    />
@@ -178,7 +198,7 @@ class InputData extends React.Component {
                             </Col>
                             <Col sm={10}>
                                 <Form.Control 
-                                    type="text" 
+                                    type="email" 
                                     name="email" 
                                     placeholder="Ingrese Email"
                                 />
@@ -233,7 +253,7 @@ class InputData extends React.Component {
                                     <input type="hidden" value="" name="expires_at" id="hiddenExpiration" />
                                 
                                 <Button block type="submit" disabled={isSubmitting} color="danger">
-                                    Ingresar
+                                    Continuar
                                 </Button>
                     </Form>
                     </Container>
