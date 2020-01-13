@@ -53,13 +53,13 @@ class ConfirmationSuccess extends React.Component {
                             window.location.href = 'https://www.autoplanet.cl/'; 
                         }}
                     >
-                    {({ isSubmitting }) => (
+                    {({ isSubmitting, handleSubmit }) => (
                         <Container>
                             <h2>FELICITACIONES</h2>
                                 
                             <h5 >Bienvenido(a) al Club Autoplanet. Usted podrá acceder a promociones y descuentos presentando su RUT en las cajas de nuestras sucursales.</h5>
                                 
-                            <Form >
+                            <Form onSubmit={handleSubmit} >
                                 <Row align="center">
                                     <Col><Button type="submit" disabled={isSubmitting} color="danger">
                                         Finalizar

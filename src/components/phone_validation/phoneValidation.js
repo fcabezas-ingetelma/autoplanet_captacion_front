@@ -72,15 +72,15 @@ class PhoneValidation extends React.Component {
                             } 
                         }}
                     >
-                    {({ isSubmitting }) => (
+                    {({ isSubmitting, handleSubmit, values, handleChange }) => (
                         <Container>
                                     <h2>CONFIRMACIÓN DE TELÉFONO</h2>
                                     <label >Se ha enviado un código de 4 dígitos al número {this.state.cellphone}, el cual debe ingresar a continuación:</label>
-                            <Form >
+                            <Form onSubmit={handleSubmit} >
                                 <Form.Group as={Row} controlID='CodigoSms'>
                                     <Col align='left'>
                                     <Form.Label >Ingrese Código</Form.Label>
-                                        <Form.Control  type="text" name="code" placeholder="1234"/>
+                                        <Form.Control  type="text" name="code" placeholder="1234" value={values.code} onChange={handleChange}/>
                                         <ErrorMessage  name="code" component="div" />
                                     </Col>
                                 </Form.Group>
