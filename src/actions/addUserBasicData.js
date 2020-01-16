@@ -154,7 +154,6 @@ const createUser = async (payload, onSuccess, onFailure) => {
             if(response.data.code == 'ER_DUP_ENTRY') {
                 onFailure(CONSTANTS.USER_EXISTS_ERROR_MESSAGE);
             } else {
-                const updateDataWithSinacofi = await requester.sendGetRequest('/v1/user/get-sinacofi-data/' + payload.rut.replace('-', ''));
                 onSuccess();
             }
         } else {
