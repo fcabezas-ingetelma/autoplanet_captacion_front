@@ -37,6 +37,7 @@ class PhoneValidation extends React.Component {
                                         clientType: this.state.clientType, 
                                         attenderRut: this.state.attenderRut,
                                         canal: this.state.canal, 
+                                        sku: this.state.sku, 
                                         expires_at: this.state.expires_at,
                                         confirmationChoice: this.state.confirmationChoice, 
                                         email: this.state.email, 

@@ -57,6 +57,7 @@ class ConfirmationSuccess extends React.Component {
                                         clientType: this.state.clientType, 
                                         attenderRut: this.state.attenderRut, 
                                         canal: this.state.canal, 
+                                        sku: this.state.sku, 
                                         code: this.state.code,
                                         confirmationChoice: this.state.confirmationChoice, 
                                         email: this.state.email, 
