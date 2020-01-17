@@ -11,7 +11,9 @@ const setTracker = (payload, onSuccess, onFailure) => {
 const setTrackerService = async (payload, onSuccess, onFailure) => {
     let requester = new HttpRequester();
     let requestBody = {
-        ip: payload.ip
+        ip: payload.ip, 
+        userAgent: payload.userAgent, 
+        os: payload.os 
     }
 
     if(payload.rut) {
@@ -24,6 +26,10 @@ const setTrackerService = async (payload, onSuccess, onFailure) => {
 
     if(payload.canal) {
         requestBody.canal = payload.canal;
+    }
+
+    if(payload.sku) {
+        requestBody.sku = payload.sku;
     }
 
     const response = await requester.sendPutRequest('/v1/user/set-tracker', requestBody);

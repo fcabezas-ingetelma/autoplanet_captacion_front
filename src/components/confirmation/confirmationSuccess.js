@@ -10,6 +10,7 @@ import './confirmationSuccess.css';
 
 import { connect } from "react-redux";
 import updateAttendanceInfo from '../../actions/updateAttendanceInfo'
+import getSinacofiData from '../../actions/getSinacofiData';
 
 import { getConfirmationState } from '../../utils/utils';
 
@@ -25,6 +26,25 @@ class ConfirmationSuccess extends React.Component {
         }
     }
 
+    componentDidMount() {
+        if(this.state) {
+            let requestBody = {
+                rut: this.state.rut, 
+                attenderRut: this.state.attenderRut, 
+                canal: this.state.canal
+            }
+            this.props.getSinacofiData(requestBody, () => {
+                if(this.state.attenderRut || this.state.canal) {
+                    this.props.updateAttendanceInfo(requestBody, () => {}, () => {});
+                }
+            }, () => {
+                if(this.state.attenderRut || this.state.canal) {
+                    this.props.updateAttendanceInfo(requestBody, () => {}, () => {});
+                }
+            });
+        }
+    }
+
     render() {
         if(dataStore.getState()) {
             return(
@@ -34,9 +54,12 @@ class ConfirmationSuccess extends React.Component {
                         initialValues = {{ rut: this.state.rut, 
                                         cellphone: this.state.cellphone, 
                                         ip: this.state.ip, 
+                                        userAgent: this.state.userAgent, 
+                                        os: this.state.os, 
                                         clientType: this.state.clientType, 
                                         attenderRut: this.state.attenderRut, 
                                         canal: this.state.canal, 
+                                        sku: this.state.sku, 
                                         code: this.state.code,
                                         confirmationChoice: this.state.confirmationChoice, 
                                         email: this.state.email, 
@@ -47,15 +70,7 @@ class ConfirmationSuccess extends React.Component {
                         }}
                         onSubmit={(values, { setSubmitting }) => {
                             setSubmitting(false);
-                            if(values.attenderRut || values.canal) {
-                                this.props.updateAttendanceInfo(values, () => {
-                                    window.location.href = 'https://www.autoplanet.cl/'; 
-                                }, () => {
-                                    window.location.href = 'https://www.autoplanet.cl/'; 
-                                });
-                            } else {
-                                window.location.href = 'https://www.autoplanet.cl/'; 
-                            }
+                            window.location.href = 'https://www.autoplanet.cl/'; 
                         }}
                     >
                     {({ isSubmitting, handleSubmit }) => (
@@ -87,7 +102,8 @@ const mapStateToProps = state => ({
 });
   
 const mapDispatchToProps = dispatch => ({
-    updateAttendanceInfo: (payload, onSuccess, onFailure) => dispatch(updateAttendanceInfo(payload, onSuccess, onFailure))
+    updateAttendanceInfo: (payload, onSuccess, onFailure) => dispatch(updateAttendanceInfo(payload, onSuccess, onFailure)), 
+    getSinacofiData: (payload, onSuccess, onFailure) => dispatch(getSinacofiData(payload, onSuccess, onFailure))
 });
   
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ConfirmationSuccess));

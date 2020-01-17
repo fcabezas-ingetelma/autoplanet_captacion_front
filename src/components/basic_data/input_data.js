@@ -23,6 +23,9 @@ class InputData extends React.Component {
         this.state = {
                         attenderRut: getUrlParam(window.location.href, 'r', ''), 
                         canal: getUrlParam(window.location.href, 'c', ''), 
+                        sku: getUrlParam(window.location.href, 'sku', ''), 
+                        userAgent: window.navigator.userAgent, 
+                        os: window.navigator.platform, 
                         ip: '', 
                         estados: undefined
                      };
@@ -67,9 +70,12 @@ class InputData extends React.Component {
                     initialValues = {{  rut: '', 
                                         cellphone: '', 
                                         ip: this.state.ip, 
+                                        userAgent: this.state.userAgent, 
+                                        os: this.state.os, 
                                         clientType: '', 
                                         attenderRut: this.state.attenderRut, 
                                         canal: this.state.canal, 
+                                        sku: this.state.sku, 
                                         codeToValidate: '', 
                                         expires_at: '',
                                         confirmationChoice: '', 
