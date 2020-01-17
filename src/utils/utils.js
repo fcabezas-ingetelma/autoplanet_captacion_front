@@ -40,7 +40,9 @@ function getPhoneValidationState(dataStore) {
     return { 
         rut: dataStore.getState().userData.rut !== '' ? dataStore.getState().userData.rut : '', 
         cellphone: dataStore.getState().userData.cellphone !== '' ? dataStore.getState().userData.cellphone : '', 
-        ip: dataStore.getState().userData.ip !== '' ? dataStore.getState().userData.ip : '',
+        ip: dataStore.getState().userData.ip !== '' ? dataStore.getState().userData.ip : '', 
+        userAgent: dataStore.getState().userData.userAgent !== '' ? dataStore.getState().userData.userAgent : '', 
+        os: dataStore.getState().userData.os !== '' ? dataStore.getState().userData.os : '', 
         clientType: dataStore.getState().userData.clientType !== '' ? dataStore.getState().userData.clientType : '', 
         attenderRut: dataStore.getState().userData.attenderRut !== '' ? dataStore.getState().userData.attenderRut : '', 
         canal: dataStore.getState().userData.canal !== '' ? dataStore.getState().userData.canal : '', 
@@ -57,7 +59,9 @@ function getConfirmationState(dataStore) {
     return { 
         rut: dataStore.getState().userData.rut !== '' ? dataStore.getState().userData.rut : '', 
         cellphone: dataStore.getState().userData.cellphone !== '' ? dataStore.getState().userData.cellphone : '', 
-        ip: dataStore.getState().userData.ip !== '' ? dataStore.getState().userData.ip : '',
+        ip: dataStore.getState().userData.ip !== '' ? dataStore.getState().userData.ip : '', 
+        userAgent: dataStore.getState().userData.userAgent !== '' ? dataStore.getState().userData.userAgent : '', 
+        os: dataStore.getState().userData.os !== '' ? dataStore.getState().userData.os : '', 
         clientType: dataStore.getState().userData.clientType !== '' ? dataStore.getState().userData.clientType : '', 
         attenderRut: dataStore.getState().userData.attenderRut !== '' ? dataStore.getState().userData.attenderRut : '', 
         canal: dataStore.getState().userData.canal !== '' ? dataStore.getState().userData.canal : '', 

@@ -34,6 +34,8 @@ class PhoneValidation extends React.Component {
                         initialValues = {{ rut: this.state.rut, 
                                         cellphone: this.state.cellphone, 
                                         ip: this.state.ip, 
+                                        userAgent: this.state.userAgent, 
+                                        os: this.state.os, 
                                         clientType: this.state.clientType, 
                                         attenderRut: this.state.attenderRut,
                                         canal: this.state.canal, 
