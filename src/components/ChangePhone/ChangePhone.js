@@ -4,18 +4,20 @@ import { Button} from 'reactstrap';
 import { withRouter } from 'react-router-dom';
 import {Form, Row, Col, Container, InputGroup} from 'react-bootstrap'
 import dataStore from '../../store';
-import './phoneValidation.css';
 
 import { connect } from "react-redux";
-import validateCode from '../../actions/validateCode';
+import addUserBasicData from '../../actions/addUserBasicData';
+import getEstados from '../../actions/getEstados';
+import setEstados from '../../actions/setEstados';
 import createSolicitud from '../../actions/createSolicitud';
-import updateSMSData from '../../actions/updateSMSData';
+import setTracker from '../../actions/setTracker';
 
 import { getPhoneValidationState } from '../../utils/utils';
 
 import SessionHeader from '../session/session';
 
-class PhoneValidation extends React.Component {
+
+class ChangePhone extends React.Component {
     constructor(props) {
         super(props);
         if(dataStore.getState()) {
@@ -48,49 +50,54 @@ class PhoneValidation extends React.Component {
                         validate = {values => {
                             const errors = {};
 
-                            //Validate sms
-                            if (values.code != this.state.codeToValidate) {
-                                errors.code = 'El código ingresado no coincide. Intente nuevamente.';
-                                this.props.createSolicitud(values, 6, () => {}, () => {});
+                            if (values.cellphone == this.state.cellphone) {
+                                errors.code = 'El teléfono ingresado es el mismo. Intente nuevamente.';
                             }
 
                             return errors;
                         }}
                         onSubmit = {(values, { setSubmitting }) => {
-                            if(values.expires_at >= Date.now()) {
-                                setSubmitting(false);
-                                this.props.validateCode(values);
-                                this.props.updateSMSData(values, () => {}, () => {});
-                                this.props.createSolicitud(values, 5, () => {
-                                    this.props.history.push("/confirmation");
-                                }, () => {});
+                            if(!this.errors){
+
                             } else {
-                                setTimeout(() => {
-                                    alert('El código ha expirado. Por favor, intente nuevamente.');
-                                    setSubmitting(false);
-                                    this.props.createSolicitud(values, 6, () => {
-                                        this.props.history.push("/");
-                                    }, () => {});
-                                }, 400);
-                            } 
+                                alert('Uno o más campos tienen inconsistencias. Por favor, intente nuevamente');
+                                setSubmitting(false);
+                            }                             
                         }}
                     >
                     {({ isSubmitting, handleSubmit, values, handleChange }) => (
                         <Container>
-                                    <h2>CONFIRMACIÓN DE TELÉFONO</h2>
-                                    <label >Se ha enviado un código de 4 dígitos al número {this.state.cellphone}, el cual debe ingresar a continuación:</label>
-                                    <p><a  href='' style={{color:'red'}}>¿No es su número? Haga click aquí para modificarlo.</a></p>
+                                    <h2>CAMBIO NÚMERO DE TELÉFONO</h2>
+                                    <label>Ingrese su nuevo número de teléfono</label>                                    
                             <Form onSubmit={handleSubmit} >
-                                <Form.Group as={Row} controlID='CodigoSms'>
-                                    <Col align='left'>
-                                    <Form.Label >Ingrese Código</Form.Label>
-                                        <Form.Control  type="text" name="code" placeholder="1234" value={values.code} onChange={handleChange}/>
-                                        <ErrorMessage  name="code" component="div" />
-                                    </Col>
+                                <Form.Group as={Row} controlID='ChangePhone'>
+                                <Col align='left'>
+                                    <Form.Label  >
+                                        Teléfono Celular
+                                    </Form.Label>
+                                </Col>
+                                <Col sm={10}>
+                                    <InputGroup>
+                                        <InputGroup.Prepend id="inputGroupPrepend">
+                                            <InputGroup.Text>+569</InputGroup.Text>
+                                        </InputGroup.Prepend>
+                                        <Form.Control 
+                                            required
+                                            maxLength='8'
+                                            aria-describedby="inputGroupPrepend"
+                                            required
+                                            type="tel" 
+                                            name="cellphone" 
+                                            value={values.cellphone}
+                                            onChange={handleChange}
+                                            placeholder="Ingrese los últimos 8 digitos" 
+                                        />
+                                    </InputGroup>
+                                </Col>
                                 </Form.Group>
                                 <Row>
                                     <Col><Button  type="submit" disabled={isSubmitting} color="danger">
-                                        Confirmar
+                                        Cambiar
                                     </Button></Col>
                                 </Row>
                                 
@@ -111,9 +118,11 @@ const mapStateToProps = state => ({
 });
   
 const mapDispatchToProps = dispatch => ({
-    validateCode: (payload) => dispatch(validateCode(payload)), 
+    addUserBasicData: (payload, onSuccess, onFailure) => dispatch(addUserBasicData(payload, onSuccess, onFailure)), 
+    getEstados: (onSuccess, onFailure) => dispatch(getEstados(onSuccess, onFailure)), 
+    setEstados: (payload) => dispatch(setEstados(payload)), 
     createSolicitud: (payload, estado_id, onSuccess, onFailure) => dispatch(createSolicitud(payload, estado_id, onSuccess, onFailure)), 
-    updateSMSData: (payload, onSuccess, onFailure) => dispatch(updateSMSData(payload, onSuccess, onFailure))
+    setTracker: (payload, onSuccess, onFailure) => dispatch(setTracker(payload, onSuccess, onFailure))
 });
   
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(PhoneValidation));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ChangePhone));
