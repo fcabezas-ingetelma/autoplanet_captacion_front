@@ -8,6 +8,7 @@ import { getUrlParam } from '../../utils/utils';
 
 import { connect } from "react-redux";
 import setTracker from '../../actions/setTracker';
+import getShortUrl from '../../actions/getShortUrl';
 
 import SessionHeader from '../session/session';
 
@@ -45,8 +46,21 @@ class EnvioWhatsapp extends React.Component {
                             alert('Ingrese un número de teléfono válido');
                             setSubmitting(false);
                         } else {
-                            this.url = window.location.origin + '?r=' + this.state.attenderRut + '&telefono=' + values.cellphone + '&c=20';
-                            window.location.href = `https://api.whatsapp.com/send?phone=569${values.cellphone}&text=${encodeURIComponent(this.url)}`; 
+                            this.props.getShortUrl(
+                                {
+                                    url: window.location.origin,
+                                    attenderRut: this.state.attenderRut, 
+                                    cellphone: values.cellphone
+                                }, 
+                                (shortUrl) => {
+                                    setSubmitting(false);
+                                    window.location.href = `https://api.whatsapp.com/send?phone=569${values.cellphone}&text=${encodeURIComponent(shortUrl)}`; 
+                                }, 
+                                () => {
+                                    setSubmitting(false);
+                                    alert('Hubo un error al procesar la solicitud, intente nuevamente');
+                                }
+                            );
                         }
                     }}
                 >
@@ -99,7 +113,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    setTracker: (payload, onSuccess, onFailure) => dispatch(setTracker(payload, onSuccess, onFailure))
+    setTracker: (payload, onSuccess, onFailure) => dispatch(setTracker(payload, onSuccess, onFailure)), 
+    getShortUrl: (payload, onSuccess, onFailure) => dispatch(getShortUrl(payload, onSuccess, onFailure))
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(EnvioWhatsapp));
