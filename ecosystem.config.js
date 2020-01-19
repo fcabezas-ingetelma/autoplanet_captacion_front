@@ -19,7 +19,7 @@ module.exports = {
     production : {
       user : 'ec2-user',
       host : '54.213.163.10',
-      ref  : 'origin/develop',
+      ref  : 'origin/feature/cambio_de_telefono',
       repo : 'git@github.com:fcabezas-ingetelma/autoplanet_captacion_front.git',
       path : '/home/ec2-user/autoplanet_captacion_front',
       key  : '../aws_keys/autoplanet_front.pem',
