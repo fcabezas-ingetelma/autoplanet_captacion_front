@@ -1,51 +1,52 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
+import publicIp from 'public-ip';
 import {Form, Row, Col, Container, InputGroup, Button} from 'react-bootstrap'
-import dataStore from '../../store';
 import {Formik} from 'formik';
 
+import { getUrlParam } from '../../utils/utils';
+
 import { connect } from "react-redux";
-import addUserBasicData from '../../actions/addUserBasicData';
-import getEstados from '../../actions/getEstados';
-import setEstados from '../../actions/setEstados';
-import createSolicitud from '../../actions/createSolicitud';
 import setTracker from '../../actions/setTracker';
 
-import { getPhoneValidationState } from '../../utils/utils';
-
-
 import SessionHeader from '../session/session';
-
 
 class EnvioWhatsapp extends React.Component {
     url =  '';
     constructor(props) {
         super(props);
-        if(dataStore.getState()) {
-            this.state = getPhoneValidationState(dataStore);
-        } else {
-            this.props.history.push("/");
-        }
+        this.state = {
+            attenderRut: getUrlParam(window.location.href, 'r', ''), 
+            userAgent: window.navigator.userAgent, 
+            os: window.navigator.platform, 
+            ip: '', 
+            page: 'WhatsApp Page'
+        };
     }
 
-    asignUrl(){
-        this.url = window.location.origin + '/?r=' + this.state.attenderRut + '&telefono=' + this.cellphone + '&c=20';
+    componentDidMount() {
+        (async () => {
+            let ipv4 = await publicIp.v4();
+            this.setState({ ip: ipv4 });
+            this.props.setTracker(this.state, () => {}, () => {});
+        })();
     }
 
     render(){
         return(
             <div>
-                <SessionHeader attenderRut={this.state.attenderRut} rut={this.state.rut} canal={this.state.canal} />
+                <SessionHeader attenderRut={this.state.attenderRut} />
                 <Formik
                     initialValues = {{
                         cellphone:'',
                     }}
                     onSubmit = {(values, {setSubmitting}) => {
                         if(!values.cellphone){
-                            alert('Ingrese un numero de telefono valido');
+                            alert('Ingrese un número de teléfono válido');
                             setSubmitting(false);
-                        }else{
-
+                        } else {
+                            this.url = window.location.origin + '?r=' + this.state.attenderRut + '&telefono=' + values.cellphone + '&c=20';
+                            window.location.href = `https://api.whatsapp.com/send?phone=569${values.cellphone}&text=${encodeURIComponent(this.url)}`; 
                         }
                     }}
                 >
@@ -79,11 +80,9 @@ class EnvioWhatsapp extends React.Component {
                             </Col>
                         </Form.Group>
                         <Row>
-                            <Col>
-                                <a onClick={this.asignUrl()} href={`https://api.whatsapp.com/send?phone=569${values.cellphone}&text=${encodeURIComponent(this.url)}`} class="btn btn-success btn-block">
-                                    Enviar Link por WhatsApp
-                                </a>   
-                            </Col>
+                            <Button block type="submit" disabled={isSubmitting} variant="success">
+                                Enviar Link por WhatsApp
+                            </Button>
                         </Row>
                     </Form>
                     </Container>
@@ -100,11 +99,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    addUserBasicData: (payload, onSuccess, onFailure) => dispatch(addUserBasicData(payload, onSuccess, onFailure)), 
-getEstados: (onSuccess, onFailure) => dispatch(getEstados(onSuccess, onFailure)), 
-setEstados: (payload) => dispatch(setEstados(payload)), 
-createSolicitud: (payload, estado_id, onSuccess, onFailure) => dispatch(createSolicitud(payload, estado_id, onSuccess, onFailure)), 
-setTracker: (payload, onSuccess, onFailure) => dispatch(setTracker(payload, onSuccess, onFailure))
+    setTracker: (payload, onSuccess, onFailure) => dispatch(setTracker(payload, onSuccess, onFailure))
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(EnvioWhatsapp));

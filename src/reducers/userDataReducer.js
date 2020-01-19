@@ -1,5 +1,9 @@
 export default (state, action) => {
     switch (action.type) {
+      case "get_short_url":
+        return {
+          userData: action.payload
+        };
       case "get_sinacofi_data":
         return {
           userData: action.payload

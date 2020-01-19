@@ -2,7 +2,7 @@
 import React from 'react';
 import { Formik, Field, ErrorMessage } from 'formik';
 import { withRouter } from 'react-router-dom';
-import { validaRut, validaPhoneLength, getUrlParam } from '../../utils/utils';
+import { validaRut, getUrlParam } from '../../utils/utils';
 import publicIp from 'public-ip';
 import {Form, Row, Col, Container, InputGroup, Button, Alert} from 'react-bootstrap'
 
@@ -27,6 +27,7 @@ class InputData extends React.Component {
                         userAgent: window.navigator.userAgent, 
                         os: window.navigator.platform, 
                         ip: '', 
+                        page: 'Home Page', 
                         estados: undefined
                      };
     }

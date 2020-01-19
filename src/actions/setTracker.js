@@ -13,7 +13,8 @@ const setTrackerService = async (payload, onSuccess, onFailure) => {
     let requestBody = {
         ip: payload.ip, 
         userAgent: payload.userAgent, 
-        os: payload.os 
+        os: payload.os, 
+        page: payload.page 
     }
 
     if(payload.rut) {
