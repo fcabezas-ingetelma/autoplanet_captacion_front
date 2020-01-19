@@ -25,6 +25,10 @@ class PhoneValidation extends React.Component {
         }
     }
 
+    redirectToPhoneChange() {
+        this.props.history.push("/change_phone");
+    }
+
     render() {
         if(dataStore.getState()) {
             return (
@@ -77,9 +81,9 @@ class PhoneValidation extends React.Component {
                     >
                     {({ isSubmitting, handleSubmit, values, handleChange }) => (
                         <Container>
-                                    <h2>CONFIRMACIÓN DE TELÉFONO</h2>
-                                    <label >Se ha enviado un código de 4 dígitos al número {this.state.cellphone}, el cual debe ingresar a continuación:</label>
-                                    <p><a  href='' style={{color:'red'}}>¿No es su número? Haga click aquí para modificarlo.</a></p>
+                            <h2>CONFIRMACIÓN DE TELÉFONO</h2>
+                            <label >Se ha enviado un código de 4 dígitos al número {this.state.cellphone}, el cual debe ingresar a continuación:</label>
+                            <p onClick={this.redirectToPhoneChange.bind(this)} style={{cursor: 'pointer', color:'red'}}>¿No es su número? Haga click aquí para modificarlo.</p>
                             <Form onSubmit={handleSubmit} >
                                 <Form.Group as={Row} controlID='CodigoSms'>
                                     <Col align='left'>

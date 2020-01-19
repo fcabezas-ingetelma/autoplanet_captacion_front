@@ -6,10 +6,6 @@ import {Form, Row, Col, Container, InputGroup} from 'react-bootstrap'
 import dataStore from '../../store';
 
 import { connect } from "react-redux";
-import addUserBasicData from '../../actions/addUserBasicData';
-import getEstados from '../../actions/getEstados';
-import setEstados from '../../actions/setEstados';
-import createSolicitud from '../../actions/createSolicitud';
 import setTracker from '../../actions/setTracker';
 
 import { getPhoneValidationState } from '../../utils/utils';
@@ -34,41 +30,42 @@ class ChangePhone extends React.Component {
                     <SessionHeader attenderRut={this.state.attenderRut} rut={this.state.rut} canal={this.state.canal} />
                     <Formik
                         initialValues = {{ rut: this.state.rut, 
-                                        cellphone: this.state.cellphone, 
-                                        ip: this.state.ip, 
-                                        userAgent: this.state.userAgent, 
-                                        os: this.state.os, 
-                                        clientType: this.state.clientType, 
-                                        attenderRut: this.state.attenderRut,
-                                        canal: this.state.canal, 
-                                        sku: this.state.sku, 
-                                        expires_at: this.state.expires_at,
-                                        confirmationChoice: this.state.confirmationChoice, 
-                                        email: this.state.email, 
-                                        code: '', 
-                                        estados: this.state.estados }}
+                                           cellphone: '', 
+                                           ip: this.state.ip, 
+                                           userAgent: this.state.userAgent, 
+                                           os: this.state.os, 
+                                           clientType: this.state.clientType, 
+                                           attenderRut: this.state.attenderRut,
+                                           canal: this.state.canal, 
+                                           sku: this.state.sku, 
+                                           expires_at: this.state.expires_at,
+                                           confirmationChoice: this.state.confirmationChoice, 
+                                           email: this.state.email, 
+                                           code: '', 
+                                           estados: this.state.estados 
+                                        }}
                         validate = {values => {
                             const errors = {};
-
+                            
                             if (values.cellphone == this.state.cellphone) {
-                                errors.code = 'El teléfono ingresado es el mismo. Intente nuevamente.';
+                                errors.cellphone = 'El teléfono ingresado es el mismo. Intente nuevamente.';
                             }
 
                             return errors;
                         }}
                         onSubmit = {(values, { setSubmitting }) => {
+                            setSubmitting(false);
                             if(!this.errors){
-
+                                
                             } else {
                                 alert('Uno o más campos tienen inconsistencias. Por favor, intente nuevamente');
-                                setSubmitting(false);
                             }                             
                         }}
                     >
                     {({ isSubmitting, handleSubmit, values, handleChange }) => (
                         <Container>
-                                    <h2>CAMBIO NÚMERO DE TELÉFONO</h2>
-                                    <label>Ingrese su nuevo número de teléfono</label>                                    
+                            <h2>CAMBIO NÚMERO DE TELÉFONO</h2>
+                            <label>Ingrese su nuevo número de teléfono</label>                                    
                             <Form onSubmit={handleSubmit} >
                                 <Form.Group as={Row} controlID='ChangePhone'>
                                 <Col align='left'>
@@ -93,6 +90,9 @@ class ChangePhone extends React.Component {
                                             placeholder="Ingrese los últimos 8 digitos" 
                                         />
                                     </InputGroup>
+                                    <Form.Text>
+                                            <ErrorMessage name="cellphone" component="div" />
+                                    </Form.Text>
                                 </Col>
                                 </Form.Group>
                                 <Row>
@@ -118,10 +118,6 @@ const mapStateToProps = state => ({
 });
   
 const mapDispatchToProps = dispatch => ({
-    addUserBasicData: (payload, onSuccess, onFailure) => dispatch(addUserBasicData(payload, onSuccess, onFailure)), 
-    getEstados: (onSuccess, onFailure) => dispatch(getEstados(onSuccess, onFailure)), 
-    setEstados: (payload) => dispatch(setEstados(payload)), 
-    createSolicitud: (payload, estado_id, onSuccess, onFailure) => dispatch(createSolicitud(payload, estado_id, onSuccess, onFailure)), 
     setTracker: (payload, onSuccess, onFailure) => dispatch(setTracker(payload, onSuccess, onFailure))
 });
   
