@@ -9,7 +9,11 @@ const addUserBasicData = (payload, onSuccess, onFailure) => {
         () => {
             createUser(payload, 
                 () => {
-                    sendSms(payload, onSuccess, onFailure);
+                    if(payload.validationMethod == CONSTANTS.SMS) {
+                        sendSms(payload, onSuccess, onFailure);
+                    } else {
+                        onSuccess();
+                    }
                 }, 
                 () => {
                     validateUserStatus(payload, onSuccess, onFailure);
@@ -105,7 +109,16 @@ const validateUserStatus = async (payload, onSuccess, onFailure) => {
         userStatusResponse.data && userStatusResponse.data.code) {
         switch (userStatusResponse.data.code) {
             case 150: //SMS Sended but no validated, must send again
-                reSendSms(payload, onSuccess, onFailure);
+                if(payload.validationMethod == CONSTANTS.SMS) {
+                    reSendSms(payload, onSuccess, onFailure);
+                } else {
+                    const updateResponse = updateUserBasicData(payload);
+                    if(updateResponse) {
+                        onSuccess();
+                    } else {
+                        onFailure();
+                    }
+                }
                 break;
             case 160: //SMS Sended and validated, must finish process
                 const updateResponse = updateUserBasicData(payload);

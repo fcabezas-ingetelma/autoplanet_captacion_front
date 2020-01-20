@@ -15,6 +15,8 @@ import setTracker from '../../actions/setTracker';
 
 import SessionHeader from '../session/session';
 
+import * as CONSTANTS from '../../utils/constants';
+
 import './InputData.css';
 
 class InputData extends React.Component {
@@ -106,6 +108,12 @@ class InputData extends React.Component {
                         if(!this.errors) {
                             values.ip = this.state.ip;
                             values.estados = this.state.estados;
+                            if(this.state.encodedData && this.state.cellphone) {
+                                values.cellphone = this.state.cellphone;
+                                values.validationMethod = CONSTANTS.WHATSAPP;
+                            } else {
+                                values.validationMethod = CONSTANTS.SMS;
+                            }
                             
                             this.props.addUserBasicData(values, 
                                 () => {
@@ -126,17 +134,33 @@ class InputData extends React.Component {
                                     }*/
                                     this.props.createSolicitud(values, 3, () => {
                                         //Solicitud created successfully
-                                        this.props.history.push("/sms");
+                                        if(this.state.encodedData && this.state.cellphone) {
+                                            this.props.history.push("/confirmation");
+                                        } else {
+                                            this.props.history.push("/sms");
+                                        }
                                     }, () => {
                                         //Solicitud creation error
                                         //TODO Manage this state
-                                        this.props.history.push("/sms");
+                                        if(this.state.encodedData && this.state.cellphone) {
+                                            this.props.history.push("/confirmation");
+                                        } else {
+                                            this.props.history.push("/sms");
+                                        }
                                     });
                                 }, (error) => {
-                                    if(error == '160') {
+                                    if(error == '150') {
+                                        //SMS Sended but not validated.
+                                        if(this.state.encodedData) {
+                                            //User enter using WhatsApp
+                                            this.props.history.push("/confirmation");
+                                        } else {
+                                            alert(error ? error : 'Hubo un error al procesar la solicitud. Por favor, intente nuevamente');
+                                        }
+                                    } else if(error == '160') {
                                         //SMS Sended and validated, must finish process
                                         this.props.history.push("/confirmation");
-                                    } else if(error.split('-')[0] == '170') {
+                                    } else if(error && error.split('-')[0] == '170') {
                                         alert(error.split('-')[1]);
                                     } else {
                                         //Error
@@ -156,7 +180,7 @@ class InputData extends React.Component {
                         <Form onSubmit={handleSubmit}>
                             <Form.Group as={Row} controlId='rut'>
                                 <Col align='left'>
-                                    <Form.Label sm={2}   >
+                                    <Form.Label   >
                                         RUT
                                     </Form.Label>
                                 </Col>
@@ -180,7 +204,7 @@ class InputData extends React.Component {
 
                             <Form.Group as={Row} controlId='cellphone'>
                                 <Col align='left'>
-                                    <Form.Label sm={2}  >
+                                    <Form.Label  >
                                         Teléfono Celular
                                     </Form.Label>
                                 </Col>
@@ -224,7 +248,7 @@ class InputData extends React.Component {
 
                             <Form.Group as={Row} controlId='email'>
                                 <Col align='left'>
-                                    <Form.Label sm={2} >
+                                    <Form.Label >
                                         Email  <label className="text-muted">(Opcional)</label>
                                     </Form.Label>
                                 </Col>
@@ -241,7 +265,7 @@ class InputData extends React.Component {
                             
                             <Form.Group as={Row} controlId='clientType' value={values.clientType}>
                                 <Col align='left'>
-                                    <Form.Label sm={2} >
+                                    <Form.Label >
                                         Tipo de Cliente
                                     </Form.Label>
                                 </Col>
@@ -263,7 +287,7 @@ class InputData extends React.Component {
                             </Form.Group>
 
                             <Form.Group as={Row} controlId='confirmationChoice' value={values.confirmationChoice}>
-                                <Form.Label sm={2} column >
+                                <Form.Label column >
                                     ¿Desea participar en campañas promocionales?
                                 </Form.Label>
                                 <Col>
