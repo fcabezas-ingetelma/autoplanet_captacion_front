@@ -2,7 +2,7 @@
 import React from 'react';
 import { Formik, Field, ErrorMessage } from 'formik';
 import { withRouter } from 'react-router-dom';
-import { validaRut, getUrlParam } from '../../utils/utils';
+import { validaRut, getUrlParam, decodeFromBase64 } from '../../utils/utils';
 import publicIp from 'public-ip';
 import {Form, Row, Col, Container, InputGroup, Button, Alert} from 'react-bootstrap'
 
@@ -24,9 +24,11 @@ class InputData extends React.Component {
                         attenderRut: getUrlParam(window.location.href, 'r', ''), 
                         canal: getUrlParam(window.location.href, 'c', ''), 
                         sku: getUrlParam(window.location.href, 'sku', ''), 
+                        encodedData: getUrlParam(window.location.href, 'encodedData', ''), 
                         userAgent: window.navigator.userAgent, 
                         os: window.navigator.platform, 
                         ip: '', 
+                        cellphone: '', 
                         page: 'Home Page', 
                         estados: undefined
                      };
@@ -43,6 +45,15 @@ class InputData extends React.Component {
             this.setState({ estados: estados });
             this.props.setEstados(this.state);
         }, () => {});
+
+        if(this.state.encodedData) {
+            let decodedData = '?' + decodeFromBase64(this.state.encodedData);
+            this.setState({ 
+                attenderRut: getUrlParam(decodedData, 'r', ''), 
+                canal: getUrlParam(decodedData, 'c', '') == '207' ? '20' : getUrlParam(decodedData, 'c', ''), 
+                cellphone: getUrlParam(decodedData, 'telefono', '')
+            });
+        }
     }
 
     render() {
@@ -69,7 +80,7 @@ class InputData extends React.Component {
                 <SessionHeader attenderRut={this.state.attenderRut} />
                 <Formik
                     initialValues = {{  rut: '', 
-                                        cellphone: '', 
+                                        cellphone: this.state.cellphone, 
                                         ip: this.state.ip, 
                                         userAgent: this.state.userAgent, 
                                         os: this.state.os, 
@@ -178,17 +189,35 @@ class InputData extends React.Component {
                                         <InputGroup.Prepend id="inputGroupPrepend">
                                             <InputGroup.Text>+569</InputGroup.Text>
                                         </InputGroup.Prepend>
-                                        <Form.Control 
-                                            required
-                                            maxLength='8'
-                                            aria-describedby="inputGroupPrepend"
-                                            required
-                                            type="tel" 
-                                            name="cellphone" 
-                                            value={values.cellphone}
-                                            onChange={handleChange}
-                                            placeholder="Ingrese los últimos 8 digitos" 
-                                        />
+                                        {this.state.cellphone ? (
+                                                <Form.Control 
+                                                    required
+                                                    disabled
+                                                    maxLength='8'
+                                                    aria-describedby="inputGroupPrepend"
+                                                    required
+                                                    type="tel" 
+                                                    name="cellphone" 
+                                                    value={this.state.cellphone}
+                                                    onChange={handleChange}
+                                                    placeholder="Ingrese los últimos 8 digitos" 
+                                                />
+                                            )
+                                            :
+                                            (
+                                                <Form.Control 
+                                                    required
+                                                    maxLength='8'
+                                                    aria-describedby="inputGroupPrepend"
+                                                    required
+                                                    type="tel" 
+                                                    name="cellphone" 
+                                                    value={values.cellphone}
+                                                    onChange={handleChange}
+                                                    placeholder="Ingrese los últimos 8 digitos" 
+                                                />
+                                            )
+                                        }
                                     </InputGroup>
                                 </Col>
                             </Form.Group>

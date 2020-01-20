@@ -36,6 +36,10 @@ function getUrlParam(url, parameter, defaultvalue){
     return urlparameter;
 }
 
+function decodeFromBase64(input) {
+    return Buffer.from(input, 'base64').toString('utf-8');
+}
+
 function getPhoneValidationState(dataStore) {
     return { 
         rut: dataStore.getState().userData.rut !== '' ? dataStore.getState().userData.rut : '', 
@@ -73,4 +77,4 @@ function getConfirmationState(dataStore) {
     };
 }
 
-export { validaRut, validaPhoneLength, getUrlParam, getPhoneValidationState, getConfirmationState };
+export { validaRut, validaPhoneLength, getUrlParam, getPhoneValidationState, getConfirmationState, decodeFromBase64 };
