@@ -66,17 +66,21 @@ class EnvioWhatsapp extends React.Component {
                 >
                 {({ isSubmitting, handleSubmit, values, handleChange}) => (
                     <Container>
+                        <br sm={2}/>
                         <h2>Ingrese su Teléfono Celular:</h2>
                     <Form onSubmit={handleSubmit} >
                         <Form.Group as={Row} controlID='cellphone'>
                             <Col align='left'>
+                                <br/>
                                 <Form.Label  >
                                     Teléfono Celular
                                 </Form.Label>
                             </Col>
                             <Col sm={10}>
                                 <InputGroup>
+                                
                                     <InputGroup.Prepend id="inputGroupPrepend">
+                                        <br/>
                                         <InputGroup.Text>+569</InputGroup.Text>
                                     </InputGroup.Prepend>
                                     <Form.Control 
@@ -93,11 +97,10 @@ class EnvioWhatsapp extends React.Component {
                                 </InputGroup>
                             </Col>
                         </Form.Group>
-                        <Row>
+                            <br/>
                             <Button block type="submit" disabled={isSubmitting} variant="success">
                                 Enviar Link por WhatsApp
                             </Button>
-                        </Row>
                     </Form>
                     </Container>
 
