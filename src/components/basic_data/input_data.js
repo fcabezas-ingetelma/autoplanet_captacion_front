@@ -2,7 +2,7 @@
 import React from 'react';
 import { Formik, Field, ErrorMessage } from 'formik';
 import { withRouter } from 'react-router-dom';
-import { validaRut, getUrlParam, decodeFromBase64 } from '../../utils/utils';
+import { validaRut, rutChecker, getUrlParam, decodeFromBase64 } from '../../utils/utils';
 import publicIp from 'public-ip';
 import {Form, Row, Col, Container, InputGroup, Button, Alert} from 'react-bootstrap'
 
@@ -61,25 +61,32 @@ class InputData extends React.Component {
         }
     }
 
-    render() {
-        function validRut(e){
-            let value = e.target.value.replace(/\./g, '').replace('-', '');
-  
-            if (value.match(/^(\d{2})(\d{3}){2}(\w{1})$/)) {
-              value = value.replace(/^(\d{2})(\d{3})(\d{3})(\w{1})$/, '$1$2$3-$4');
-            }
-            else if (value.match(/^(\d)(\d{3}){2}(\w{0,1})$/)) {
-              value = value.replace(/^(\d)(\d{3})(\d{3})(\w{0,1})$/, '$1$2$3-$4');
-            }
-            else if (value.match(/^(\d)(\d{3})(\d{0,2})$/)) {
-              value = value.replace(/^(\d)(\d{3})(\d{0,2})$/, '$1$2$3');
-            }
-            else if (value.match(/^(\d)(\d{0,2})$/)) {
-              value = value.replace(/^(\d)(\d{0,2})$/, '$1$2');
-            }
-            e.target.value = value;
+    successResponseHandler(values) {
+        if(this.state.encodedData && this.state.cellphone) {
+            this.props.validateToken(values, () => {
+                this.props.history.push("/confirmation");
+            }, () => {
+                alert('La información enviada via WhatsApp ha caducado. Por favor, repita el proceso nuevamente.');
+            });
+        } else {
+            this.props.history.push("/sms");
         }
+    }
 
+    failureResponseHandler(values, error) {
+        if(this.state.encodedData) {
+            //User enter using WhatsApp
+            this.props.validateToken(values, () => {
+                this.props.history.push("/confirmation");
+            }, () => {
+                alert('La información enviada via WhatsApp ha caducado. Por favor, repita el proceso nuevamente.');
+            });
+        } else {
+            alert(error ? error : 'Hubo un error al procesar la solicitud. Por favor, intente nuevamente');
+        }
+    }
+
+    render() {
         return (
             <div>
                 <SessionHeader attenderRut={this.state.attenderRut} />
@@ -140,57 +147,23 @@ class InputData extends React.Component {
                                     }*/
                                     this.props.createSolicitud(values, 3, () => {
                                         //Solicitud created successfully
-                                        if(this.state.encodedData && this.state.cellphone) {
-                                            this.props.validateToken(values, () => {
-                                                this.props.history.push("/confirmation");
-                                            }, () => {
-                                                alert('La información enviada via WhatsApp ha caducado. Por favor, repita el proceso nuevamente.');
-                                            });
-                                        } else {
-                                            this.props.history.push("/sms");
-                                        }
+                                        this.successResponseHandler.bind(this, values);
                                     }, () => {
                                         //Solicitud creation error
                                         //TODO Manage this state
-                                        if(this.state.encodedData && this.state.cellphone) {
-                                            this.props.validateToken(values, () => {
-                                                this.props.history.push("/confirmation");
-                                            }, () => {
-                                                alert('La información enviada via WhatsApp ha caducado. Por favor, repita el proceso nuevamente.');
-                                            });
-                                        } else {
-                                            this.props.history.push("/sms");
-                                        }
+                                        this.successResponseHandler.bind(this, values);
                                     });
                                 }, (error) => {
                                     if(error == '150') {
                                         //SMS Sended but not validated.
-                                        if(this.state.encodedData) {
-                                            //User enter using WhatsApp
-                                            this.props.validateToken(values, () => {
-                                                this.props.history.push("/confirmation");
-                                            }, () => {
-                                                alert('La información enviada via WhatsApp ha caducado. Por favor, repita el proceso nuevamente.');
-                                            });
-                                        } else {
-                                            alert(error ? error : 'Hubo un error al procesar la solicitud. Por favor, intente nuevamente');
-                                        }
+                                        this.failureResponseHandler.bind(this, values, error);
                                     } else if(error == '160') {
                                         //SMS Sended and validated, must finish process
                                         this.props.history.push("/confirmation");
                                     } else if(error && error.split('-')[0] == '170') {
                                         alert(error.split('-')[1]);
                                     } else {
-                                        if(this.state.encodedData) {
-                                            //User enter using WhatsApp
-                                            this.props.validateToken(values, () => {
-                                                this.props.history.push("/confirmation");
-                                            }, () => {
-                                                alert('La información enviada via WhatsApp ha caducado. Por favor, repita el proceso nuevamente.');
-                                            });
-                                        } else {
-                                            alert(error ? error : 'Hubo un error al procesar la solicitud. Por favor, intente nuevamente');
-                                        }
+                                        this.failureResponseHandler.bind(this, values, error);
                                     }
                                     setSubmitting(false);
                                 }
@@ -216,7 +189,7 @@ class InputData extends React.Component {
                                         maxLength='10'
                                         type="text" 
                                         onChange={handleChange}
-                                        onInput={validRut}
+                                        onInput={rutChecker}
                                         onBlur={this.validate}
                                         value={values.rut}
                                         name="rut" 
