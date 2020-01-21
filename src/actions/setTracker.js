@@ -33,6 +33,10 @@ const setTrackerService = async (payload, onSuccess, onFailure) => {
         requestBody.sku = payload.sku;
     }
 
+    if(payload.cellphone) {
+        requestBody.cellphone = payload.cellphone;
+    }
+
     const response = await requester.sendPutRequest('/v1/user/set-tracker', requestBody);
     if(response && response.status == 200) {
         onSuccess(response.data.message);

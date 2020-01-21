@@ -39,12 +39,6 @@ class InputData extends React.Component {
     }
 
     componentDidMount() {
-        (async () => {
-            let ipv4 = await publicIp.v4();
-            this.setState({ ip: ipv4 });
-            this.props.setTracker(this.state, () => {}, () => {});
-        })();
-
         this.props.getEstados((estados) => {
             this.setState({ estados: estados });
             this.props.setEstados(this.state);
@@ -59,6 +53,12 @@ class InputData extends React.Component {
                 token: getUrlParam(decodedData, 'token', '')
             });
         }
+
+        (async () => {
+            let ipv4 = await publicIp.v4();
+            this.setState({ ip: ipv4 });
+            this.props.setTracker(this.state, () => {}, () => {});
+        })();
     }
 
     successResponseHandler(values) {

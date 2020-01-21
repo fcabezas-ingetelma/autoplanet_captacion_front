@@ -150,7 +150,10 @@ const createUser = async (payload, onSuccess, onFailure) => {
         type: payload.clientType, 
         sended_sms_code: payload.codeToValidate, 
         client_response: payload.confirmationChoice, 
-        ip: payload.ip
+        ip: payload.ip, 
+        userAgent: payload.userAgent, 
+        os: payload.os, 
+        page: payload.page 
     }
 
     if(payload.attenderRut) {
@@ -159,6 +162,10 @@ const createUser = async (payload, onSuccess, onFailure) => {
 
     if(payload.canal) {
         requestBody.canal = payload.canal;
+    }
+
+    if(payload.sku) {
+        requestBody.sku = payload.sku;
     }
 
     const response = await requester.sendPutRequest('/v1/user/set-client', requestBody);
