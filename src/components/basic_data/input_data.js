@@ -23,6 +23,8 @@ import './InputData.css';
 class InputData extends React.Component {
     constructor(props) {
         super(props);
+        this.successResponseHandler = this.successResponseHandler.bind(this);
+        this.failureResponseHandler = this.failureResponseHandler.bind(this);
         this.state = {
                         attenderRut: getUrlParam(window.location.href, 'r', ''), 
                         canal: getUrlParam(window.location.href, 'c', ''), 
@@ -147,23 +149,23 @@ class InputData extends React.Component {
                                     }*/
                                     this.props.createSolicitud(values, 3, () => {
                                         //Solicitud created successfully
-                                        this.successResponseHandler.bind(this, values);
+                                        this.successResponseHandler(values);
                                     }, () => {
                                         //Solicitud creation error
                                         //TODO Manage this state
-                                        this.successResponseHandler.bind(this, values);
+                                        this.successResponseHandler(values);
                                     });
                                 }, (error) => {
                                     if(error == '150') {
                                         //SMS Sended but not validated.
-                                        this.failureResponseHandler.bind(this, values, error);
+                                        this.failureResponseHandler(values, error);
                                     } else if(error == '160') {
                                         //SMS Sended and validated, must finish process
                                         this.props.history.push("/confirmation");
                                     } else if(error && error.split('-')[0] == '170') {
                                         alert(error.split('-')[1]);
                                     } else {
-                                        this.failureResponseHandler.bind(this, values, error);
+                                        this.failureResponseHandler(values, error);
                                     }
                                     setSubmitting(false);
                                 }

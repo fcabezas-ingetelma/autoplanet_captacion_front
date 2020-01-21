@@ -7,11 +7,11 @@ import dataStore from '../../store';
 
 import { connect } from "react-redux";
 import setTracker from '../../actions/setTracker';
+import updateCellphone from '../../actions/updateCellphone';
 
 import { getPhoneValidationState } from '../../utils/utils';
 
 import SessionHeader from '../session/session';
-
 
 class ChangePhone extends React.Component {
     constructor(props) {
@@ -56,7 +56,11 @@ class ChangePhone extends React.Component {
                         onSubmit = {(values, { setSubmitting }) => {
                             setSubmitting(false);
                             if(!this.errors){
-                                
+                                this.props.updateCellphone(values, () => {
+                                    this.props.history.push("/sms");
+                                }, () => {
+                                    alert('Hubo un problema al actualizar la información. Por favor, intente nuevamente');
+                                });
                             } else {
                                 alert('Uno o más campos tienen inconsistencias. Por favor, intente nuevamente');
                             }                             
@@ -118,7 +122,8 @@ const mapStateToProps = state => ({
 });
   
 const mapDispatchToProps = dispatch => ({
-    setTracker: (payload, onSuccess, onFailure) => dispatch(setTracker(payload, onSuccess, onFailure))
+    setTracker: (payload, onSuccess, onFailure) => dispatch(setTracker(payload, onSuccess, onFailure)), 
+    updateCellphone: (payload, onSuccess, onFailure) => dispatch(updateCellphone(payload, onSuccess, onFailure))
 });
   
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ChangePhone));
