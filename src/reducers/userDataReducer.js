@@ -1,5 +1,9 @@
 export default (state, action) => {
     switch (action.type) {
+      case "validate_token":
+        return {
+          userData: action.payload
+        };
       case "get_short_url":
         return {
           userData: action.payload

@@ -12,6 +12,7 @@ import getEstados from '../../actions/getEstados';
 import setEstados from '../../actions/setEstados';
 import createSolicitud from '../../actions/createSolicitud';
 import setTracker from '../../actions/setTracker';
+import validateToken from '../../actions/validateToken';
 
 import SessionHeader from '../session/session';
 
@@ -32,7 +33,8 @@ class InputData extends React.Component {
                         ip: '', 
                         cellphone: '', 
                         page: 'Home Page', 
-                        estados: undefined
+                        estados: undefined, 
+                        token: ''
                      };
     }
 
@@ -52,8 +54,9 @@ class InputData extends React.Component {
             let decodedData = '?' + decodeFromBase64(this.state.encodedData);
             this.setState({ 
                 attenderRut: getUrlParam(decodedData, 'r', ''), 
-                canal: getUrlParam(decodedData, 'c', '') == '207' ? '20' : getUrlParam(decodedData, 'c', ''), 
-                cellphone: getUrlParam(decodedData, 'telefono', '')
+                canal: getUrlParam(decodedData, 'c', '').replace('C\\', ''), 
+                cellphone: getUrlParam(decodedData, 'telefono', ''), 
+                token: getUrlParam(decodedData, 'token', '')
             });
         }
     }
@@ -111,6 +114,9 @@ class InputData extends React.Component {
                             if(this.state.encodedData && this.state.cellphone) {
                                 values.cellphone = this.state.cellphone;
                                 values.validationMethod = CONSTANTS.WHATSAPP;
+                                values.token = this.state.token;
+                                values.attenderRut = this.state.attenderRut;
+                                values.canal = this.state.canal;
                             } else {
                                 values.validationMethod = CONSTANTS.SMS;
                             }
@@ -135,7 +141,11 @@ class InputData extends React.Component {
                                     this.props.createSolicitud(values, 3, () => {
                                         //Solicitud created successfully
                                         if(this.state.encodedData && this.state.cellphone) {
-                                            this.props.history.push("/confirmation");
+                                            this.props.validateToken(values, () => {
+                                                this.props.history.push("/confirmation");
+                                            }, () => {
+                                                alert('La información enviada via WhatsApp ha caducado. Por favor, repita el proceso nuevamente.');
+                                            });
                                         } else {
                                             this.props.history.push("/sms");
                                         }
@@ -143,7 +153,11 @@ class InputData extends React.Component {
                                         //Solicitud creation error
                                         //TODO Manage this state
                                         if(this.state.encodedData && this.state.cellphone) {
-                                            this.props.history.push("/confirmation");
+                                            this.props.validateToken(values, () => {
+                                                this.props.history.push("/confirmation");
+                                            }, () => {
+                                                alert('La información enviada via WhatsApp ha caducado. Por favor, repita el proceso nuevamente.');
+                                            });
                                         } else {
                                             this.props.history.push("/sms");
                                         }
@@ -153,7 +167,11 @@ class InputData extends React.Component {
                                         //SMS Sended but not validated.
                                         if(this.state.encodedData) {
                                             //User enter using WhatsApp
-                                            this.props.history.push("/confirmation");
+                                            this.props.validateToken(values, () => {
+                                                this.props.history.push("/confirmation");
+                                            }, () => {
+                                                alert('La información enviada via WhatsApp ha caducado. Por favor, repita el proceso nuevamente.');
+                                            });
                                         } else {
                                             alert(error ? error : 'Hubo un error al procesar la solicitud. Por favor, intente nuevamente');
                                         }
@@ -163,8 +181,16 @@ class InputData extends React.Component {
                                     } else if(error && error.split('-')[0] == '170') {
                                         alert(error.split('-')[1]);
                                     } else {
-                                        //Error
-                                        alert(error ? error : 'Hubo un error al procesar la solicitud. Por favor, intente nuevamente');
+                                        if(this.state.encodedData) {
+                                            //User enter using WhatsApp
+                                            this.props.validateToken(values, () => {
+                                                this.props.history.push("/confirmation");
+                                            }, () => {
+                                                alert('La información enviada via WhatsApp ha caducado. Por favor, repita el proceso nuevamente.');
+                                            });
+                                        } else {
+                                            alert(error ? error : 'Hubo un error al procesar la solicitud. Por favor, intente nuevamente');
+                                        }
                                     }
                                     setSubmitting(false);
                                 }
@@ -341,7 +367,8 @@ const mapDispatchToProps = dispatch => ({
     getEstados: (onSuccess, onFailure) => dispatch(getEstados(onSuccess, onFailure)), 
     setEstados: (payload) => dispatch(setEstados(payload)), 
     createSolicitud: (payload, estado_id, onSuccess, onFailure) => dispatch(createSolicitud(payload, estado_id, onSuccess, onFailure)), 
-    setTracker: (payload, onSuccess, onFailure) => dispatch(setTracker(payload, onSuccess, onFailure))
+    setTracker: (payload, onSuccess, onFailure) => dispatch(setTracker(payload, onSuccess, onFailure)), 
+    validateToken: (payload, onSuccess, onFailure) => dispatch(validateToken(payload, onSuccess, onFailure))
 });
   
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(InputData));

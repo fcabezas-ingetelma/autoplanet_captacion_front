@@ -37,7 +37,7 @@ function getUrlParam(url, parameter, defaultvalue){
 }
 
 function decodeFromBase64(input) {
-    return Buffer.from(input, 'base64').toString('utf-8');
+    return Buffer.from(input, 'base64').toString('ascii');
 }
 
 function getPhoneValidationState(dataStore) {

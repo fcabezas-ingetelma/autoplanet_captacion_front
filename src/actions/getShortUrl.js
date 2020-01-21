@@ -9,14 +9,20 @@ const getShortUrl = (payload, onSuccess, onFailure) => {
 
 const getShortUrlService = async (payload, onSuccess, onFailure) => {
     let requester = new HttpRequester();
-    let requestBody = {
-        url: payload.url,
-        rut_captador: payload.attenderRut, 
-        cellphone: payload.cellphone
-    }
-    const response = await requester.sendPostRequest('/v1/url/url-shortener-service', requestBody);
-    if(response && response.data) {
-        onSuccess(response.data.shortLink);
+    const tokenResponse = await requester.sendPutRequest('/v1/token/init-ws-token', { cellphone: payload.cellphone });
+    if(tokenResponse.data.token) {
+        let requestBody = {
+            url: payload.url,
+            rut_captador: payload.attenderRut, 
+            cellphone: payload.cellphone, 
+            token: tokenResponse.data.token
+        }
+        const response = await requester.sendPostRequest('/v1/url/url-shortener-service', requestBody);
+        if(response && response.data) {
+            onSuccess(response.data.shortLink);
+        } else {
+            onFailure();
+        }
     } else {
         onFailure();
     }
