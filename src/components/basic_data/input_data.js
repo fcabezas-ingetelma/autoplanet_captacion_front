@@ -206,7 +206,7 @@ class InputData extends React.Component {
                         <Form onSubmit={handleSubmit}>
                             <Form.Group as={Row} controlId='rut'>
                                 <Col align='left'>
-                                    <Form.Label   >
+                                    <Form.Label sm={2} >
                                         RUT
                                     </Form.Label>
                                 </Col>
@@ -230,7 +230,7 @@ class InputData extends React.Component {
 
                             <Form.Group as={Row} controlId='cellphone'>
                                 <Col align='left'>
-                                    <Form.Label  >
+                                    <Form.Label sm={2} >
                                         Teléfono Celular
                                     </Form.Label>
                                 </Col>
@@ -274,7 +274,7 @@ class InputData extends React.Component {
 
                             <Form.Group as={Row} controlId='email'>
                                 <Col align='left'>
-                                    <Form.Label >
+                                    <Form.Label sm={2} >
                                         Email  <label className="text-muted">(Opcional)</label>
                                     </Form.Label>
                                 </Col>
@@ -313,7 +313,7 @@ class InputData extends React.Component {
                             </Form.Group>
 
                             <Form.Group as={Row} controlId='confirmationChoice' value={values.confirmationChoice}>
-                                <Form.Label column >
+                                <Form.Label sm={2} column >
                                     ¿Desea participar en campañas promocionales?
                                 </Form.Label>
                                 <Col>
