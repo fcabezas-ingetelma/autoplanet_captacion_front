@@ -5,6 +5,9 @@
 /.pnp
 .pnp.js
 
+# pm2
+ecosystem.config.js
+
 # testing
 /coverage
 
