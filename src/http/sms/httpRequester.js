@@ -6,7 +6,7 @@ dotenv.config();
 
 class HttpRequester {
     constructor() {
-        this.url = 'https://54.191.66.41:4000';
+        this.url = 'https://api.autoplanet-enrolamiento.omnisign.cl:4000';
         this.config = {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
