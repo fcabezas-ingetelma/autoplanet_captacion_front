@@ -6,7 +6,6 @@ import {Form, Row, Col, Container, InputGroup} from 'react-bootstrap'
 
 import { withRouter } from 'react-router-dom';
 import dataStore from '../../store';
-import './confirmationSuccess.css';
 
 import { connect } from "react-redux";
 import updateAttendanceInfo from '../../actions/updateAttendanceInfo'

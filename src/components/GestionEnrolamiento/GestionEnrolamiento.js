@@ -8,8 +8,24 @@ import { connect } from "react-redux";
 import setTracker from '../../actions/setTracker';
 import getShortUrl from '../../actions/getShortUrl';
 
+import dataStore from '../../store';
+
 class GestionEnrolamiento extends React.Component {
+    constructor(props) {
+        super(props);
+        if(dataStore.getState()) {
+            console.log(props);
+        } else {
+            this.props.history.push("/");
+        }
+    }
+
+    getData(token){
+        
+    }
+
     render() {
+        console.log('wena man');
         return (
             <div>
                 <br />
