@@ -1,5 +1,17 @@
 export default (state, action) => {
     switch (action.type) {
+      case "update_cellphone":
+        return {
+          userData: action.payload
+        };
+      case "validate_token":
+        return {
+          userData: action.payload
+        };
+      case "get_short_url":
+        return {
+          userData: action.payload
+        };
       case "get_sinacofi_data":
         return {
           userData: action.payload

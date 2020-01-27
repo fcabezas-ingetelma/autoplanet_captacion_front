@@ -13,7 +13,8 @@ const setTrackerService = async (payload, onSuccess, onFailure) => {
     let requestBody = {
         ip: payload.ip, 
         userAgent: payload.userAgent, 
-        os: payload.os 
+        os: payload.os, 
+        page: payload.page 
     }
 
     if(payload.rut) {
@@ -30,6 +31,10 @@ const setTrackerService = async (payload, onSuccess, onFailure) => {
 
     if(payload.sku) {
         requestBody.sku = payload.sku;
+    }
+
+    if(payload.cellphone) {
+        requestBody.cellphone = payload.cellphone;
     }
 
     const response = await requester.sendPutRequest('/v1/user/set-tracker', requestBody);

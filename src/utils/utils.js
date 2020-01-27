@@ -16,6 +16,24 @@ function validaRut(rutCompleto) {
 	return (validaDV(rut) + '' === digv );
 }
 
+function rutChecker(e){
+    let value = e.target.value.replace(/\./g, '').replace('-', '');
+
+    if (value.match(/^(\d{2})(\d{3}){2}(\w{1})$/)) {
+      value = value.replace(/^(\d{2})(\d{3})(\d{3})(\w{1})$/, '$1$2$3-$4');
+    }
+    else if (value.match(/^(\d)(\d{3}){2}(\w{0,1})$/)) {
+      value = value.replace(/^(\d)(\d{3})(\d{3})(\w{0,1})$/, '$1$2$3-$4');
+    }
+    else if (value.match(/^(\d)(\d{3})(\d{0,2})$/)) {
+      value = value.replace(/^(\d)(\d{3})(\d{0,2})$/, '$1$2$3');
+    }
+    else if (value.match(/^(\d)(\d{0,2})$/)) {
+      value = value.replace(/^(\d)(\d{0,2})$/, '$1$2');
+    }
+    e.target.value = value;
+}
+
 function validaPhoneLength(phone) {
     return phone.length >= 8;
 }
@@ -34,6 +52,10 @@ function getUrlParam(url, parameter, defaultvalue){
         urlparameter = getUrlVars(url)[parameter];
     }
     return urlparameter;
+}
+
+function decodeFromBase64(input) {
+    return Buffer.from(input, 'base64').toString('ascii');
 }
 
 function getPhoneValidationState(dataStore) {
@@ -73,4 +95,4 @@ function getConfirmationState(dataStore) {
     };
 }
 
-export { validaRut, validaPhoneLength, getUrlParam, getPhoneValidationState, getConfirmationState };
+export { validaRut, rutChecker, validaPhoneLength, getUrlParam, getPhoneValidationState, getConfirmationState, decodeFromBase64 };

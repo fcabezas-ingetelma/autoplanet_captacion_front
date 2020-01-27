@@ -9,6 +9,8 @@ import './index.css';
 import App from './screens/input_data/App';
 import Sms from './screens/sms_send/Sms';
 import Confirmation from './screens/confirmation/Confirmation';
+import Change_Phone from './screens/change_phone/Change_Phone'
+import Envio_Whatsapp from './screens/envio_whatsapp/Envio_Whatsapp'
 
 import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -20,6 +22,8 @@ const routing = (
                 <Route exact path="/" component={App} />
                 <Route path="/sms" component={Sms} />
                 <Route path="/confirmation" component={Confirmation} />
+                <Route path="/change_phone" component={Change_Phone} />
+                <Route path="/envioWhatsapp" component={Envio_Whatsapp} />
             </Switch>
         </Router>
     </Provider>

@@ -2,7 +2,7 @@
 import React from 'react';
 import { Formik, Field, ErrorMessage } from 'formik';
 import { withRouter } from 'react-router-dom';
-import { validaRut, validaPhoneLength, getUrlParam } from '../../utils/utils';
+import { validaRut, rutChecker, getUrlParam, decodeFromBase64 } from '../../utils/utils';
 import publicIp from 'public-ip';
 import {Form, Row, Col, Container, InputGroup, Button, Alert} from 'react-bootstrap'
 
@@ -12,63 +12,89 @@ import getEstados from '../../actions/getEstados';
 import setEstados from '../../actions/setEstados';
 import createSolicitud from '../../actions/createSolicitud';
 import setTracker from '../../actions/setTracker';
+import validateToken from '../../actions/validateToken';
 
 import SessionHeader from '../session/session';
+
+import * as CONSTANTS from '../../utils/constants';
 
 import './InputData.css';
 
 class InputData extends React.Component {
     constructor(props) {
         super(props);
+        this.successResponseHandler = this.successResponseHandler.bind(this);
+        this.failureResponseHandler = this.failureResponseHandler.bind(this);
         this.state = {
                         attenderRut: getUrlParam(window.location.href, 'r', ''), 
                         canal: getUrlParam(window.location.href, 'c', ''), 
                         sku: getUrlParam(window.location.href, 'sku', ''), 
+                        encodedData: getUrlParam(window.location.href, 'encodedData', ''), 
                         userAgent: window.navigator.userAgent, 
                         os: window.navigator.platform, 
                         ip: '', 
-                        estados: undefined
+                        cellphone: '', 
+                        page: 'Home Page', 
+                        estados: undefined, 
+                        token: ''
                      };
     }
 
     componentDidMount() {
+        this.props.getEstados((estados) => {
+            this.setState({ estados: estados });
+            this.props.setEstados(this.state);
+        }, () => {});
+
+        if(this.state.encodedData) {
+            let decodedData = '?' + decodeFromBase64(this.state.encodedData);
+            this.setState({ 
+                attenderRut: getUrlParam(decodedData, 'r', ''), 
+                canal: getUrlParam(decodedData, 'c', '').replace('C\\', ''), 
+                cellphone: getUrlParam(decodedData, 'telefono', ''), 
+                token: getUrlParam(decodedData, 'token', '')
+            });
+        }
+
         (async () => {
             let ipv4 = await publicIp.v4();
             this.setState({ ip: ipv4 });
             this.props.setTracker(this.state, () => {}, () => {});
         })();
+    }
 
-        this.props.getEstados((estados) => {
-            this.setState({ estados: estados });
-            this.props.setEstados(this.state);
-        }, () => {});
+    successResponseHandler(values) {
+        if(this.state.encodedData && this.state.cellphone) {
+            this.props.validateToken(values, () => {
+                this.props.history.push("/confirmation");
+            }, () => {
+                alert('La información enviada via WhatsApp ha caducado. Por favor, repita el proceso nuevamente.');
+            });
+        } else {
+            this.props.history.push("/sms");
+        }
+    }
+
+    failureResponseHandler(values, error) {
+        if(this.state.encodedData) {
+            //User enter using WhatsApp
+            this.props.validateToken(values, () => {
+                this.props.history.push("/confirmation");
+            }, () => {
+                alert('La información enviada via WhatsApp ha caducado. Por favor, repita el proceso nuevamente.');
+            });
+        } else {
+            alert(error ? error : 'Hubo un error al procesar la solicitud. Por favor, intente nuevamente');
+        }
     }
 
     render() {
-        function validRut(e){
-            let value = e.target.value.replace(/\./g, '').replace('-', '');
-  
-            if (value.match(/^(\d{2})(\d{3}){2}(\w{1})$/)) {
-              value = value.replace(/^(\d{2})(\d{3})(\d{3})(\w{1})$/, '$1$2$3-$4');
-            }
-            else if (value.match(/^(\d)(\d{3}){2}(\w{0,1})$/)) {
-              value = value.replace(/^(\d)(\d{3})(\d{3})(\w{0,1})$/, '$1$2$3-$4');
-            }
-            else if (value.match(/^(\d)(\d{3})(\d{0,2})$/)) {
-              value = value.replace(/^(\d)(\d{3})(\d{0,2})$/, '$1$2$3');
-            }
-            else if (value.match(/^(\d)(\d{0,2})$/)) {
-              value = value.replace(/^(\d)(\d{0,2})$/, '$1$2');
-            }
-            e.target.value = value;
-        }
-
         return (
             <div>
                 <SessionHeader attenderRut={this.state.attenderRut} />
                 <Formik
                     initialValues = {{  rut: '', 
-                                        cellphone: '', 
+                                        cellphone: this.state.cellphone, 
                                         ip: this.state.ip, 
                                         userAgent: this.state.userAgent, 
                                         os: this.state.os, 
@@ -94,6 +120,15 @@ class InputData extends React.Component {
                         if(!this.errors) {
                             values.ip = this.state.ip;
                             values.estados = this.state.estados;
+                            if(this.state.encodedData && this.state.cellphone) {
+                                values.cellphone = this.state.cellphone;
+                                values.validationMethod = CONSTANTS.WHATSAPP;
+                                values.token = this.state.token;
+                                values.attenderRut = this.state.attenderRut;
+                                values.canal = this.state.canal;
+                            } else {
+                                values.validationMethod = CONSTANTS.SMS;
+                            }
                             
                             this.props.addUserBasicData(values, 
                                 () => {
@@ -114,21 +149,23 @@ class InputData extends React.Component {
                                     }*/
                                     this.props.createSolicitud(values, 3, () => {
                                         //Solicitud created successfully
-                                        this.props.history.push("/sms");
+                                        this.successResponseHandler(values);
                                     }, () => {
                                         //Solicitud creation error
                                         //TODO Manage this state
-                                        this.props.history.push("/sms");
+                                        this.successResponseHandler(values);
                                     });
                                 }, (error) => {
-                                    if(error == '160') {
+                                    if(error == '150') {
+                                        //SMS Sended but not validated.
+                                        this.failureResponseHandler(values, error);
+                                    } else if(error == '160') {
                                         //SMS Sended and validated, must finish process
                                         this.props.history.push("/confirmation");
-                                    } else if(error.split('-')[0] == '170') {
+                                    } else if(error && error.split('-')[0] == '170') {
                                         alert(error.split('-')[1]);
                                     } else {
-                                        //Error
-                                        alert(error ? error : 'Hubo un error al procesar la solicitud. Por favor, intente nuevamente');
+                                        this.failureResponseHandler(values, error);
                                     }
                                     setSubmitting(false);
                                 }
@@ -144,7 +181,7 @@ class InputData extends React.Component {
                         <Form onSubmit={handleSubmit}>
                             <Form.Group as={Row} controlId='rut'>
                                 <Col align='left'>
-                                    <Form.Label sm={2}  >
+                                    <Form.Label sm={2} >
                                         RUT
                                     </Form.Label>
                                 </Col>
@@ -154,7 +191,7 @@ class InputData extends React.Component {
                                         maxLength='10'
                                         type="text" 
                                         onChange={handleChange}
-                                        onInput={validRut}
+                                        onInput={rutChecker}
                                         onBlur={this.validate}
                                         value={values.rut}
                                         name="rut" 
@@ -177,24 +214,42 @@ class InputData extends React.Component {
                                         <InputGroup.Prepend id="inputGroupPrepend">
                                             <InputGroup.Text>+569</InputGroup.Text>
                                         </InputGroup.Prepend>
-                                        <Form.Control 
-                                            required
-                                            maxLength='8'
-                                            aria-describedby="inputGroupPrepend"
-                                            required
-                                            type="tel" 
-                                            name="cellphone" 
-                                            value={values.cellphone}
-                                            onChange={handleChange}
-                                            placeholder="Ingrese los últimos 8 digitos" 
-                                        />
+                                        {this.state.cellphone ? (
+                                                <Form.Control 
+                                                    required
+                                                    disabled
+                                                    maxLength='8'
+                                                    aria-describedby="inputGroupPrepend"
+                                                    required
+                                                    type="tel" 
+                                                    name="cellphone" 
+                                                    value={this.state.cellphone}
+                                                    onChange={handleChange}
+                                                    placeholder="Ingrese los últimos 8 digitos" 
+                                                />
+                                            )
+                                            :
+                                            (
+                                                <Form.Control 
+                                                    required
+                                                    maxLength='8'
+                                                    aria-describedby="inputGroupPrepend"
+                                                    required
+                                                    type="tel" 
+                                                    name="cellphone" 
+                                                    value={values.cellphone}
+                                                    onChange={handleChange}
+                                                    placeholder="Ingrese los últimos 8 digitos" 
+                                                />
+                                            )
+                                        }
                                     </InputGroup>
                                 </Col>
                             </Form.Group>
 
                             <Form.Group as={Row} controlId='email'>
                                 <Col align='left'>
-                                    <Form.Label >
+                                    <Form.Label sm={2} >
                                         Email  <label className="text-muted">(Opcional)</label>
                                     </Form.Label>
                                 </Col>
@@ -233,7 +288,7 @@ class InputData extends React.Component {
                             </Form.Group>
 
                             <Form.Group as={Row} controlId='confirmationChoice' value={values.confirmationChoice}>
-                                <Form.Label column sm={2}>
+                                <Form.Label sm={2} column >
                                     ¿Desea participar en campañas promocionales?
                                 </Form.Label>
                                 <Col>
@@ -287,7 +342,8 @@ const mapDispatchToProps = dispatch => ({
     getEstados: (onSuccess, onFailure) => dispatch(getEstados(onSuccess, onFailure)), 
     setEstados: (payload) => dispatch(setEstados(payload)), 
     createSolicitud: (payload, estado_id, onSuccess, onFailure) => dispatch(createSolicitud(payload, estado_id, onSuccess, onFailure)), 
-    setTracker: (payload, onSuccess, onFailure) => dispatch(setTracker(payload, onSuccess, onFailure))
+    setTracker: (payload, onSuccess, onFailure) => dispatch(setTracker(payload, onSuccess, onFailure)), 
+    validateToken: (payload, onSuccess, onFailure) => dispatch(validateToken(payload, onSuccess, onFailure))
 });
   
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(InputData));
