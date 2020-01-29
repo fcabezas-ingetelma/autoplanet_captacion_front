@@ -1,5 +1,13 @@
 export default (state, action) => {
     switch (action.type) {
+      case "validate_user":
+        return {
+          userData: action.payload
+        };
+      case "get_enrolls":
+        return {
+          userData: action.payload
+        };
       case "update_cellphone":
         return {
           userData: action.payload

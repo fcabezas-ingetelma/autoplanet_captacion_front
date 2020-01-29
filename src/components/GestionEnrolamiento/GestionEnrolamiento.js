@@ -1,31 +1,51 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import publicIp from 'public-ip';
-import { Form, Row, Col, Container, InputGroup, Button, Table } from 'react-bootstrap'
-import { Formik } from 'formik';
+import { Row, Col, Container, Button, Table } from 'react-bootstrap'
 
 import { connect } from "react-redux";
-import setTracker from '../../actions/setTracker';
-import getShortUrl from '../../actions/getShortUrl';
+import getEnrolls from '../../actions/getEnrolls';
+import deleteSession from '../../actions/deleteSession';
 
 import dataStore from '../../store';
 
 class GestionEnrolamiento extends React.Component {
     constructor(props) {
         super(props);
-        if(dataStore.getState()) {
-            console.log(props);
+        this.fetchData = this.fetchData.bind(this);
+        this.closeSession = this.closeSession.bind(this);
+        if(!dataStore.getState()) {
+            this.props.history.push("/login");
         } else {
-            this.props.history.push("/");
+            this.state = {
+                user: dataStore.getState().userData.user, 
+                token: dataStore.getState().userData.token, 
+                data: undefined
+            }
         }
     }
 
-    getData(token){
-        
+    componentDidMount() {
+        this.fetchData();
+    }
+
+    fetchData() {
+        if(this.state && this.state.token && this.state.user) {
+            this.props.getEnrolls(this.state, 
+                (data) => {
+                    this.setState({ data: data });
+                }, 
+                () => {
+                    alert('Hubo un problema al intentar obtener los datos. Por favor, intente nuevamente.');
+                });
+        }
+    }
+
+    closeSession() {
+        this.props.deleteSession();
+        this.props.history.push("/login");
     }
 
     render() {
-        console.log('wena man');
         return (
             <div>
                 <br />
@@ -35,10 +55,10 @@ class GestionEnrolamiento extends React.Component {
                             <h2>
                                 Gestion Enrolamiento
                             </h2>
-                            <Button>Actualizar</Button>
+                            <Button onClick={this.fetchData.bind(this)}>Actualizar</Button>
                         </Col>
                         <Col align='right'>
-                            <Button variant='danger' >Cerrar Session</Button>
+                            <Button variant='danger' onClick={this.closeSession.bind(this)}>Cerrar Sesión</Button>
                         </Col>
                     </Row>
                     <br/>
@@ -55,18 +75,18 @@ class GestionEnrolamiento extends React.Component {
                         <tbody>
                             <tr>
                                 <td>Vendedor</td>
-                                <td> </td>
-                                <td> </td>
+                                <td>{this.state && this.state.data ? this.state.data.visitCounter : ''}</td>
+                                <td>{this.state && this.state.data ? this.state.data.enrollmentCounter : ''}</td>
                             </tr>
                             <tr>
                                 <td>Premio Ilusión</td>
-                                <td> </td>
-                                <td> </td>
+                                <td>{this.state && this.state.data ? this.state.data.illussionsGiftVisitCounter : ''}</td>
+                                <td>{this.state && this.state.data ? this.state.data.illussionsGiftEnrollmentCounter : ''}</td>
                             </tr>
                             <tr>
                                 <td>Oferta Cliente</td>
-                                <td> </td>
-                                <td> </td>
+                                <td>{this.state && this.state.data ? this.state.data.clientOfferVisitCounter : ''}</td>
+                                <td>{this.state && this.state.data ? this.state.data.clientOfferEnrollmentCounter : ''}</td>
                             </tr>
                         </tbody>
                     </Table>
@@ -75,27 +95,27 @@ class GestionEnrolamiento extends React.Component {
                     <Table striped bordered hover responsive>
                         <thead>
                             <tr>
-                                <th>Canal</th>
+                                <th>Rut Captador</th>
                                 <th>Cantidad Visitas</th>
                                 <th>Cantidad Enrolamientos</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td> </td>
-                                <td> </td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td> </td>
-                                <td> </td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td> </td>
-                                <td> </td>
-                            </tr>
+                            {(this.state && this.state.data && this.state.data.sellerDetail) ?
+                                this.state.data.sellerDetail.map(obj => (
+                                    <tr key={`${obj.rut_captador}`}>
+                                        <td>{`${obj.rut_captador}`}</td>
+                                        <td>{`${obj.Visits}` != 'null' ? `${obj.Visits}` : 0}</td>
+                                        <td>{`${obj.Enrollment}` != 'null' ? `${obj.Enrollment}` : 0}</td>
+                                    </tr>
+                                )) 
+                                :
+                                (<tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>)
+                            }
                         </tbody>
                     </Table>
                     </Col>
@@ -112,8 +132,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    setTracker: (payload, onSuccess, onFailure) => dispatch(setTracker(payload, onSuccess, onFailure)),
-    getShortUrl: (payload, onSuccess, onFailure) => dispatch(getShortUrl(payload, onSuccess, onFailure))
+    getEnrolls: (payload, onSuccess, onFailure) => dispatch(getEnrolls(payload, onSuccess, onFailure)), 
+    deleteSession: () => dispatch(deleteSession())
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(GestionEnrolamiento));

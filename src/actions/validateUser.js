@@ -16,9 +16,13 @@ const validateLoginService = async (payload, onSuccess, onFailure) => {
         'pass': payload.password
     }
 
-    const response =  await requester.sendPostRequest('/v1/backoffice/captador-auth',data);
+    const response =  await requester.sendPostRequest('/v1/backoffice/captador-auth', data);
     if(response && response.status == 200) {
-        onSuccess();
+        if(response.data.loginStatus) {
+            onSuccess(response.data.token);
+        } else {
+            onFailure();
+        }
     } else {
         onFailure();
     }

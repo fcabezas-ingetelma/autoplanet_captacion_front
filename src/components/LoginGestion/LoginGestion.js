@@ -5,11 +5,9 @@ import { Form, Row, Col, Container, InputGroup, Button } from 'react-bootstrap'
 import { Formik } from 'formik';
 
 import { connect } from "react-redux";
-import setTracker from '../../actions/setTracker';
 import validateUser from '../../actions/validateUser';
 
 class Login extends React.Component {
-    
     constructor(props) {
         super(props);
     }
@@ -24,7 +22,8 @@ class Login extends React.Component {
                     </h2>
                     <Formik
                         initialValues={{
-
+                            user: '', 
+                            password: ''
                         }}
                         onSubmit={(values, { setSubmitting }) => {
                             setSubmitting(false);
@@ -35,7 +34,10 @@ class Login extends React.Component {
                                 alert('Ingrese contraseña');
                                 setSubmitting(false);
                             } else {
-                                validateUser(values, () => {
+                                this.props.validateUser(values, 
+                                (token) => {
+                                    values.password = undefined;
+                                    values.token = token;
                                     this.props.history.push('/gestion_enrolamiento');
                                 }, () => {
                                     alert('Usuario o contraseña incorrecta');
@@ -91,7 +93,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    setTracker: (payload, onSuccess, onFailure) => dispatch(setTracker(payload, onSuccess, onFailure)),
+    validateUser: (payload, onSuccess, onFailure) => dispatch(validateUser(payload, onSuccess, onFailure))
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login));
