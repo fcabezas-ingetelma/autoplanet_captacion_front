@@ -32,6 +32,15 @@ class HttpRequester {
         }
     }
 
+    async sendGetRequestWithHeaders(path, config) {
+        try {
+            return await axios.get(this.url + path, config);
+        } catch (error) {
+            console.log(error);
+            return error;
+        }
+    }
+
     async sendPutRequest(path, requestBody) {
         try {
             return await axios.put(this.url + path, qs.stringify(requestBody), this.config);
