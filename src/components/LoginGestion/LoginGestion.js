@@ -6,6 +6,7 @@ import { Formik } from 'formik';
 
 import { connect } from "react-redux";
 import validateUser from '../../actions/validateUser';
+import { rutChecker, validaRut } from '../../utils/utils';
 
 class Login extends React.Component {
     constructor(props) {
@@ -28,7 +29,10 @@ class Login extends React.Component {
                         onSubmit={(values, { setSubmitting }) => {
                             setSubmitting(false);
                             if (!values.user) {
-                                alert('Ingrese un nombre de usuario');
+                                alert('Ingrese un rut');
+                                setSubmitting(false);
+                            } else if(!validaRut(values.user)) {
+                                alert('Ingrese un rut válido');
                                 setSubmitting(false);
                             } else if (!values.password) {
                                 alert('Ingrese contraseña');
@@ -52,14 +56,15 @@ class Login extends React.Component {
                                 <br sm={2} />
                                 <Form onSubmit={handleSubmit} >
                                     <Form.Group controlId="user">
-                                        <Form.Label>Ingrese Usuario</Form.Label>
+                                        <Form.Label>Ingrese Rut</Form.Label>
                                         <Form.Control
                                             required
                                             type="text"
-                                            placeholder="Ingrese usuario"
+                                            placeholder="Ingrese Rut"
                                             name='user'
                                             value={values.user}
                                             onChange={handleChange}
+                                            onInput={rutChecker}
                                         />
                                     </Form.Group>
 

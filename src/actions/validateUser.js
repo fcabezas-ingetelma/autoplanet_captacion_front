@@ -12,7 +12,7 @@ const validateLoginService = async (payload, onSuccess, onFailure) => {
     let requester = new HttpRequester();
 
     var data = {
-        'user': payload.user,
+        'user': payload.user.split('-')[0],
         'pass': payload.password
     }
 
