@@ -63,6 +63,11 @@ class GestionEnrolamiento extends React.Component {
                     </Row>
                     <br/>
                     <Row>
+                        <Col>
+                            <h5>Resultado por día</h5>
+                        </Col>
+                    </Row>
+                    <Row>
                     <Col>
                     <Table striped bordered hover responsive>
                         <thead>
@@ -104,6 +109,11 @@ class GestionEnrolamiento extends React.Component {
                     </Table>
                     </Col>
                     <Col>
+                    <Row>
+                        <Col>
+                            <h5>Resultado por hora (Día Actual)</h5>
+                        </Col>
+                    </Row>
                     <Table striped bordered hover responsive>
                         <thead>
                             <tr>
