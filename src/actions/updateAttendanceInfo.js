@@ -11,10 +11,17 @@ const updateAttendanceInfo = (payload, onSuccess, onFailure) => {
 const updateAttendanceInfoService = async (payload, onSuccess, onFailure) => {
     let requester = new HttpRequester();
     let requestBody = {
-        canal: payload.canal, 
-        rut_captador: payload.attenderRut.split('-')[0], 
         rut_cliente: payload.rut.split('-')[0]
     }
+
+    if(payload.attenderRut) {
+        requestBody.rut_captador = payload.attenderRut.split('-')[0];
+    }
+
+    if(payload.canal) {
+        requestBody.canal = payload.canal;
+    }
+
     const response = await requester.sendPatchRequest('/v1/user/set-attendance-data', requestBody);
     if(response && response.data) {
         onSuccess(response.data.message);
