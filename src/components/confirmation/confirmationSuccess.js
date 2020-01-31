@@ -76,7 +76,16 @@ class ConfirmationSuccess extends React.Component {
                         <Container>
                             <h2>FELICITACIONES</h2>
                                 
-                            <h5 >Bienvenido(a) al Club Autoplanet. Usted podrá acceder a promociones y descuentos presentando su RUT en las cajas de nuestras sucursales.</h5>
+                            {this.state.canal == '2' ? 
+                                <h5 >Bienvenido(a) al Club Autoplanet. Usted podrá acceder a promociones y descuentos presentando su RUT en las cajas de nuestras sucursales.</h5>
+                                :
+                                this.state.canal == '18' ? 
+                                    <h5 >Bienvenido(a) al Club Autoplanet. Tu inscripción se realizó exitosamente, por lo que estarás participando para ganar un IPAD.</h5>
+                                    :
+                                    this.state.canal == '19' ? 
+                                        <h5 >Bienvenido(a) al Club Autoplanet. Tu inscripción se realizó exitosamente. Muestra este mensaje en el mesón y recibe tu limpia tapiz de regalo.</h5>
+                                        :
+                                        <h5 >Bienvenido(a) al Club Autoplanet. Usted podrá acceder a promociones y descuentos presentando su RUT en las cajas de nuestras sucursales.</h5>}
                                 
                             <Form onSubmit={handleSubmit} >
                                 <Row align="center">

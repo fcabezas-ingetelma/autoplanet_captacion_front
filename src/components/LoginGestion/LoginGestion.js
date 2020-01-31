@@ -80,7 +80,7 @@ class Login extends React.Component {
                                         />
                                     </Form.Group>
                                     <Button block variant="primary" type="submit" disabled={isSubmitting}>
-                                        Submit
+                                        Ingresar
                                     </Button>
                                 </Form>
                             </Container>
