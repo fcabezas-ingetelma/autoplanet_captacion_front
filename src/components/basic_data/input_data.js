@@ -66,7 +66,11 @@ class InputData extends React.Component {
     successResponseHandler(values) {
         if(this.state.encodedData && this.state.cellphone) {
             this.props.validateToken(values, () => {
-                this.props.history.push("/confirmation");
+                this.props.createSolicitud(values, 4, () => {
+                    this.props.history.push("/confirmation");
+                }, () => {
+                    this.props.history.push("/confirmation");
+                });
             }, () => {
                 alert('La información enviada via WhatsApp ha caducado. Por favor, repita el proceso nuevamente.');
             });
@@ -79,7 +83,11 @@ class InputData extends React.Component {
         if(this.state.encodedData) {
             //User enter using WhatsApp
             this.props.validateToken(values, () => {
-                this.props.history.push("/confirmation");
+                this.props.createSolicitud(values, 4, () => {
+                    this.props.history.push("/confirmation");
+                }, () => {
+                    this.props.history.push("/confirmation");
+                });
             }, () => {
                 alert('La información enviada via WhatsApp ha caducado. Por favor, repita el proceso nuevamente.');
             });
@@ -150,7 +158,7 @@ class InputData extends React.Component {
                                                        break;
                                         }
                                     }*/
-                                    this.props.createSolicitud(values, 3, () => {
+                                    this.props.createSolicitud(values, 4, () => {
                                         //Solicitud created successfully
                                         this.successResponseHandler(values);
                                     }, () => {

@@ -1,8 +1,7 @@
 import React from 'react';
-import { Formik, Field } from 'formik';
+import { Formik } from 'formik';
 import { Button} from 'reactstrap';
-import {Form, Row, Col, Container, InputGroup} from 'react-bootstrap'
-
+import {Form, Row, Col, Container} from 'react-bootstrap'
 
 import { withRouter } from 'react-router-dom';
 import dataStore from '../../store';
@@ -10,6 +9,7 @@ import dataStore from '../../store';
 import { connect } from "react-redux";
 import updateAttendanceInfo from '../../actions/updateAttendanceInfo'
 import getSinacofiData from '../../actions/getSinacofiData';
+import createSolicitud from '../../actions/createSolicitud';
 
 import { getConfirmationState } from '../../utils/utils';
 
@@ -34,11 +34,19 @@ class ConfirmationSuccess extends React.Component {
             }
             this.props.getSinacofiData(requestBody, () => {
                 if(this.state.attenderRut || this.state.canal) {
-                    this.props.updateAttendanceInfo(requestBody, () => {}, () => {});
+                    this.props.updateAttendanceInfo(requestBody, 
+                    () => {
+                        this.props.createSolicitud(requestBody, 3, () => {}, () => {});
+                    }, 
+                    () => {});
                 }
             }, () => {
                 if(this.state.attenderRut || this.state.canal) {
-                    this.props.updateAttendanceInfo(requestBody, () => {}, () => {});
+                    this.props.updateAttendanceInfo(requestBody, 
+                    () => {
+                        this.props.createSolicitud(requestBody, 3, () => {}, () => {});
+                    }, 
+                    () => {});
                 }
             });
         }
@@ -111,6 +119,7 @@ const mapStateToProps = state => ({
   
 const mapDispatchToProps = dispatch => ({
     updateAttendanceInfo: (payload, onSuccess, onFailure) => dispatch(updateAttendanceInfo(payload, onSuccess, onFailure)), 
+    createSolicitud: (payload, estado_id, onSuccess, onFailure) => dispatch(createSolicitud(payload, estado_id, onSuccess, onFailure)), 
     getSinacofiData: (payload, onSuccess, onFailure) => dispatch(getSinacofiData(payload, onSuccess, onFailure))
 });
   
