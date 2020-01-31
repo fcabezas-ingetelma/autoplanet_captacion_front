@@ -67,27 +67,39 @@ class GestionEnrolamiento extends React.Component {
                     <Table striped bordered hover responsive>
                         <thead>
                             <tr>
-                                <th>Canal</th>
-                                <th>Cantidad Visitas</th>
-                                <th>Cantidad Enrolamientos</th>
+                                <th>Día</th>
+                                <th>Visita Vendedor</th>
+                                <th>Visita IPAD</th>
+                                <th>Visita Limpia Tapiz</th>
+                                <th>Enrolado Vendedor</th>
+                                <th>Enrolado IPAD</th>
+                                <th>Enrolado Limpia Tapiz</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Vendedor</td>
-                                <td>{this.state && this.state.data ? this.state.data.visitCounter : ''}</td>
-                                <td>{this.state && this.state.data ? this.state.data.enrollmentCounter : ''}</td>
-                            </tr>
-                            <tr>
-                                <td>Premio Ilusión</td>
-                                <td>{this.state && this.state.data ? this.state.data.illussionsGiftVisitCounter : ''}</td>
-                                <td>{this.state && this.state.data ? this.state.data.illussionsGiftEnrollmentCounter : ''}</td>
-                            </tr>
-                            <tr>
-                                <td>Oferta Cliente</td>
-                                <td>{this.state && this.state.data ? this.state.data.clientOfferVisitCounter : ''}</td>
-                                <td>{this.state && this.state.data ? this.state.data.clientOfferEnrollmentCounter : ''}</td>
-                            </tr>
+                            {(this.state && this.state.data && this.state.data.dailyStatus) ?
+                                this.state.data.dailyStatus.map(obj => (
+                                    <tr key={`${obj.dia}`}>
+                                        <td>{`${obj.dia}` != 'null' ? `${obj.dia}` : ''}</td>
+                                        <td>{`${obj.Visita_Vendedor}` != 'null' ? `${obj.Visita_Vendedor}` : 0}</td>
+                                        <td>{`${obj.Visita_Ipad}` != 'null' ? `${obj.Visita_Ipad}` : 0}</td>
+                                        <td>{`${obj.Visita_Limpia_Tapiz}` != 'null' ? `${obj.Visita_Limpia_Tapiz}` : 0}</td>
+                                        <td>{`${obj.Enrolado_Vendedor}` != 'null' ? `${obj.Enrolado_Vendedor}` : 0}</td>
+                                        <td>{`${obj.Enrolado_Ipad}` != 'null' ? `${obj.Enrolado_Ipad}` : 0}</td>
+                                        <td>{`${obj.Enrolado_Limpia_Tapiz}` != 'null' ? `${obj.Enrolado_Limpia_Tapiz}` : 0}</td>
+                                    </tr>
+                                )) 
+                                :
+                                (<tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>)
+                            }
                         </tbody>
                     </Table>
                     </Col>
@@ -95,22 +107,34 @@ class GestionEnrolamiento extends React.Component {
                     <Table striped bordered hover responsive>
                         <thead>
                             <tr>
-                                <th>Rut Captador</th>
-                                <th>Cantidad Visitas</th>
-                                <th>Cantidad Enrolamientos</th>
+                                <th>Hora</th>
+                                <th>Visita Vendedor</th>
+                                <th>Visita IPAD</th>
+                                <th>Visita Limpia Tapiz</th>
+                                <th>Enrolado Vendedor</th>
+                                <th>Enrolado IPAD</th>
+                                <th>Enrolado Limpia Tapiz</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {(this.state && this.state.data && this.state.data.sellerDetail) ?
-                                this.state.data.sellerDetail.map(obj => (
-                                    <tr key={`${obj.rut_captador}`}>
-                                        <td>{`${obj.rut_captador}`}</td>
-                                        <td>{`${obj.Visits}` != 'null' ? `${obj.Visits}` : 0}</td>
-                                        <td>{`${obj.Enrollment}` != 'null' ? `${obj.Enrollment}` : 0}</td>
+                            {(this.state && this.state.data && this.state.data.hourlyStatus) ?
+                                this.state.data.hourlyStatus.map(obj => (
+                                    <tr key={`${obj.Hora}`}>
+                                        <td>{`${obj.Hora}` != 'null' ? `${obj.Hora}` : ''}</td>
+                                        <td>{`${obj.Visita_Vendedor}` != 'null' ? `${obj.Visita_Vendedor}` : 0}</td>
+                                        <td>{`${obj.Visita_Ipad}` != 'null' ? `${obj.Visita_Ipad}` : 0}</td>
+                                        <td>{`${obj.Visita_Limpia_Tapiz}` != 'null' ? `${obj.Visita_Limpia_Tapiz}` : 0}</td>
+                                        <td>{`${obj.Enrolado_Vendedor}` != 'null' ? `${obj.Enrolado_Vendedor}` : 0}</td>
+                                        <td>{`${obj.Enrolado_Ipad}` != 'null' ? `${obj.Enrolado_Ipad}` : 0}</td>
+                                        <td>{`${obj.Enrolado_Limpia_Tapiz}` != 'null' ? `${obj.Enrolado_Limpia_Tapiz}` : 0}</td>
                                     </tr>
                                 )) 
                                 :
                                 (<tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>

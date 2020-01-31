@@ -2,7 +2,7 @@
 import React from 'react';
 import { Formik, Field, ErrorMessage } from 'formik';
 import { withRouter } from 'react-router-dom';
-import { validaRut, rutChecker, getUrlParam, decodeFromBase64 } from '../../utils/utils';
+import { validaRut, rutChecker, validaEmail, getUrlParam, decodeFromBase64 } from '../../utils/utils';
 import publicIp from 'public-ip';
 import {Form, Row, Col, Container, InputGroup, Button, Alert} from 'react-bootstrap'
 
@@ -113,6 +113,8 @@ class InputData extends React.Component {
                             errors.rut = 'Campo Requerido';
                         } else if (!validaRut(values.rut)) {
                             errors.rut = 'Rut Inválido';
+                        } else if(!validaEmail(values.email)) {
+                            errors.email = 'El email ingresado es inválido';
                         }
                         return errors;
                     }}
@@ -250,11 +252,12 @@ class InputData extends React.Component {
                             <Form.Group as={Row} controlId='email'>
                                 <Col align='left'>
                                     <Form.Label sm={2} >
-                                        Email  <label className="text-muted">(Opcional)</label>
+                                        Email 
                                     </Form.Label>
                                 </Col>
                                 <Col sm={10}>
                                     <Form.Control 
+                                        required
                                         type="email" 
                                         name="email" 
                                         value={values.email}
@@ -267,18 +270,35 @@ class InputData extends React.Component {
                             <Form.Group as={Row} controlId='clientType' value={values.clientType}>
                                 <Col align='left'>
                                     <Form.Label >
-                                        Tipo de Cliente
+                                        Cuéntanos de ti...
                                     </Form.Label>
                                 </Col>
                                 <Col align='left' sm={10}>
-                                    {['Cabify','Cornershop','Empleado','Taller','Otro'].map(type =>(
-                                        <div key={`${type}`}>
+                                    {[
+                                        {
+                                            label: '¿Eres Chofer?', 
+                                            value: 'Chofer'
+                                        }, 
+                                        {
+                                            label: '¿Eres Mecánico o dueño de un taller?', 
+                                            value: 'Taller'
+                                        }, 
+                                        {
+                                            label: '¿Trabajas en AutoPlanet o Derco?', 
+                                            value: 'Empleado'
+                                        }, 
+                                        {
+                                            label: 'Ninguna de las anteriores', 
+                                            value: 'Otro'
+                                        }
+                                    ].map(obj =>(
+                                        <div key={`${obj.value}`}>
                                             <Form.Check
                                                 required
                                                 type='radio'
-                                                id={`${type}`}
-                                                label={`${type}`}
-                                                value={`${type}`}
+                                                id={`${obj.value}`}
+                                                label={`${obj.label}`}
+                                                value={`${obj.value}`}
                                                 onChange={handleChange}
                                                 name="clientType"
                                             />
@@ -289,7 +309,7 @@ class InputData extends React.Component {
 
                             <Form.Group as={Row} controlId='confirmationChoice' value={values.confirmationChoice}>
                                 <Form.Label sm={2} column >
-                                    ¿Desea participar en campañas promocionales?
+                                    Acepto participar en campañas promocionales. <a target='_blank' href="/terms">Ver Términos y Condiciones</a>
                                 </Form.Label>
                                 <Col>
                                     <Form.Check

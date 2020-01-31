@@ -34,6 +34,10 @@ function rutChecker(e){
     e.target.value = value;
 }
 
+function validaEmail(email) {
+    return email.includes('@');
+}
+
 function validaPhoneLength(phone) {
     return phone.length >= 8;
 }
@@ -95,4 +99,4 @@ function getConfirmationState(dataStore) {
     };
 }
 
-export { validaRut, rutChecker, validaPhoneLength, getUrlParam, getPhoneValidationState, getConfirmationState, decodeFromBase64 };
+export { validaRut, rutChecker, validaEmail, validaPhoneLength, getUrlParam, getPhoneValidationState, getConfirmationState, decodeFromBase64 };

@@ -12,6 +12,7 @@ import Confirmation from './screens/confirmation/Confirmation';
 import Change_Phone from './screens/change_phone/Change_Phone'
 import Envio_Whatsapp from './screens/envio_whatsapp/Envio_Whatsapp'
 import Gestion_Enrolamiento from './screens/gestion_enrolamiento/Gestion_Enrolamiento'
+import Terminos from './screens/terms/Terms';
 
 import Login from './screens/login/Login'
 
@@ -29,6 +30,7 @@ const routing = (
                 <Route path="/envioWhatsapp" component={Envio_Whatsapp} />
                 <Route path="/login" component={Login} />
                 <Route path="/gestion_enrolamiento" component={Gestion_Enrolamiento} />
+                <Route path="/terms" component={Terminos} />
             </Switch>
         </Router>
     </Provider>
