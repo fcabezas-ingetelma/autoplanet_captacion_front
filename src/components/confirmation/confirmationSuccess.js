@@ -32,7 +32,14 @@ class ConfirmationSuccess extends React.Component {
                 attenderRut: this.state.attenderRut, 
                 canal: this.state.canal
             }
-            this.props.getSinacofiData(requestBody, () => {
+            if(this.state.attenderRut || this.state.canal) {
+                this.props.updateAttendanceInfo(requestBody, 
+                () => {
+                    this.props.createSolicitud(requestBody, 3, () => {}, () => {});
+                }, 
+                () => {});
+            }
+            /*this.props.getSinacofiData(requestBody, () => {
                 if(this.state.attenderRut || this.state.canal) {
                     this.props.updateAttendanceInfo(requestBody, 
                     () => {
@@ -48,7 +55,7 @@ class ConfirmationSuccess extends React.Component {
                     }, 
                     () => {});
                 }
-            });
+            });*/
         }
     }
 
