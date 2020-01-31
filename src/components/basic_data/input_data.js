@@ -89,6 +89,7 @@ class InputData extends React.Component {
     }
 
     render() {
+        let isDisabled = false;
         return (
             <div>
                 <SessionHeader attenderRut={this.state.attenderRut} />
@@ -178,7 +179,7 @@ class InputData extends React.Component {
                         } 
                     }}
                 >
-                {({ isSubmitting, handleSubmit, values, handleChange }) => (
+                {({ handleSubmit, values, handleChange }) => (
                     <Container >
                         <Form onSubmit={handleSubmit}>
                             <Form.Group as={Row} controlId='rut'>
@@ -321,6 +322,7 @@ class InputData extends React.Component {
                                         name='confirmationChoice'
                                         value='Si'
                                         onChange={handleChange}
+                                        onClick={() => { isDisabled = false }}
                                     />
                                 </Col>
                                 <Col>
@@ -333,6 +335,7 @@ class InputData extends React.Component {
                                         name='confirmationChoice'
                                         value='No'
                                         onChange={handleChange}
+                                        onClick={() => { isDisabled = true }}
                                     />
                                 </Col> 
                             </Form.Group>
@@ -341,7 +344,7 @@ class InputData extends React.Component {
                             <input type="hidden" value="" name="codeToValidate" id="hiddenCode" />
                             <input type="hidden" value="" name="expires_at" id="hiddenExpiration" />
                                     
-                            <Button block type="submit" disabled={isSubmitting} variant="danger">
+                            <Button block type="submit" disabled={isDisabled} variant="danger">
                                 Continuar
                             </Button>
                         </Form>
