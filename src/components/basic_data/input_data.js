@@ -191,7 +191,7 @@ class InputData extends React.Component {
                 >
                 {({ handleSubmit, values, handleChange }) => (
                     <Container >
-                        <Form onSubmit={handleSubmit} onsubmit="var text = document.getElementById('minle').value; if(text.length < 80) { alert('put more info!'); return false; } return true;">
+                        <Form onSubmit={handleSubmit}>
                             <Form.Group as={Row} controlId='rut'>
                                 <Col align='left'>
                                     <Form.Label sm={2} >
@@ -236,7 +236,6 @@ class InputData extends React.Component {
                                                     required
                                                     type="tel" 
                                                     name="cellphone" 
-                                                    id='minle'
                                                     value={this.state.cellphone}
                                                     onChange={handleChange}
                                                     onBlur={this.validate}
