@@ -19,7 +19,7 @@ class Login extends React.Component {
                 <br />
                 <Container>
                     <h2 sm={2}>
-                        Detalle de Enrolamiento de Clientes
+                        Piloto Enrolamiento de Clientes
                     </h2>
                     <Formik
                         initialValues={{
