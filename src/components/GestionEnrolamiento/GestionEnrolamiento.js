@@ -62,6 +62,7 @@ class GestionEnrolamiento extends React.Component {
                         </Col>
                     </Row>
                     <br/>
+                    <br/>
                     <Row>
                         <Col>
                             <h5>Resultado por día</h5>
@@ -69,16 +70,27 @@ class GestionEnrolamiento extends React.Component {
                     </Row>
                     <Row>
                     <Col>
+                    <Table striped hover responsive>
+                        <thead>
+                            <tr>
+                                <th><h6 style={{ color: 'white' }}>Día</h6></th>
+                                <th><h6 style={{ color: 'white' }}>Día</h6></th>
+                                <th>Nº de visitas a la página</th>
+                                <th><h6 style={{ color: 'white' }}>Día</h6></th>
+                                <th>Nº de enrolamientos</th>
+                            </tr>
+                        </thead>
+                    </Table>
                     <Table striped bordered hover responsive>
                         <thead>
                             <tr>
                                 <th>Día</th>
-                                <th>Visita Vendedor</th>
-                                <th>Visita IPAD</th>
-                                <th>Visita Limpia Tapiz</th>
-                                <th>Enrolado Vendedor</th>
-                                <th>Enrolado IPAD</th>
-                                <th>Enrolado Limpia Tapiz</th>
+                                <th>QR Vendedor</th>
+                                <th>QR IPAD</th>
+                                <th>QR Limpia Tapiz</th>
+                                <th>QR Vendedor</th>
+                                <th>QR IPAD</th>
+                                <th>QR Limpia Tapiz</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -109,21 +121,34 @@ class GestionEnrolamiento extends React.Component {
                     </Table>
                     </Col>
                     <Col>
+                    <br/>
+                    <br/>
                     <Row>
                         <Col>
                             <h5>Resultado por hora (Día Actual)</h5>
                         </Col>
                     </Row>
+                    <Table striped hover responsive>
+                        <thead>
+                            <tr>
+                                <th><h6 style={{ color: 'white' }}>Día</h6></th>
+                                <th><h6 style={{ color: 'white' }}>Día</h6></th>
+                                <th>Nº de visitas a la página</th>
+                                <th><h6 style={{ color: 'white' }}>Día</h6></th>
+                                <th>Nº de enrolamientos</th>
+                            </tr>
+                        </thead>
+                    </Table>
                     <Table striped bordered hover responsive>
                         <thead>
                             <tr>
                                 <th>Hora</th>
-                                <th>Visita Vendedor</th>
-                                <th>Visita IPAD</th>
-                                <th>Visita Limpia Tapiz</th>
-                                <th>Enrolado Vendedor</th>
-                                <th>Enrolado IPAD</th>
-                                <th>Enrolado Limpia Tapiz</th>
+                                <th>QR Vendedor</th>
+                                <th>QR IPAD</th>
+                                <th>QR Limpia Tapiz</th>
+                                <th>QR Vendedor</th>
+                                <th>QR IPAD</th>
+                                <th>QR Limpia Tapiz</th>
                             </tr>
                         </thead>
                         <tbody>
