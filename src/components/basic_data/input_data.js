@@ -124,6 +124,8 @@ class InputData extends React.Component {
                             errors.rut = 'Rut Inválido';
                         } else if(!validaEmail(values.email)) {
                             errors.email = 'El email ingresado es inválido';
+                        } else if(values.cellphone.length < 8){
+                            errors.cellphone = 'Ingrese un telefono de 8 digitos';
                         }
                         return errors;
                     }}
@@ -189,7 +191,7 @@ class InputData extends React.Component {
                 >
                 {({ handleSubmit, values, handleChange }) => (
                     <Container >
-                        <Form onSubmit={handleSubmit}>
+                        <Form onSubmit={handleSubmit} onsubmit="var text = document.getElementById('minle').value; if(text.length < 80) { alert('put more info!'); return false; } return true;">
                             <Form.Group as={Row} controlId='rut'>
                                 <Col align='left'>
                                     <Form.Label sm={2} >
@@ -234,8 +236,10 @@ class InputData extends React.Component {
                                                     required
                                                     type="tel" 
                                                     name="cellphone" 
+                                                    id='minle'
                                                     value={this.state.cellphone}
                                                     onChange={handleChange}
+                                                    onBlur={this.validate}
                                                     placeholder="Ingrese los últimos 8 digitos" 
                                                 />
                                             )
