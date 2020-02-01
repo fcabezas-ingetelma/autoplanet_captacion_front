@@ -50,7 +50,12 @@ class GestionEnrolamiento extends React.Component {
         var d = new Date();
         var elem = document.getElementById('tiempo');
         if(typeof elem !== 'undefined' && elem !== null) {
-            elem.innerHTML = 'Actualizado al ' + d.getDate() + '/'+(d.getMonth()+1)+'/'+d.getFullYear()+' '+ d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+            const date = d.getDate() < 10 ? '0' + d.getDate() : d.getDate();
+            const month = d.getMonth()+1 < 10 ? '0' + (d.getMonth()+1) : d.getMonth()+1;
+            const hours = d.getHours() < 10 ? '0' + d.getHours() : d.getHours();
+            const minutes = d.getMinutes() < 10 ? '0' + d.getMinutes() : d.getMinutes();
+            const seconds = d.getSeconds() < 10 ? '0' + d.getSeconds() : d.getSeconds();
+            elem.innerHTML = 'Actualizado al ' + date + '/'+ month +'/'+d.getFullYear()+' '+ hours +':'+ minutes +':'+ seconds;
         }
     }
     
