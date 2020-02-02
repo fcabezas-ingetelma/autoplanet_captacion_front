@@ -74,7 +74,8 @@ const reSendSms = async (payload, onSuccess, onFailure) => {
 
         let requestBody = {
             code: payload.codeToValidate, 
-            rut: payload.rut.split('-')[0]
+            rut: payload.rut.split('-')[0], 
+            cellphone: payload.cellphone
         }
         const response = await requester.sendPostRequest('/v1/sms/re-send-sms', requestBody);
         if(response && response.status == 200) {
