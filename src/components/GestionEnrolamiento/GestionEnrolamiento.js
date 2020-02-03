@@ -45,7 +45,6 @@ class GestionEnrolamiento extends React.Component {
         this.props.deleteSession();
         this.props.history.push("/login");
     }
-
     paintTime(){
         var d = new Date();
         var elem = document.getElementById('tiempo');
@@ -98,6 +97,12 @@ class GestionEnrolamiento extends React.Component {
                                         <th>QR IPAD</th>
                                         <th>QR Limpia Tapiz</th>
                                     </tr>
+                                    <tr>
+                                        <th></th>
+                                        <th><small>Tienda V. Mackenna</small></th>
+                                        <th><small>Tienda Maipu</small></th>
+                                        <th><small>Tienda Quilicura</small></th>
+                                    </tr>
                                 </thead>
                                 <tbody>
                                     {(this.state && this.state.data && this.state.data.dailyStatus) ?
@@ -132,6 +137,12 @@ class GestionEnrolamiento extends React.Component {
                                         <th>QR Vendedor</th>
                                         <th>QR IPAD</th>
                                         <th>QR Limpia Tapiz</th>
+                                    </tr>
+                                    <tr>
+                                        <th></th>
+                                        <th><small>Tienda V. Mackenna</small></th>
+                                        <th><small>Tienda Maipu</small></th>
+                                        <th><small>Tienda Quilicura</small></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -178,6 +189,12 @@ class GestionEnrolamiento extends React.Component {
                                         <th>QR IPAD</th>
                                         <th>QR Limpia Tapiz</th>
                                     </tr>
+                                    <tr>
+                                        <th></th>
+                                        <th><small>Tienda V. Mackenna</small></th>
+                                        <th><small>Tienda Maipu</small></th>
+                                        <th><small>Tienda Quilicura</small></th>
+                                    </tr>
                                 </thead>
                                 <tbody>
                                     {(this.state && this.state.data && this.state.data.hourlyStatus) ?
@@ -211,6 +228,12 @@ class GestionEnrolamiento extends React.Component {
                                         <th>QR Vendedor</th>
                                         <th>QR IPAD</th>
                                         <th>QR Limpia Tapiz</th>
+                                    </tr>
+                                    <tr>
+                                        <th></th>
+                                        <th><small>Tienda V. Mackenna</small></th>
+                                        <th><small>Tienda Maipu</small></th>
+                                        <th><small>Tienda Quilicura</small></th>
                                     </tr>
                                 </thead>
                                 <tbody>
