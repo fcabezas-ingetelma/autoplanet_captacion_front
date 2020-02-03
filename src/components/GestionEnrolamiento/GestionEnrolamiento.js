@@ -90,14 +90,10 @@ class GestionEnrolamiento extends React.Component {
                             <Table striped bordered hover responsive>
                                 <thead>
                                     <tr>
-                                        <th colSpan='4' className='text-center'>Nº de visitas a la página</th>
-                                        <th colSpan='3' className='text-center'>Nº de enrolamientos</th>
+                                        <th colSpan='4' className='text-center text-white' style={{backgroundColor:'#E36924'}}>Nº de visitas a la página</th>
                                     </tr>
                                     <tr>
                                         <th>Día</th>
-                                        <th>QR Vendedor</th>
-                                        <th>QR IPAD</th>
-                                        <th>QR Limpia Tapiz</th>
                                         <th>QR Vendedor</th>
                                         <th>QR IPAD</th>
                                         <th>QR Limpia Tapiz</th>
@@ -111,6 +107,38 @@ class GestionEnrolamiento extends React.Component {
                                                 <td>{`${obj.Visita_Vendedor}` != 'null' ? `${obj.Visita_Vendedor}` : 0}</td>
                                                 <td>{`${obj.Visita_Ipad}` != 'null' ? `${obj.Visita_Ipad}` : 0}</td>
                                                 <td>{`${obj.Visita_Limpia_Tapiz}` != 'null' ? `${obj.Visita_Limpia_Tapiz}` : 0}</td>
+                                            </tr>
+                                        ))
+                                        :
+                                        (<tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>)
+                                    }
+                                </tbody>
+                            </Table>
+                        </Col>
+
+                        <Col>
+                            <Table striped bordered hover responsive>
+                                <thead>
+                                    <tr>
+                                        <th colSpan='4' className='text-center text-white' style={{backgroundColor:'#B60B14'}}>Nº de enrolamientos</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Día</th>
+                                        <th>QR Vendedor</th>
+                                        <th>QR IPAD</th>
+                                        <th>QR Limpia Tapiz</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {(this.state && this.state.data && this.state.data.dailyStatus) ?
+                                        this.state.data.dailyStatus.map(obj => (
+                                            <tr key={`${obj.dia}`}>
+                                                <td>{`${obj.dia}` != 'null' ? `${obj.dia}` : ''}</td>
                                                 <td>{`${obj.Enrolado_Vendedor}` != 'null' ? `${obj.Enrolado_Vendedor}` : 0}</td>
                                                 <td>{`${obj.Enrolado_Ipad}` != 'null' ? `${obj.Enrolado_Ipad}` : 0}</td>
                                                 <td>{`${obj.Enrolado_Limpia_Tapiz}` != 'null' ? `${obj.Enrolado_Limpia_Tapiz}` : 0}</td>
@@ -122,15 +150,13 @@ class GestionEnrolamiento extends React.Component {
                                             <td></td>
                                             <td></td>
                                             <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
                                         </tr>)
                                     }
                                 </tbody>
                             </Table>
                         </Col>
-                        
+                        </Row>
+                        <Row>
                         <Col>
                         <br/>
                         <br/>
@@ -139,17 +165,15 @@ class GestionEnrolamiento extends React.Component {
                                     <h5>Resultado por hora (Día Actual)</h5>
                                 </Col>
                             </Row>
-                            <Table striped bordered hover responsive>
+                            <Row>
+                                <Col>
+                                <Table striped bordered hover responsive>
                                 <thead>
                                     <tr>
-                                        <th colSpan='4' className='text-center'>Nº de visitas a la página</th>
-                                        <th colSpan='3' className='text-center'>Nº de enrolamientos</th>
+                                        <th colSpan='4' className='text-center text-white' style={{backgroundColor:'#E36924'}}>Nº de visitas a la página</th>
                                     </tr>
                                     <tr>
                                         <th>Hora</th>
-                                        <th>QR Vendedor</th>
-                                        <th>QR IPAD</th>
-                                        <th>QR Limpia Tapiz</th>
                                         <th>QR Vendedor</th>
                                         <th>QR IPAD</th>
                                         <th>QR Limpia Tapiz</th>
@@ -163,6 +187,37 @@ class GestionEnrolamiento extends React.Component {
                                                 <td>{`${obj.Visita_Vendedor}` != 'null' ? `${obj.Visita_Vendedor}` : 0}</td>
                                                 <td>{`${obj.Visita_Ipad}` != 'null' ? `${obj.Visita_Ipad}` : 0}</td>
                                                 <td>{`${obj.Visita_Limpia_Tapiz}` != 'null' ? `${obj.Visita_Limpia_Tapiz}` : 0}</td>
+                                            </tr>
+                                        ))
+                                        :
+                                        (<tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>)
+                                    }
+                                </tbody>
+                            </Table>
+                                </Col>
+                                <Col>
+                                <Table striped bordered hover responsive>
+                                <thead>
+                                    <tr>
+                                        <th colSpan='4' className='text-center text-white' style={{backgroundColor:'#B60B14'}}>Nº de enrolamientos</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Hora</th>
+                                        <th>QR Vendedor</th>
+                                        <th>QR IPAD</th>
+                                        <th>QR Limpia Tapiz</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {(this.state && this.state.data && this.state.data.hourlyStatus) ?
+                                        this.state.data.hourlyStatus.map(obj => (
+                                            <tr key={`${obj.Hora}`}>
+                                                <td>{`${obj.Hora}` != 'null' ? `${obj.Hora}` : ''}</td>
                                                 <td>{`${obj.Enrolado_Vendedor}` != 'null' ? `${obj.Enrolado_Vendedor}` : 0}</td>
                                                 <td>{`${obj.Enrolado_Ipad}` != 'null' ? `${obj.Enrolado_Ipad}` : 0}</td>
                                                 <td>{`${obj.Enrolado_Limpia_Tapiz}` != 'null' ? `${obj.Enrolado_Limpia_Tapiz}` : 0}</td>
@@ -174,13 +229,13 @@ class GestionEnrolamiento extends React.Component {
                                             <td></td>
                                             <td></td>
                                             <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
                                         </tr>)
                                     }
                                 </tbody>
                             </Table>
+                                </Col>
+                            </Row>
+                            
                         </Col>
                     </Row>
 
