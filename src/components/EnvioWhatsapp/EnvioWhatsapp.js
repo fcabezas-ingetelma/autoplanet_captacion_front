@@ -67,7 +67,7 @@ class EnvioWhatsapp extends React.Component {
                 {({ isSubmitting, handleSubmit, values, handleChange}) => (
                     <Container>
                         <br sm={2}/>
-                        <h2>Ingrese su Teléfono Celular:</h2>
+                        <h2>Ingrese Teléfono Celular del Cliente:</h2>
                     <Form onSubmit={handleSubmit} >
                         <Form.Group as={Row} controlID='cellphone'>
                             <Col align='left'>
