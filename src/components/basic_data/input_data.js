@@ -125,12 +125,19 @@ class InputData extends React.Component {
                         } else if(!validaEmail(values.email)) {
                             errors.email = 'El email ingresado es inválido';
                         } else if(values.cellphone.length < 8){
-                            errors.cellphone = 'Ingrese un teléfono de 8 dígitos';
+                            if(this.state.cellphone) {
+                                if(this.state.cellphone.length < 8) {
+                                    errors.cellphone = 'Ingrese un teléfono de 8 dígitos';
+                                }
+                            } else {
+                                errors.cellphone = 'Ingrese un teléfono de 8 dígitos';
+                            }
                         }
                         return errors;
                     }}
                     onSubmit = {(values, { setSubmitting }) => {
                         if(!this.errors) {
+                            let isValid = true;
                             values.ip = this.state.ip;
                             values.estados = this.state.estados;
                             if(this.state.encodedData && this.state.cellphone) {
@@ -142,47 +149,59 @@ class InputData extends React.Component {
                             } else {
                                 values.validationMethod = CONSTANTS.SMS;
                             }
-                            
-                            this.props.addUserBasicData(values, 
-                                () => {
-                                    //Success
-                                    setSubmitting(false);
-                                    //This commented code has no sense since solcitud don't keep track of states
-                                    //In the near future we should have a 'move_to' table
-                                    /*if(values.cellphone) {
-                                        this.props.createSolicitud(values, 4, () => {}, () => {});
-                                    }
-                                    if(values.confirmationChoice) {
-                                        switch (values.confirmationChoice) {
-                                            case 'Si': this.props.createSolicitud(values, 7, () => {}, () => {});
-                                                       break;
-                                            case 'No': this.props.createSolicitud(values, 8, () => {}, () => {});
-                                                       break;
-                                        }
-                                    }*/
-                                    this.props.createSolicitud(values, 4, () => {
-                                        //Solicitud created successfully
-                                        this.successResponseHandler(values);
-                                    }, () => {
-                                        //Solicitud creation error
-                                        //TODO Manage this state
-                                        this.successResponseHandler(values);
-                                    });
-                                }, (error) => {
-                                    if(error == '150') {
-                                        //SMS Sended but not validated.
-                                        this.failureResponseHandler(values, error);
-                                    } else if(error == '160') {
-                                        //SMS Sended and validated, must finish process
-                                        this.props.history.push("/confirmation");
-                                    } else if(error && error.split('-')[0] == '170') {
-                                        alert(error.split('-')[1]);
-                                    } else {
-                                        this.failureResponseHandler(values, error);
-                                    }
+
+                            if(values.cellphone.length == 9) {
+                                if(values.cellphone.charAt(0) == '9') {
+                                    values.cellphone = values.cellphone.substring(1);
+                                } else {
+                                    isValid = false;
+                                    alert('El teléfono ingresado no es válido, por favor verifique e ingrese nuevamente.');
                                     setSubmitting(false);
                                 }
-                            );
+                            }
+                            
+                            if(isValid) {
+                                this.props.addUserBasicData(values, 
+                                    () => {
+                                        //Success
+                                        setSubmitting(false);
+                                        //This commented code has no sense since solcitud don't keep track of states
+                                        //In the near future we should have a 'move_to' table
+                                        /*if(values.cellphone) {
+                                            this.props.createSolicitud(values, 4, () => {}, () => {});
+                                        }
+                                        if(values.confirmationChoice) {
+                                            switch (values.confirmationChoice) {
+                                                case 'Si': this.props.createSolicitud(values, 7, () => {}, () => {});
+                                                        break;
+                                                case 'No': this.props.createSolicitud(values, 8, () => {}, () => {});
+                                                        break;
+                                            }
+                                        }*/
+                                        this.props.createSolicitud(values, 4, () => {
+                                            //Solicitud created successfully
+                                            this.successResponseHandler(values);
+                                        }, () => {
+                                            //Solicitud creation error
+                                            //TODO Manage this state
+                                            this.successResponseHandler(values);
+                                        });
+                                    }, (error) => {
+                                        if(error == '150') {
+                                            //SMS Sended but not validated.
+                                            this.failureResponseHandler(values, error);
+                                        } else if(error == '160') {
+                                            //SMS Sended and validated, must finish process
+                                            this.props.history.push("/confirmation");
+                                        } else if(error && error.split('-')[0] == '170') {
+                                            alert(error.split('-')[1]);
+                                        } else {
+                                            this.failureResponseHandler(values, error);
+                                        }
+                                        setSubmitting(false);
+                                    }
+                                );
+                            }
                         } else {
                             alert('Uno o más campos tienen inconsistencias. Por favor, intente nuevamente');
                             setSubmitting(false);
@@ -231,7 +250,7 @@ class InputData extends React.Component {
                                                 <Form.Control 
                                                     required
                                                     disabled
-                                                    maxLength='8'
+                                                    maxLength='9'
                                                     aria-describedby="inputGroupPrepend"
                                                     required
                                                     type="tel" 
@@ -246,7 +265,7 @@ class InputData extends React.Component {
                                             (
                                                 <Form.Control 
                                                     required
-                                                    maxLength='8'
+                                                    maxLength='9'
                                                     aria-describedby="inputGroupPrepend"
                                                     required
                                                     type="tel" 
