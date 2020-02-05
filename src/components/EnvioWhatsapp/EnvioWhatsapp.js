@@ -39,10 +39,11 @@ class EnvioWhatsapp extends React.Component {
                 <SessionHeader attenderRut={this.state.attenderRut} />
                 <Formik
                     initialValues = {{
-                        cellphone:'',
+                        cellphone:'', 
+                        isSMSButton: false
                     }}
                     onSubmit = {(values, {setSubmitting}) => {
-                        if(!values.cellphone){
+                        if(!values.cellphone || values.cellphone.length < 8){
                             alert('Ingrese un número de teléfono válido');
                             setSubmitting(false);
                         } else {
@@ -54,7 +55,11 @@ class EnvioWhatsapp extends React.Component {
                                 }, 
                                 (shortUrl) => {
                                     setSubmitting(false);
-                                    window.location.href = `https://api.whatsapp.com/send?phone=569${values.cellphone}&text=${encodeURIComponent(shortUrl)}`; 
+                                    if(values.isSMSButton) {
+                                        console.log('SMS short url: ' + shortUrl);
+                                    } else {
+                                        window.location.href = `https://api.whatsapp.com/send?phone=569${values.cellphone}&text=${encodeURIComponent(shortUrl)}`; 
+                                    }
                                 }, 
                                 () => {
                                     setSubmitting(false);
@@ -64,7 +69,7 @@ class EnvioWhatsapp extends React.Component {
                         }
                     }}
                 >
-                {({ isSubmitting, handleSubmit, values, handleChange}) => (
+                {({ isSubmitting, handleSubmit, values, handleChange, setFieldValue }) => (
                     <Container>
                         <br sm={2}/>
                         <h2>Ingrese Teléfono Celular del Cliente:</h2>
@@ -72,7 +77,7 @@ class EnvioWhatsapp extends React.Component {
                         <Form.Group as={Row} controlID='cellphone'>
                             <Col align='left'>
                                 <br/>
-                                <Form.Label  >
+                                <Form.Label>
                                     Teléfono Celular
                                 </Form.Label>
                             </Col>
@@ -98,8 +103,23 @@ class EnvioWhatsapp extends React.Component {
                             </Col>
                         </Form.Group>
                             <br/>
-                            <Button block type="submit" disabled={isSubmitting} variant="success">
-                                Enviar Link por WhatsApp
+                            <Button block 
+                                    onClick={(e)=>{
+                                        setFieldValue('isSMSButton', false)
+                                        handleSubmit(e);
+                                    }} 
+                                    disabled={isSubmitting} variant="success">
+                                    Enviar Link por WhatsApp
+                            </Button>
+                            <br/>
+                            <Button block id="second-button"
+                                    onClick={(e)=>{
+                                        setFieldValue('isSMSButton', true)
+                                        handleSubmit(e);
+                                    }} 
+                                    disabled={isSubmitting} 
+                                    style={{backgroundColor:'#E36924', borderColor:'#E36924'}}>
+                                    Enviar Link por SMS (Mensaje de Texto)
                             </Button>
                     </Form>
                     </Container>
