@@ -115,7 +115,7 @@ class EnvioWhatsapp extends React.Component {
                             </Col>
                         </Form.Group>
                             <br/>
-                            {this.state.userAgent.includes('iPhone') || this.state.userAgent.includes('Android') &&
+                            {(this.state.userAgent.includes('iPhone') || this.state.userAgent.includes('Android')) &&
                                 <Button block 
                                         onClick={(e)=>{
                                             setFieldValue('isSMSButton', false)
