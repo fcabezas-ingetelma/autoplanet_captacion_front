@@ -45,10 +45,13 @@ class EnvioWhatsapp extends React.Component {
                         isSMSButton: false
                     }}
                     onSubmit = {(values, {setSubmitting}) => {
-                        if(!values.cellphone || values.cellphone.length < 8){
+                        if(!values.cellphone || values.cellphone.length < 8 || (values.cellphone.length == 9 && values.cellphone.charAt(0) != '9')){
                             alert('Ingrese un número de teléfono válido');
                             setSubmitting(false);
                         } else {
+                            if(values.cellphone.length == 9 && values.cellphone.charAt(0) == '9') {
+                                values.cellphone = values.cellphone.substring(1);
+                            }
                             this.props.getShortUrl(
                                 {
                                     url: window.location.origin,
@@ -102,7 +105,7 @@ class EnvioWhatsapp extends React.Component {
                                     </InputGroup.Prepend>
                                     <Form.Control 
                                         required
-                                        maxLength='8'
+                                        maxLength='9'
                                         aria-describedby="inputGroupPrepend"
                                         required
                                         type="tel" 
