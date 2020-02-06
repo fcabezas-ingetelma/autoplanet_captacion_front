@@ -61,6 +61,7 @@ class EnvioWhatsapp extends React.Component {
                                     setSubmitting(false);
                                     if(values.isSMSButton) {
                                         values.link = shortUrl;
+                                        values.canal = this.state.canal;
                                         this.props.sendSMS(values, 
                                             () => {
                                                 alert('El mensaje de texto se ha enviado correctamente.');

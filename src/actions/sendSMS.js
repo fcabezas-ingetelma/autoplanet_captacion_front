@@ -22,6 +22,10 @@ const sendSMSService = async (payload, onSuccess, onFailure) => {
         requestBody.link = payload.link;
     }
 
+    if(payload.canal) {
+        requestBody.canal = payload.canal;
+    }
+
     const response = await requester.sendPostRequest('/v1/sms/send-sms', requestBody);
     if(response && response.status == 200) {
         onSuccess();
