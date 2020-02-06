@@ -37,6 +37,10 @@ const setTrackerService = async (payload, onSuccess, onFailure) => {
         requestBody.cellphone = payload.cellphone;
     }
 
+    if(payload.canalPromotor) {
+        requestBody.canalPromotor = payload.canalPromotor;
+    }
+
     const response = await requester.sendPutRequest('/v1/user/set-tracker', requestBody);
     if(response && response.status == 200) {
         onSuccess(response.data.message);

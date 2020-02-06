@@ -28,6 +28,7 @@ class InputData extends React.Component {
         this.state = {
                         attenderRut: getUrlParam(window.location.href, 'r', ''), 
                         canal: getUrlParam(window.location.href, 'c', ''), 
+                        canalPromotor: getUrlParam(window.location.href, 'cp', ''), 
                         sku: getUrlParam(window.location.href, 'sku', ''), 
                         encodedData: getUrlParam(window.location.href, 'encodedData', ''), 
                         userAgent: window.navigator.userAgent, 
@@ -51,6 +52,7 @@ class InputData extends React.Component {
             this.setState({ 
                 attenderRut: getUrlParam(decodedData, 'r', ''), 
                 canal: getUrlParam(decodedData, 'c', '').replace('C\\', ''), 
+                canalPromotor: getUrlParam(decodedData, 'cp', ''), 
                 cellphone: getUrlParam(decodedData, 'telefono', ''), 
                 token: getUrlParam(decodedData, 'token', '')
             });
@@ -110,6 +112,7 @@ class InputData extends React.Component {
                                         clientType: '', 
                                         attenderRut: this.state.attenderRut, 
                                         canal: this.state.canal, 
+                                        canalPromotor: this.state.canalPromotor, 
                                         sku: this.state.sku, 
                                         codeToValidate: '', 
                                         expires_at: '',
@@ -146,6 +149,7 @@ class InputData extends React.Component {
                                 values.token = this.state.token;
                                 values.attenderRut = this.state.attenderRut;
                                 values.canal = this.state.canal;
+                                values.canalPromotor = this.state.canalPromotor;
                             } else {
                                 values.validationMethod = CONSTANTS.SMS;
                             }

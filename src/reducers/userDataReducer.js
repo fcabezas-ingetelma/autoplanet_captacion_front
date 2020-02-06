@@ -1,5 +1,9 @@
 export default (state, action) => {
     switch (action.type) {
+      case "send_sms":
+        return {
+          userData: action.payload
+        };
       case "validate_user":
         return {
           userData: action.payload

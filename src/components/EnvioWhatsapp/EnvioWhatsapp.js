@@ -9,6 +9,7 @@ import { getUrlParam } from '../../utils/utils';
 import { connect } from "react-redux";
 import setTracker from '../../actions/setTracker';
 import getShortUrl from '../../actions/getShortUrl';
+import sendSMS from '../../actions/sendSMS';
 
 import SessionHeader from '../session/session';
 
@@ -18,6 +19,8 @@ class EnvioWhatsapp extends React.Component {
         super(props);
         this.state = {
             attenderRut: getUrlParam(window.location.href, 'r', ''), 
+            canal: getUrlParam(window.location.href, 'c', ''), 
+            canalPromotor: getUrlParam(window.location.href, 'cp', ''), 
             userAgent: window.navigator.userAgent, 
             os: window.navigator.platform, 
             ip: '', 
@@ -51,12 +54,21 @@ class EnvioWhatsapp extends React.Component {
                                 {
                                     url: window.location.origin,
                                     attenderRut: this.state.attenderRut, 
+                                    canal: this.state.canal, 
+                                    canalPromotor: this.state.canalPromotor, 
                                     cellphone: values.cellphone
                                 }, 
                                 (shortUrl) => {
                                     setSubmitting(false);
                                     if(values.isSMSButton) {
-                                        console.log('SMS short url: ' + shortUrl);
+                                        values.link = shortUrl;
+                                        this.props.sendSMS(values, 
+                                            () => {
+                                                alert('El mensaje de texto se ha enviado correctamente.');
+                                            }, 
+                                            () => {
+                                                alert('Hubo un error al enviar el mensaje de texto. Por favor, intente nuevamente.');
+                                            });
                                     } else {
                                         window.location.href = `https://api.whatsapp.com/send?phone=569${values.cellphone}&text=${encodeURIComponent(shortUrl)}`; 
                                     }
@@ -137,7 +149,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     setTracker: (payload, onSuccess, onFailure) => dispatch(setTracker(payload, onSuccess, onFailure)), 
-    getShortUrl: (payload, onSuccess, onFailure) => dispatch(getShortUrl(payload, onSuccess, onFailure))
+    getShortUrl: (payload, onSuccess, onFailure) => dispatch(getShortUrl(payload, onSuccess, onFailure)), 
+    sendSMS: (payload, onSuccess, onFailure) => dispatch(sendSMS(payload, onSuccess, onFailure))
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(EnvioWhatsapp));

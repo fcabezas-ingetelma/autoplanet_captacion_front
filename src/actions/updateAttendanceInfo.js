@@ -22,6 +22,10 @@ const updateAttendanceInfoService = async (payload, onSuccess, onFailure) => {
         requestBody.canal = payload.canal;
     }
 
+    if(payload.canalPromotor) {
+        requestBody.canal_promotor = payload.canalPromotor;
+    }
+
     const response = await requester.sendPatchRequest('/v1/user/set-attendance-data', requestBody);
     if(response && response.data) {
         onSuccess(response.data.message);

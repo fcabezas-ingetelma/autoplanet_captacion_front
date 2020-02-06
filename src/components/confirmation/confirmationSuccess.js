@@ -30,7 +30,8 @@ class ConfirmationSuccess extends React.Component {
             let requestBody = {
                 rut: this.state.rut, 
                 attenderRut: this.state.attenderRut, 
-                canal: this.state.canal
+                canal: this.state.canal, 
+                canalPromotor: this.state.canalPromotor, 
             }
             if(this.state.attenderRut || this.state.canal) {
                 this.props.updateAttendanceInfo(requestBody, 
@@ -73,6 +74,7 @@ class ConfirmationSuccess extends React.Component {
                                         clientType: this.state.clientType, 
                                         attenderRut: this.state.attenderRut, 
                                         canal: this.state.canal, 
+                                        canalPromotor: this.state.canalPromotor, 
                                         sku: this.state.sku, 
                                         code: this.state.code,
                                         confirmationChoice: this.state.confirmationChoice, 

@@ -14,6 +14,8 @@ const getShortUrlService = async (payload, onSuccess, onFailure) => {
         let requestBody = {
             url: payload.url,
             rut_captador: payload.attenderRut, 
+            canal: payload.canal, 
+            canal_promotor: payload.canalPromotor, 
             cellphone: payload.cellphone, 
             token: tokenResponse.data.token
         }
