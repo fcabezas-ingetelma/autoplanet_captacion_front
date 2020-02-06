@@ -23,7 +23,9 @@ class EnvioWhatsapp extends React.Component {
             userAgent: window.navigator.userAgent, 
             os: window.navigator.platform, 
             ip: '', 
-            page: 'WhatsApp Page'
+            page: 'WhatsApp Page', 
+            canSendSMS: true, 
+            timeRemaining: 120
         };
     }
 
@@ -65,13 +67,34 @@ class EnvioWhatsapp extends React.Component {
                                     if(values.isSMSButton) {
                                         values.link = shortUrl;
                                         values.canal = this.state.canal;
-                                        this.props.sendSMS(values, 
-                                            () => {
-                                                alert('El mensaje de texto se ha enviado correctamente.');
-                                            }, 
-                                            () => {
-                                                alert('Hubo un error al enviar el mensaje de texto. Por favor, intente nuevamente.');
-                                            });
+                                        if(this.state.canSendSMS) {
+                                            this.props.sendSMS(values, 
+                                                () => {
+                                                    this.setState({ canSendSMS: false });
+                                                    alert('El mensaje de texto se ha enviado correctamente.');
+                                                    this.timer = setInterval(() => {
+                                                        if(this.state.timeRemaining > 0) {
+                                                            this.setState({ timeRemaining: this.state.timeRemaining - 1 });
+                                                        } else {
+                                                            clearInterval(this.timer);
+                                                            this.setState({ canSendSMS: true, timeRemaining: 120 });
+                                                        }
+                                                    }, 1000);
+                                                }, 
+                                                () => {
+                                                    alert('Hubo un error al enviar el mensaje de texto. Por favor, intente nuevamente.');
+                                                });
+                                        } else {
+                                            let minutes = Math.floor(this.state.timeRemaining/60);
+                                            let seconds = this.state.timeRemaining%60;
+                                            let message = '';
+                                            if(minutes > 0) {
+                                                message = 'Debes esperar ' + minutes + ' minuto y ' + seconds + ' segundos para enviar nuevamente un mensaje SMS';
+                                            } else {
+                                                message = 'Debes esperar ' + seconds + ' segundos para enviar nuevamente un mensaje SMS';
+                                            }
+                                            alert(message);
+                                        }
                                     } else {
                                         window.location.href = `https://api.whatsapp.com/send?phone=569${values.cellphone}&text=${encodeURIComponent(shortUrl)}`; 
                                     }
