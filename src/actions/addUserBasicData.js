@@ -169,6 +169,10 @@ const createUser = async (payload, onSuccess, onFailure) => {
         requestBody.sku = payload.sku;
     }
 
+    if(payload.canalPromotor) {
+        requestBody.canal_promotor = payload.canalPromotor;
+    }
+
     const response = await requester.sendPutRequest('/v1/user/set-client', requestBody);
     if(response) { 
         if(response.status == 200) {

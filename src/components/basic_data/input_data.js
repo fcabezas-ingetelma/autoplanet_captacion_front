@@ -83,16 +83,20 @@ class InputData extends React.Component {
 
     failureResponseHandler(values, error) {
         if(this.state.encodedData) {
-            //User enter using WhatsApp
-            this.props.validateToken(values, () => {
-                this.props.createSolicitud(values, 4, () => {
-                    this.props.history.push("/confirmation");
+            if(error) {
+                alert(error);
+            } else {
+                //User enter using WhatsApp
+                this.props.validateToken(values, () => {
+                    this.props.createSolicitud(values, 4, () => {
+                        this.props.history.push("/confirmation");
+                    }, () => {
+                        this.props.history.push("/confirmation");
+                    });
                 }, () => {
-                    this.props.history.push("/confirmation");
+                    alert('La información enviada via WhatsApp ha caducado. Por favor, repita el proceso nuevamente.');
                 });
-            }, () => {
-                alert('La información enviada via WhatsApp ha caducado. Por favor, repita el proceso nuevamente.');
-            });
+            }
         } else {
             alert(error ? error : 'Hubo un error al procesar la solicitud. Por favor, intente nuevamente');
         }
