@@ -20,7 +20,6 @@ class EnvioWhatsapp extends React.Component {
         this.state = {
             attenderRut: getUrlParam(window.location.href, 'r', ''), 
             canal: getUrlParam(window.location.href, 'c', ''), 
-            canalPromotor: getUrlParam(window.location.href, 'cp', ''), 
             userAgent: window.navigator.userAgent, 
             os: window.navigator.platform, 
             ip: '', 
@@ -55,7 +54,7 @@ class EnvioWhatsapp extends React.Component {
                                     url: window.location.origin,
                                     attenderRut: this.state.attenderRut, 
                                     canal: this.state.canal, 
-                                    canalPromotor: this.state.canalPromotor, 
+                                    canalPromotor: values.isSMSButton ? '2' : '1', 
                                     cellphone: values.cellphone
                                 }, 
                                 (shortUrl) => {
