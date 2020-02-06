@@ -115,14 +115,16 @@ class EnvioWhatsapp extends React.Component {
                             </Col>
                         </Form.Group>
                             <br/>
-                            <Button block 
-                                    onClick={(e)=>{
-                                        setFieldValue('isSMSButton', false)
-                                        handleSubmit(e);
-                                    }} 
-                                    disabled={isSubmitting} variant="success">
-                                    Enviar Link por WhatsApp
-                            </Button>
+                            {this.state.os === 'iPhone' || this.state.userAgent.includes('Android') &&
+                                <Button block 
+                                        onClick={(e)=>{
+                                            setFieldValue('isSMSButton', false)
+                                            handleSubmit(e);
+                                        }} 
+                                        disabled={isSubmitting} variant="success">
+                                        Enviar Link por WhatsApp
+                                </Button>
+                            }
                             <br/>
                             <Button block id="second-button"
                                     onClick={(e)=>{
