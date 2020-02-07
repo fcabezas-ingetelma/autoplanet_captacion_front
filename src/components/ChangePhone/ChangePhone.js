@@ -57,7 +57,7 @@ class ChangePhone extends React.Component {
                             setSubmitting(false);
                             if(!this.errors){
                                 this.props.updateCellphone(values, () => {
-                                    this.props.history.push("/sms");
+                                    this.props.history.push("/sms?sended=true");
                                 }, () => {
                                     alert('Hubo un problema al actualizar la información. Por favor, intente nuevamente');
                                 });
@@ -100,7 +100,7 @@ class ChangePhone extends React.Component {
                                 </Col>
                                 </Form.Group>
                                 <Row>
-                                    <Col><Button  type="submit" disabled={isSubmitting} color="danger">
+                                    <Col><Button type="submit" disabled={isSubmitting} color="danger">
                                         Cambiar
                                     </Button></Col>
                                 </Row>

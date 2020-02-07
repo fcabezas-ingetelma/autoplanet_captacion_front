@@ -78,7 +78,11 @@ function getPhoneValidationState(dataStore) {
         expires_at: dataStore.getState().userData.expires_at !== '' ? dataStore.getState().userData.expires_at : '', 
         confirmationChoice: dataStore.getState().userData.confirmationChoice !== '' ? dataStore.getState().userData.confirmationChoice : '', 
         email: dataStore.getState().userData.email !== '' ? dataStore.getState().userData.email : '', 
-        estados: dataStore.getState().userData.estados !== '' ? dataStore.getState().userData.estados : ''
+        estados: dataStore.getState().userData.estados !== '' ? dataStore.getState().userData.estados : '', 
+        canSendSMS: true, 
+        timeRemaining: 120, 
+        minutesRemaining: 2, 
+        secondsRemaining: 0
     };
 }
 

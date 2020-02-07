@@ -11,7 +11,7 @@ import validateCode from '../../actions/validateCode';
 import createSolicitud from '../../actions/createSolicitud';
 import updateSMSData from '../../actions/updateSMSData';
 
-import { getPhoneValidationState } from '../../utils/utils';
+import { getPhoneValidationState, getUrlParam } from '../../utils/utils';
 
 import SessionHeader from '../session/session';
 
@@ -20,17 +20,55 @@ class PhoneValidation extends React.Component {
         super(props);
         if(dataStore.getState()) {
             this.state = getPhoneValidationState(dataStore);
+            let sended = getUrlParam(window.location.href, 'sended', '');
+            if(sended) {
+                this.timer = setInterval(
+                    () => this.tickManager(), 
+                    1000
+                );
+            }
         } else {
             this.props.history.push("/");
         }
     }
 
+    tickManager() {
+        if(this.state.timeRemaining > 0) {
+            this.setState({ 
+                canSendSMS: false, 
+                timeRemaining: this.state.timeRemaining - 1, 
+                minutesRemaining: Math.floor(this.state.timeRemaining/60), 
+                secondsRemaining: this.state.timeRemaining%60
+            });
+        } else {
+            clearInterval(this.timer);
+            this.setState({ 
+                canSendSMS: true, 
+                timeRemaining: 120, 
+                minutesRemaining: 2, 
+                secondsRemaining: 0
+            });
+        }
+    }
+
     redirectToPhoneChange() {
-        this.props.history.push("/change_phone");
+        if(this.state.canSendSMS) {
+            this.props.history.push("/change_phone");
+        }
     }
 
     render() {
         if(dataStore.getState()) {
+            let label;
+            if(this.state.canSendSMS) {
+                label = <h6 id='tiempo'></h6>
+            } else {
+                if(this.state.minutesRemaining > 0) {
+                    label = <h6 id='tiempo'>Debes esperar {this.state.minutesRemaining} minuto y {this.state.secondsRemaining} segundos para cambiar nuevamente su número</h6>
+                } else {
+                    label = <h6 id='tiempo'>Debes esperar {this.state.secondsRemaining} segundos para cambiar nuevamente su número</h6>
+                }
+            }
             return (
                 <div>
                     <SessionHeader attenderRut={this.state.attenderRut} rut={this.state.rut} canal={this.state.canal} />
@@ -85,6 +123,9 @@ class PhoneValidation extends React.Component {
                             <h2>CONFIRMACIÓN DE TELÉFONO</h2>
                             <label >Se ha enviado un código de 4 dígitos al número {this.state.cellphone}, el cual debe ingresar a continuación:</label>
                             <p onClick={this.redirectToPhoneChange.bind(this)} style={{cursor: 'pointer', color:'red'}}>¿No es su número? Haga click aquí para modificarlo.</p>
+                            <br />
+                            {label}
+                            <br />
                             <Form onSubmit={handleSubmit} >
                                 <Form.Group as={Row} controlID='CodigoSms'>
                                     <Col align='left'>
