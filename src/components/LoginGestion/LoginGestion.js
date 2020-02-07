@@ -39,10 +39,17 @@ class Login extends React.Component {
                                 setSubmitting(false);
                             } else {
                                 this.props.validateUser(values, 
-                                (token) => {
+                                (token, adminType) => {
                                     values.password = undefined;
                                     values.token = token;
-                                    this.props.history.push('/gestion_enrolamiento');
+                                    values.adminType = adminType;
+                                    switch(adminType) {
+                                        case 1: this.props.history.push('/gestion_enrolamiento'); break;
+                                        case 2: this.props.history.push('/gestion_enrolamiento_la_florida'); break;
+                                        case 3: this.props.history.push('/gestion_enrolamiento_quilicura'); break;
+                                        case 4: this.props.history.push('/gestion_enrolamiento_maipu'); break;
+                                        default: this.props.history.push('/gestion_enrolamiento');
+                                    }
                                 }, () => {
                                     alert('Usuario o contraseña incorrecta');
                                     window.location.reload();

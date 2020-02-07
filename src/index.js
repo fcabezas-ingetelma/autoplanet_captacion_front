@@ -12,6 +12,9 @@ import Confirmation from './screens/confirmation/Confirmation';
 import Change_Phone from './screens/change_phone/Change_Phone'
 import Envio_Whatsapp from './screens/envio_whatsapp/Envio_Whatsapp'
 import Gestion_Enrolamiento from './screens/gestion_enrolamiento/Gestion_Enrolamiento'
+import Gestion_Enrolamiento_La_Florida from './screens/gestion_enrolamiento/Gestion_Enrolamiento_La_Florida';
+import Gestion_Enrolamiento_Maipu from './screens/gestion_enrolamiento/Gestion_Enrolamiento_Maipu';
+import Gestion_Enrolamiento_Quilicura from './screens/gestion_enrolamiento/Gestion_Enrolamiento_Quilicura';
 import Terminos from './screens/terms/Terms';
 
 import Login from './screens/login/Login'
@@ -30,6 +33,9 @@ const routing = (
                 <Route path="/envioWhatsapp" component={Envio_Whatsapp} />
                 <Route path="/login" component={Login} />
                 <Route path="/gestion_enrolamiento" component={Gestion_Enrolamiento} />
+                <Route path="/gestion_enrolamiento_la_florida" component={Gestion_Enrolamiento_La_Florida} />
+                <Route path="/gestion_enrolamiento_maipu" component={Gestion_Enrolamiento_Maipu} />
+                <Route path="/gestion_enrolamiento_quilicura" component={Gestion_Enrolamiento_Quilicura} />
                 <Route path="/terms" component={Terminos} />
             </Switch>
         </Router>

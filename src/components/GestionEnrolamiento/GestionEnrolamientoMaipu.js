@@ -8,7 +8,7 @@ import deleteSession from '../../actions/deleteSession';
 
 import dataStore from '../../store';
 
-class GestionEnrolamiento extends React.Component {
+class GestionEnrolamientoMaipu extends React.Component {
     constructor(props) {
         super(props);
         this.fetchData = this.fetchData.bind(this);
@@ -95,15 +95,11 @@ class GestionEnrolamiento extends React.Component {
                                     </tr>
                                     <tr>
                                         <th>Día</th>
-                                        <th>QR Vendedor</th>
                                         <th>QR IPAD</th>
-                                        <th>QR Limpia Tapiz</th>
                                     </tr>
                                     <tr>
                                         <th></th>
-                                        <th><small>Tienda V. Mackenna</small></th>
                                         <th><small>Tienda Maipú</small></th>
-                                        <th><small>Tienda Quilicura</small></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -111,15 +107,11 @@ class GestionEnrolamiento extends React.Component {
                                         this.state.data.dailyStatus.map(obj => (
                                             <tr key={`${obj.dia}`}>
                                                 <td>{`${obj.dia}` != 'null' ? `${obj.dia}` : ''}</td>
-                                                <td>{`${obj.Visita_Vendedor}` != 'null' ? `${obj.Visita_Vendedor}` : 0}</td>
                                                 <td>{`${obj.Visita_Ipad}` != 'null' ? `${obj.Visita_Ipad}` : 0}</td>
-                                                <td>{`${obj.Visita_Limpia_Tapiz}` != 'null' ? `${obj.Visita_Limpia_Tapiz}` : 0}</td>
                                             </tr>
                                         ))
                                         :
                                         (<tr>
-                                            <td></td>
-                                            <td></td>
                                             <td></td>
                                             <td></td>
                                         </tr>)
@@ -136,15 +128,11 @@ class GestionEnrolamiento extends React.Component {
                                     </tr>
                                     <tr>
                                         <th>Día</th>
-                                        <th>QR Vendedor</th>
                                         <th>QR IPAD</th>
-                                        <th>QR Limpia Tapiz</th>
                                     </tr>
                                     <tr>
                                         <th></th>
-                                        <th><small>Tienda V. Mackenna</small></th>
                                         <th><small>Tienda Maipú</small></th>
-                                        <th><small>Tienda Quilicura</small></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -152,15 +140,11 @@ class GestionEnrolamiento extends React.Component {
                                         this.state.data.dailyStatus.map(obj => (
                                             <tr key={`${obj.dia}`}>
                                                 <td>{`${obj.dia}` != 'null' ? `${obj.dia}` : ''}</td>
-                                                <td>{`${obj.Enrolado_Vendedor}` != 'null' ? `${obj.Enrolado_Vendedor}` : 0}</td>
                                                 <td>{`${obj.Enrolado_Ipad}` != 'null' ? `${obj.Enrolado_Ipad}` : 0}</td>
-                                                <td>{`${obj.Enrolado_Limpia_Tapiz}` != 'null' ? `${obj.Enrolado_Limpia_Tapiz}` : 0}</td>
                                             </tr>
                                         ))
                                         :
                                         (<tr>
-                                            <td></td>
-                                            <td></td>
                                             <td></td>
                                             <td></td>
                                         </tr>)
@@ -187,15 +171,11 @@ class GestionEnrolamiento extends React.Component {
                                     </tr>
                                     <tr>
                                         <th>Hora</th>
-                                        <th>QR Vendedor</th>
                                         <th>QR IPAD</th>
-                                        <th>QR Limpia Tapiz</th>
                                     </tr>
                                     <tr>
                                         <th></th>
-                                        <th><small>Tienda V. Mackenna</small></th>
                                         <th><small>Tienda Maipú</small></th>
-                                        <th><small>Tienda Quilicura</small></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -203,15 +183,11 @@ class GestionEnrolamiento extends React.Component {
                                         this.state.data.hourlyStatus.map(obj => (
                                             <tr key={`${obj.Hora}`}>
                                                 <td>{`${obj.Hora}` != 'null' ? `${obj.Hora}` : ''}</td>
-                                                <td>{`${obj.Visita_Vendedor}` != 'null' ? `${obj.Visita_Vendedor}` : 0}</td>
                                                 <td>{`${obj.Visita_Ipad}` != 'null' ? `${obj.Visita_Ipad}` : 0}</td>
-                                                <td>{`${obj.Visita_Limpia_Tapiz}` != 'null' ? `${obj.Visita_Limpia_Tapiz}` : 0}</td>
                                             </tr>
                                         ))
                                         :
                                         (<tr>
-                                            <td></td>
-                                            <td></td>
                                             <td></td>
                                             <td></td>
                                         </tr>)
@@ -227,15 +203,11 @@ class GestionEnrolamiento extends React.Component {
                                     </tr>
                                     <tr>
                                         <th>Hora</th>
-                                        <th>QR Vendedor</th>
                                         <th>QR IPAD</th>
-                                        <th>QR Limpia Tapiz</th>
                                     </tr>
                                     <tr>
                                         <th></th>
-                                        <th><small>Tienda V. Mackenna</small></th>
                                         <th><small>Tienda Maipú</small></th>
-                                        <th><small>Tienda Quilicura</small></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -243,15 +215,11 @@ class GestionEnrolamiento extends React.Component {
                                         this.state.data.hourlyStatus.map(obj => (
                                             <tr key={`${obj.Hora}`}>
                                                 <td>{`${obj.Hora}` != 'null' ? `${obj.Hora}` : ''}</td>
-                                                <td>{`${obj.Enrolado_Vendedor}` != 'null' ? `${obj.Enrolado_Vendedor}` : 0}</td>
                                                 <td>{`${obj.Enrolado_Ipad}` != 'null' ? `${obj.Enrolado_Ipad}` : 0}</td>
-                                                <td>{`${obj.Enrolado_Limpia_Tapiz}` != 'null' ? `${obj.Enrolado_Limpia_Tapiz}` : 0}</td>
                                             </tr>
                                         ))
                                         :
                                         (<tr>
-                                            <td></td>
-                                            <td></td>
                                             <td></td>
                                             <td></td>
                                         </tr>)
@@ -279,4 +247,4 @@ const mapDispatchToProps = dispatch => ({
     deleteSession: () => dispatch(deleteSession())
 });
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(GestionEnrolamiento));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(GestionEnrolamientoMaipu));
