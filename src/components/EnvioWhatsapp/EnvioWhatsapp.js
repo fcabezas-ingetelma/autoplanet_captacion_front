@@ -14,9 +14,9 @@ import sendSMS from '../../actions/sendSMS';
 import SessionHeader from '../session/session';
 
 class EnvioWhatsapp extends React.Component {
-    url =  '';
     constructor(props) {
         super(props);
+        this.tickManager = this.tickManager.bind(this);
         this.state = {
             attenderRut: getUrlParam(window.location.href, 'r', ''), 
             canal: getUrlParam(window.location.href, 'c', ''), 
@@ -25,7 +25,9 @@ class EnvioWhatsapp extends React.Component {
             ip: '', 
             page: 'WhatsApp Page', 
             canSendSMS: true, 
-            timeRemaining: 120
+            timeRemaining: 120, 
+            minutesRemaining: 2,
+            secondsRemaining: 0
         };
     }
 
@@ -37,7 +39,36 @@ class EnvioWhatsapp extends React.Component {
         })();
     }
 
+    tickManager() {
+        if(this.state.timeRemaining > 0) {
+            this.setState({ 
+                canSendSMS: false, 
+                timeRemaining: this.state.timeRemaining - 1, 
+                minutesRemaining: Math.floor(this.state.timeRemaining/60), 
+                secondsRemaining: this.state.timeRemaining%60
+            });
+        } else {
+            clearInterval(this.timer);
+            this.setState({ 
+                canSendSMS: true, 
+                timeRemaining: 120, 
+                minutesRemaining: 2, 
+                secondsRemaining: 0
+            });
+        }
+    }
+
     render(){
+        let label;
+        if(this.state.canSendSMS) {
+            label = <h6 id='tiempo'></h6>
+        } else {
+            if(this.state.minutesRemaining > 0) {
+                label = <h6 id='tiempo'>Debes esperar {this.state.minutesRemaining} minuto y {this.state.secondsRemaining} segundos para enviar nuevamente un mensaje SMS</h6>
+            } else {
+                label = <h6 id='tiempo'>Debes esperar {this.state.secondsRemaining} segundos para enviar nuevamente un mensaje SMS</h6>
+            }
+        }
         return(
             <div>
                 <SessionHeader attenderRut={this.state.attenderRut} />
@@ -70,30 +101,15 @@ class EnvioWhatsapp extends React.Component {
                                         if(this.state.canSendSMS) {
                                             this.props.sendSMS(values, 
                                                 () => {
-                                                    this.setState({ canSendSMS: false });
                                                     alert('El mensaje de texto se ha enviado correctamente.');
-                                                    this.timer = setInterval(() => {
-                                                        if(this.state.timeRemaining > 0) {
-                                                            this.setState({ timeRemaining: this.state.timeRemaining - 1 });
-                                                        } else {
-                                                            clearInterval(this.timer);
-                                                            this.setState({ canSendSMS: true, timeRemaining: 120 });
-                                                        }
-                                                    }, 1000);
+                                                    this.timer = setInterval(
+                                                        () => this.tickManager(), 
+                                                        1000
+                                                    );
                                                 }, 
                                                 () => {
                                                     alert('Hubo un error al enviar el mensaje de texto. Por favor, intente nuevamente.');
                                                 });
-                                        } else {
-                                            let minutes = Math.floor(this.state.timeRemaining/60);
-                                            let seconds = this.state.timeRemaining%60;
-                                            let message = '';
-                                            if(minutes > 0) {
-                                                message = 'Debes esperar ' + minutes + ' minuto y ' + seconds + ' segundos para enviar nuevamente un mensaje SMS';
-                                            } else {
-                                                message = 'Debes esperar ' + seconds + ' segundos para enviar nuevamente un mensaje SMS';
-                                            }
-                                            alert(message);
                                         }
                                     } else {
                                         window.location.href = `https://api.whatsapp.com/send?phone=569${values.cellphone}&text=${encodeURIComponent(shortUrl)}`; 
@@ -151,13 +167,15 @@ class EnvioWhatsapp extends React.Component {
                                         Enviar Link por WhatsApp
                                 </Button>
                             }
+                            <br />
+                            {label}
                             <br/>
                             <Button block id="second-button"
                                     onClick={(e)=>{
                                         setFieldValue('isSMSButton', true)
                                         handleSubmit(e);
                                     }} 
-                                    disabled={isSubmitting} 
+                                    disabled={!this.state.canSendSMS} 
                                     style={{backgroundColor:'#E36924', borderColor:'#E36924'}}>
                                     Enviar Link por SMS (Mensaje de Texto)
                             </Button>
