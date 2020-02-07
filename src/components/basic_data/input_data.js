@@ -25,6 +25,7 @@ class InputData extends React.Component {
         super(props);
         this.successResponseHandler = this.successResponseHandler.bind(this);
         this.failureResponseHandler = this.failureResponseHandler.bind(this);
+        this.setButtonState = this.setButtonState.bind(this);
         this.state = {
                         attenderRut: getUrlParam(window.location.href, 'r', ''), 
                         canal: getUrlParam(window.location.href, 'c', ''), 
@@ -37,7 +38,8 @@ class InputData extends React.Component {
                         cellphone: '', 
                         page: 'Home Page', 
                         estados: undefined, 
-                        token: ''
+                        token: '', 
+                        isDisabled: false
                      };
     }
 
@@ -102,8 +104,11 @@ class InputData extends React.Component {
         }
     }
 
+    setButtonState(value) {
+        this.setState({ isDisabled: value })
+    }
+
     render() {
-        let isDisabled = false;
         return (
             <div>
                 <SessionHeader attenderRut={this.state.attenderRut} />
@@ -143,6 +148,7 @@ class InputData extends React.Component {
                         return errors;
                     }}
                     onSubmit = {(values, { setSubmitting }) => {
+                        this.setButtonState(true);
                         if(!this.errors) {
                             let isValid = true;
                             values.ip = this.state.ip;
@@ -163,6 +169,7 @@ class InputData extends React.Component {
                                     values.cellphone = values.cellphone.substring(1);
                                 } else {
                                     isValid = false;
+                                    this.setButtonState(false);
                                     alert('El teléfono ingresado no es válido, por favor verifique e ingrese nuevamente.');
                                     setSubmitting(false);
                                 }
@@ -207,12 +214,14 @@ class InputData extends React.Component {
                                             this.failureResponseHandler(values, error);
                                         }
                                         setSubmitting(false);
+                                        this.setButtonState(false);
                                     }
                                 );
                             }
                         } else {
                             alert('Uno o más campos tienen inconsistencias. Por favor, intente nuevamente');
                             setSubmitting(false);
+                            this.setButtonState(false);
                         } 
                     }}
                 >
@@ -363,7 +372,7 @@ class InputData extends React.Component {
                                         name='confirmationChoice'
                                         value='Si'
                                         onChange={handleChange}
-                                        onClick={() => { isDisabled = false }}
+                                        onClick={this.setButtonState.bind(this, false)}
                                     />
                                 </Col>
                                 <Col>
@@ -376,7 +385,7 @@ class InputData extends React.Component {
                                         name='confirmationChoice'
                                         value='No'
                                         onChange={handleChange}
-                                        onClick={() => { isDisabled = true }}
+                                        onClick={this.setButtonState.bind(this, true)}
                                     />
                                 </Col> 
                             </Form.Group>
@@ -385,7 +394,7 @@ class InputData extends React.Component {
                             <input type="hidden" value="" name="codeToValidate" id="hiddenCode" />
                             <input type="hidden" value="" name="expires_at" id="hiddenExpiration" />
                                     
-                            <Button block type="submit" disabled={isDisabled} variant="danger">
+                            <Button block type="submit" disabled={this.state.isDisabled} variant="danger">
                                 Continuar
                             </Button>
                         </Form>
