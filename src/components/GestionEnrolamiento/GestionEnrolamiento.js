@@ -67,7 +67,7 @@ class GestionEnrolamiento extends React.Component {
                     <Row>
                         <Col align='left'>
                             <h2>
-                                Gestion Enrolamiento
+                                Gestión Enrolamiento
                             </h2>
                             <Button onClick={this.fetchData.bind(this)}>Actualizar</Button>
                             <br/>
@@ -100,7 +100,7 @@ class GestionEnrolamiento extends React.Component {
                                     <tr>
                                         <th></th>
                                         <th><small>Tienda V. Mackenna</small></th>
-                                        <th><small>Tienda Maipu</small></th>
+                                        <th><small>Tienda Maipú</small></th>
                                         <th><small>Tienda Quilicura</small></th>
                                     </tr>
                                 </thead>
@@ -141,7 +141,7 @@ class GestionEnrolamiento extends React.Component {
                                     <tr>
                                         <th></th>
                                         <th><small>Tienda V. Mackenna</small></th>
-                                        <th><small>Tienda Maipu</small></th>
+                                        <th><small>Tienda Maipú</small></th>
                                         <th><small>Tienda Quilicura</small></th>
                                     </tr>
                                 </thead>
@@ -192,7 +192,7 @@ class GestionEnrolamiento extends React.Component {
                                     <tr>
                                         <th></th>
                                         <th><small>Tienda V. Mackenna</small></th>
-                                        <th><small>Tienda Maipu</small></th>
+                                        <th><small>Tienda Maipú</small></th>
                                         <th><small>Tienda Quilicura</small></th>
                                     </tr>
                                 </thead>
@@ -232,7 +232,7 @@ class GestionEnrolamiento extends React.Component {
                                     <tr>
                                         <th></th>
                                         <th><small>Tienda V. Mackenna</small></th>
-                                        <th><small>Tienda Maipu</small></th>
+                                        <th><small>Tienda Maipú</small></th>
                                         <th><small>Tienda Quilicura</small></th>
                                     </tr>
                                 </thead>
