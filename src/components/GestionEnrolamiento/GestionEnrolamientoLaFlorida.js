@@ -91,7 +91,7 @@ class GestionEnrolamientoLaFlorida extends React.Component {
                             <Table striped bordered hover responsive>
                                 <thead>
                                     <tr>
-                                        <th colSpan='4' className='text-center text-white' style={{backgroundColor:'#E36924'}}>Nº de Visitas por IP Única</th>
+                                        <th colSpan='4' className='text-center text-white' style={{backgroundColor:'#E36924'}}>Nº de Visitas a la página <p><strong>IP ÚNICA</strong> (Nuevo)</p></th>
                                     </tr>
                                     <tr>
                                         <th>Día</th>
@@ -124,7 +124,7 @@ class GestionEnrolamientoLaFlorida extends React.Component {
                             <Table striped bordered hover responsive>
                                 <thead>
                                     <tr>
-                                        <th colSpan='4' className='text-center text-white' style={{backgroundColor:'#B60B14'}}>Nº de Enrolamientos</th>
+                                        <th colSpan='4' className='text-center text-white' style={{backgroundColor:'#B60B14'}}>Nº de Enrolamientos <p> </p><p> </p></th>
                                     </tr>
                                     <tr>
                                         <th>Día</th>
@@ -167,7 +167,7 @@ class GestionEnrolamientoLaFlorida extends React.Component {
                                 <Table striped bordered hover responsive>
                                 <thead>
                                     <tr>
-                                        <th colSpan='4' className='text-center text-white' style={{backgroundColor:'#E36924'}}>Nº de Visitas por IP Única</th>
+                                        <th colSpan='4' className='text-center text-white' style={{backgroundColor:'#E36924'}}>Nº de Visitas a la página <p><strong>IP ÚNICA</strong> (Nuevo)</p></th>
                                     </tr>
                                     <tr>
                                         <th>Hora</th>
@@ -199,7 +199,7 @@ class GestionEnrolamientoLaFlorida extends React.Component {
                                 <Table striped bordered hover responsive>
                                 <thead>
                                     <tr>
-                                        <th colSpan='4' className='text-center text-white' style={{backgroundColor:'#B60B14'}}>Nº de Enrolamientos</th>
+                                        <th colSpan='4' className='text-center text-white' style={{backgroundColor:'#B60B14'}}>Nº de Enrolamientos <p> </p><p> </p></th>
                                     </tr>
                                     <tr>
                                         <th>Hora</th>
