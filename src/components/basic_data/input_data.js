@@ -204,7 +204,7 @@ class InputData extends React.Component {
                                     }, (error) => {
                                         if(error == '150') {
                                             //SMS Sended but not validated.
-                                            this.failureResponseHandler(values, error);
+                                            this.successResponseHandler(values);
                                         } else if(error == '160') {
                                             //SMS Sended and validated, must finish process
                                             this.props.history.push("/confirmation");

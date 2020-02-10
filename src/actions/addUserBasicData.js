@@ -100,7 +100,8 @@ const updateUserBasicData = async (payload) => {
     }
 
     //Update client basic data
-    return await requester.sendPatchRequest('/v1/user/set-client', updateRequestBody);
+    const updateRequest = await requester.sendPatchRequest('/v1/user/set-client', updateRequestBody);
+    return updateRequest;
 }
 
 const validateUserStatus = async (payload, onSuccess, onFailure) => {
