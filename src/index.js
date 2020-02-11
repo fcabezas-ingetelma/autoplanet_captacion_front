@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import dataStore from './store';
 
 import * as Sentry from '@sentry/browser';
+import dotenv from 'dotenv';
 
 import './index.css';
 
@@ -24,7 +25,9 @@ import Login from './screens/login/Login'
 import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-Sentry.init({dsn: "https://e5b194b4756745eab31a6087a40a8e0a@sentry.io/2439769"});
+dotenv.config();
+
+Sentry.init({dsn: process.env.REACT_APP_SENTRY_KEY});
 
 const routing = (
     <Provider store={dataStore}>
