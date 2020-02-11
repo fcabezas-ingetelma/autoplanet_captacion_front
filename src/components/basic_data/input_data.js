@@ -65,9 +65,6 @@ class InputData extends React.Component {
             this.setState({ ip: ipv4 });
             this.props.setTracker(this.state, () => {}, () => {});
         })();
-
-        console.log(window.location);
-        console.log(window.location.hostname);
     }
 
     successResponseHandler(values) {
