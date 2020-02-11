@@ -4,6 +4,8 @@ import { Route, Switch, BrowserRouter as Router } from 'react-router-dom'
 import { Provider } from 'react-redux';
 import dataStore from './store';
 
+import * as Sentry from '@sentry/browser';
+
 import './index.css';
 
 import App from './screens/input_data/App';
@@ -21,6 +23,8 @@ import Login from './screens/login/Login'
 
 import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.min.css';
+
+Sentry.init({dsn: "https://e5b194b4756745eab31a6087a40a8e0a@sentry.io/2439769"});
 
 const routing = (
     <Provider store={dataStore}>
