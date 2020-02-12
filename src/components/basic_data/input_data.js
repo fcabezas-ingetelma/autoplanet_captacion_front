@@ -4,7 +4,9 @@ import { Formik, Field, ErrorMessage } from 'formik';
 import { withRouter } from 'react-router-dom';
 import { validaRut, rutChecker, validaEmail, getUrlParam, decodeFromBase64 } from '../../utils/utils';
 import publicIp from 'public-ip';
-import {Form, Row, Col, Container, InputGroup, Button, Alert} from 'react-bootstrap'
+import {Form, Row, Col, Container, InputGroup, Button, Alert} from 'react-bootstrap';
+
+import dotenv from 'dotenv';
 
 import { connect } from "react-redux";
 import addUserBasicData from '../../actions/addUserBasicData';
@@ -13,12 +15,15 @@ import setEstados from '../../actions/setEstados';
 import createSolicitud from '../../actions/createSolicitud';
 import setTracker from '../../actions/setTracker';
 import validateToken from '../../actions/validateToken';
+import getShortUrl from '../../actions/getShortUrl';
 
 import SessionHeader from '../session/session';
 
 import * as CONSTANTS from '../../utils/constants';
 
 import './InputData.css';
+
+dotenv.config();
 
 class InputData extends React.Component {
     constructor(props) {
@@ -79,7 +84,27 @@ class InputData extends React.Component {
                 alert('La información enviada via WhatsApp ha caducado. Por favor, repita el proceso nuevamente.');
             });
         } else {
-            this.props.history.push("/sms");
+            switch(process.env.REACT_APP_VALIDATION_METHOD) {
+                case '0': this.props.history.push("/sms"); break;
+                case '1': this.props.getShortUrl(
+                                {
+                                    url: window.location.origin + '/validacionWhatsapp',
+                                    attenderRut: this.state.attenderRut, 
+                                    canal: this.state.canal, 
+                                    canalPromotor: '1', 
+                                    cellphone: values.cellphone
+                                }, 
+                                (shortUrl) => {
+                                    window.location.href = `https://api.whatsapp.com/send?phone=569${values.cellphone}&text=${encodeURIComponent(shortUrl)}`; 
+                                }, 
+                                () => {
+                                    this.setButtonState(false);
+                                    alert('Hubo un error al procesar la solicitud, intente nuevamente');
+                                }
+                            ); 
+                        break;
+                default: this.props.history.push("/sms"); break;
+            }
         }
     }
 
@@ -162,6 +187,12 @@ class InputData extends React.Component {
                                 values.canalPromotor = this.state.canalPromotor;
                             } else {
                                 values.validationMethod = CONSTANTS.SMS;
+                                if(process.env.REACT_APP_VALIDATION_METHOD == '0') {
+                                    //If REACT_APP_VALIDATION_METHOD is '0', means that we have to send SMS, otherwise not.
+                                    values.sendSMSValue = true;
+                                } else {
+                                    values.sendSMSValue = false;
+                                }
                             }
 
                             if(values.cellphone.length == 9) {
@@ -416,6 +447,7 @@ const mapDispatchToProps = dispatch => ({
     setEstados: (payload) => dispatch(setEstados(payload)), 
     createSolicitud: (payload, estado_id, onSuccess, onFailure) => dispatch(createSolicitud(payload, estado_id, onSuccess, onFailure)), 
     setTracker: (payload, onSuccess, onFailure) => dispatch(setTracker(payload, onSuccess, onFailure)), 
+    getShortUrl: (payload, onSuccess, onFailure) => dispatch(getShortUrl(payload, onSuccess, onFailure)),
     validateToken: (payload, onSuccess, onFailure) => dispatch(validateToken(payload, onSuccess, onFailure))
 });
   
