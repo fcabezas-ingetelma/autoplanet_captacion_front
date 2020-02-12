@@ -9,7 +9,9 @@ import { validaRut, rutChecker, getUrlParam, decodeFromBase64 } from '../../util
 import { connect } from "react-redux";
 
 import SessionHeader from '../session/session';
+
 import setTracker from '../../actions/setTracker';
+import validateToken from '../../actions/validateToken';
 
 import * as CONSTANTS from '../../utils/constants';
 
@@ -33,8 +35,10 @@ class ValidacionWhatsapp extends React.Component {
     }
 
     componentDidMount() {
+        let cellphone = undefined;
         if(this.state.encodedData) {
             let decodedData = '?' + decodeFromBase64(this.state.encodedData);
+            cellphone = getUrlParam(decodedData, 'telefono', '');
             this.setState({ 
                 attenderRut: getUrlParam(decodedData, 'r', ''), 
                 canal: getUrlParam(decodedData, 'c', '').replace('C\\', ''), 
@@ -42,6 +46,11 @@ class ValidacionWhatsapp extends React.Component {
                 cellphone: getUrlParam(decodedData, 'telefono', ''), 
                 token: getUrlParam(decodedData, 'token', '')
             });
+        }
+
+        if(cellphone == undefined) {
+            alert('La validación es incorrecta debido a que el número telefónico no está presente;');
+            this.props.history.push("/");
         }
 
         (async () => {
@@ -194,7 +203,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    setTracker: (payload, onSuccess, onFailure) => dispatch(setTracker(payload, onSuccess, onFailure))
+    setTracker: (payload, onSuccess, onFailure) => dispatch(setTracker(payload, onSuccess, onFailure)), 
+    validateToken: (payload, onSuccess, onFailure) => dispatch(validateToken(payload, onSuccess, onFailure))
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ValidacionWhatsapp));
