@@ -10,7 +10,7 @@ const getShortUrl = (payload, onSuccess, onFailure) => {
 const getShortUrlService = async (payload, onSuccess, onFailure) => {
     let requester = new HttpRequester();
     const tokenResponse = await requester.sendPutRequest('/v1/token/init-ws-token', { cellphone: payload.cellphone });
-    if(tokenResponse.data.token) {
+    if(tokenResponse.data && tokenResponse.data.token) {
         let requestBody = {
             url: payload.url,
             rut_captador: payload.attenderRut, 
