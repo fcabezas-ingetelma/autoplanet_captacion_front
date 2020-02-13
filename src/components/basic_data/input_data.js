@@ -32,6 +32,7 @@ class InputData extends React.Component {
         this.successResponseHandler = this.successResponseHandler.bind(this);
         this.failureResponseHandler = this.failureResponseHandler.bind(this);
         this.setButtonState = this.setButtonState.bind(this);
+        this.validateWhatsappMethod = this.validateWhatsappMethod.bind(this);
         this.state = {
                         attenderRut: getUrlParam(window.location.href, 'r', ''), 
                         canal: getUrlParam(window.location.href, 'c', ''), 
@@ -85,28 +86,31 @@ class InputData extends React.Component {
                 alert('La información enviada via WhatsApp ha caducado. Por favor, repita el proceso nuevamente.');
             });
         } else {
-            switch(process.env.REACT_APP_VALIDATION_METHOD) {
-                case '0': this.props.history.push("/sms"); break;
-                case '1': this.props.getShortUrl(
-                                {
-                                    url: window.location.origin + '/validacionWhatsapp',
-                                    attenderRut: this.state.attenderRut, 
-                                    canal: this.state.canal, 
-                                    canalPromotor: '1', 
-                                    cellphone: values.cellphone
-                                }, 
-                                (shortUrl) => {
-                                    window.location.href = `https://api.whatsapp.com/send?phone=569${values.cellphone}&text=${encodeURIComponent('Ingresa tus datos en: ' + shortUrl)}`; 
-                                }, 
-                                () => {
-                                    this.setButtonState(false);
-                                    alert('Hubo un error al procesar la solicitud, intente nuevamente');
-                                }
-                            ); 
-                        break;
-                default: this.props.history.push("/sms"); break;
+            if(this.validateWhatsappMethod()) {
+                this.props.getShortUrl(
+                    {
+                        url: window.location.origin + '/validacionWhatsapp',
+                        attenderRut: this.state.attenderRut, 
+                        canal: this.state.canal, 
+                        canalPromotor: '1', 
+                        cellphone: values.cellphone
+                    }, 
+                    (shortUrl) => {
+                        window.location.href = `https://api.whatsapp.com/send?phone=569${values.cellphone}&text=${encodeURIComponent('Ingresa tus datos en: ' + shortUrl)}`; 
+                    }, 
+                    () => {
+                        this.setButtonState(false);
+                        alert('Hubo un error al procesar la solicitud, intente nuevamente');
+                    }
+                ); 
+            } else {
+                this.props.history.push("/sms");
             }
         }
+    }
+
+    validateWhatsappMethod() {
+        return process.env.REACT_APP_VALIDATION_METHOD == '1' && this.state.canal == '19';
     }
 
     failureResponseHandler(values, error) {
@@ -188,11 +192,10 @@ class InputData extends React.Component {
                                 values.canalPromotor = this.state.canalPromotor;
                             } else {
                                 values.validationMethod = CONSTANTS.SMS;
-                                if(process.env.REACT_APP_VALIDATION_METHOD == '0') {
-                                    //If REACT_APP_VALIDATION_METHOD is '0', means that we have to send SMS, otherwise not.
-                                    values.sendSMSValue = true;
-                                } else {
+                                if(this.validateWhatsappMethod()) {
                                     values.sendSMSValue = false;
+                                } else {
+                                    values.sendSMSValue = true;
                                 }
                             }
 
