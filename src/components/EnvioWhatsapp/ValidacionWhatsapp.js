@@ -12,6 +12,8 @@ import SessionHeader from '../session/session';
 
 import setTracker from '../../actions/setTracker';
 import validateToken from '../../actions/validateToken';
+import validatePhoneUsage from '../../actions/validatePhoneUsage';
+import createSolicitud from '../../actions/createSolicitud';
 
 import * as CONSTANTS from '../../utils/constants';
 
@@ -97,9 +99,26 @@ class ValidacionWhatsapp extends React.Component {
                             values.attenderRut = this.state.attenderRut;
                             values.canal = this.state.canal;
                             values.canalPromotor = this.state.canalPromotor;
-                            
-                            setSubmitting(false);
-                            this.setButtonState(false);
+
+                            this.props.validatePhoneUsage(values, 
+                                () => {
+                                    this.props.validateToken(values, () => {
+                                        this.props.createSolicitud(values, 4, () => {
+                                            this.props.history.push("/confirmation");
+                                        }, () => {
+                                            this.props.history.push("/confirmation");
+                                        });
+                                    }, () => {
+                                        alert('La información enviada via WhatsApp ha caducado. Por favor, repita el proceso nuevamente.');
+                                        setSubmitting(false);
+                                        this.setButtonState(false);
+                                    });
+                                }, 
+                                () => {
+                                    alert('El rut ingresado no coincide con el registrado en conjunto al teléfono. Por favor, intente nuevamente.');
+                                    setSubmitting(false);
+                                    this.setButtonState(false);
+                            });
                         } else {
                             alert('Uno o más campos tienen inconsistencias. Por favor, intente nuevamente');
                             setSubmitting(false);
@@ -204,7 +223,9 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     setTracker: (payload, onSuccess, onFailure) => dispatch(setTracker(payload, onSuccess, onFailure)), 
-    validateToken: (payload, onSuccess, onFailure) => dispatch(validateToken(payload, onSuccess, onFailure))
+    validateToken: (payload, onSuccess, onFailure) => dispatch(validateToken(payload, onSuccess, onFailure)), 
+    createSolicitud: (payload, estado_id, onSuccess, onFailure) => dispatch(createSolicitud(payload, estado_id, onSuccess, onFailure)), 
+    validatePhoneUsage: (payload, onSuccess, onFailure) => dispatch(validatePhoneUsage(payload, onSuccess, onFailure))
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ValidacionWhatsapp));

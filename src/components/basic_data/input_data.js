@@ -16,6 +16,7 @@ import createSolicitud from '../../actions/createSolicitud';
 import setTracker from '../../actions/setTracker';
 import validateToken from '../../actions/validateToken';
 import getShortUrl from '../../actions/getShortUrl';
+import validatePhoneUsage from '../../actions/validatePhoneUsage';
 
 import SessionHeader from '../session/session';
 
@@ -207,47 +208,55 @@ class InputData extends React.Component {
                             }
                             
                             if(isValid) {
-                                this.props.addUserBasicData(values, 
+                                this.props.validatePhoneUsage(values, 
                                     () => {
-                                        //Success
-                                        setSubmitting(false);
-                                        //This commented code has no sense since solcitud don't keep track of states
-                                        //In the near future we should have a 'move_to' table
-                                        /*if(values.cellphone) {
-                                            this.props.createSolicitud(values, 4, () => {}, () => {});
-                                        }
-                                        if(values.confirmationChoice) {
-                                            switch (values.confirmationChoice) {
-                                                case 'Si': this.props.createSolicitud(values, 7, () => {}, () => {});
-                                                        break;
-                                                case 'No': this.props.createSolicitud(values, 8, () => {}, () => {});
-                                                        break;
+                                        this.props.addUserBasicData(values, 
+                                            () => {
+                                                //Success
+                                                setSubmitting(false);
+                                                //This commented code has no sense since solcitud don't keep track of states
+                                                //In the near future we should have a 'move_to' table
+                                                /*if(values.cellphone) {
+                                                    this.props.createSolicitud(values, 4, () => {}, () => {});
+                                                }
+                                                if(values.confirmationChoice) {
+                                                    switch (values.confirmationChoice) {
+                                                        case 'Si': this.props.createSolicitud(values, 7, () => {}, () => {});
+                                                                break;
+                                                        case 'No': this.props.createSolicitud(values, 8, () => {}, () => {});
+                                                                break;
+                                                    }
+                                                }*/
+                                                this.props.createSolicitud(values, 4, () => {
+                                                    //Solicitud created successfully
+                                                    this.successResponseHandler(values);
+                                                }, () => {
+                                                    //Solicitud creation error
+                                                    //TODO Manage this state
+                                                    this.successResponseHandler(values);
+                                                });
+                                            }, (error) => {
+                                                if(error == '150') {
+                                                    //SMS Sended but not validated.
+                                                    this.successResponseHandler(values);
+                                                } else if(error == '160') {
+                                                    //SMS Sended and validated, must finish process
+                                                    this.props.history.push("/confirmation");
+                                                } else if(error && error.split('-')[0] == '170') {
+                                                    alert(error.split('-')[1]);
+                                                } else {
+                                                    this.failureResponseHandler(values, error);
+                                                }
+                                                setSubmitting(false);
+                                                this.setButtonState(false);
                                             }
-                                        }*/
-                                        this.props.createSolicitud(values, 4, () => {
-                                            //Solicitud created successfully
-                                            this.successResponseHandler(values);
-                                        }, () => {
-                                            //Solicitud creation error
-                                            //TODO Manage this state
-                                            this.successResponseHandler(values);
-                                        });
-                                    }, (error) => {
-                                        if(error == '150') {
-                                            //SMS Sended but not validated.
-                                            this.successResponseHandler(values);
-                                        } else if(error == '160') {
-                                            //SMS Sended and validated, must finish process
-                                            this.props.history.push("/confirmation");
-                                        } else if(error && error.split('-')[0] == '170') {
-                                            alert(error.split('-')[1]);
-                                        } else {
-                                            this.failureResponseHandler(values, error);
-                                        }
+                                        );
+                                    }, 
+                                    (error) => {
+                                        alert(error);
                                         setSubmitting(false);
                                         this.setButtonState(false);
-                                    }
-                                );
+                                    });
                             }
                         } else {
                             alert('Uno o más campos tienen inconsistencias. Por favor, intente nuevamente');
@@ -448,7 +457,8 @@ const mapDispatchToProps = dispatch => ({
     createSolicitud: (payload, estado_id, onSuccess, onFailure) => dispatch(createSolicitud(payload, estado_id, onSuccess, onFailure)), 
     setTracker: (payload, onSuccess, onFailure) => dispatch(setTracker(payload, onSuccess, onFailure)), 
     getShortUrl: (payload, onSuccess, onFailure) => dispatch(getShortUrl(payload, onSuccess, onFailure)),
-    validateToken: (payload, onSuccess, onFailure) => dispatch(validateToken(payload, onSuccess, onFailure))
+    validateToken: (payload, onSuccess, onFailure) => dispatch(validateToken(payload, onSuccess, onFailure)), 
+    validatePhoneUsage: (payload, onSuccess, onFailure) => dispatch(validatePhoneUsage(payload, onSuccess, onFailure))
 });
   
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(InputData));
