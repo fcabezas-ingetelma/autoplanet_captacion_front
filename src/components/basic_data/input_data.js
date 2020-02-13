@@ -96,7 +96,7 @@ class InputData extends React.Component {
                                     cellphone: values.cellphone
                                 }, 
                                 (shortUrl) => {
-                                    window.location.href = `https://api.whatsapp.com/send?phone=569${values.cellphone}&text=${encodeURIComponent(shortUrl)}`; 
+                                    window.location.href = `https://api.whatsapp.com/send?phone=569${values.cellphone}&text=${encodeURIComponent('Ingresa tus datos en: ' + shortUrl)}`; 
                                 }, 
                                 () => {
                                     this.setButtonState(false);
