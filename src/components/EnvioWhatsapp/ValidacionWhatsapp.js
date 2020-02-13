@@ -206,7 +206,7 @@ class ValidacionWhatsapp extends React.Component {
                             <input type="hidden" value="" name="expires_at" id="hiddenExpiration" />
                                     
                             <Button block type="submit" disabled={this.state.isDisabled} variant="danger">
-                                Continuar
+                                Validar
                             </Button>
                         </Form>
                     </Container>

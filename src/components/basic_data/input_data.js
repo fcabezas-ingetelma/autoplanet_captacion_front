@@ -96,7 +96,7 @@ class InputData extends React.Component {
                         cellphone: values.cellphone
                     }, 
                     (shortUrl) => {
-                        window.location.href = `https://api.whatsapp.com/send?phone=569${values.cellphone}&text=${encodeURIComponent('Ingresa tus datos en: ' + shortUrl)}`; 
+                        window.location.href = `https://api.whatsapp.com/send?phone=569${values.cellphone}&text=${encodeURIComponent('Verifique su teléfono en el siguiente link: ' + shortUrl)}`; 
                     }, 
                     () => {
                         this.setButtonState(false);
@@ -110,7 +110,7 @@ class InputData extends React.Component {
     }
 
     validateWhatsappMethod() {
-        return process.env.REACT_APP_VALIDATION_METHOD == '1' && this.state.canal == '30';
+        return process.env.REACT_APP_VALIDATION_METHOD == '1' && this.state.canal == '19';
     }
 
     failureResponseHandler(values, error) {
