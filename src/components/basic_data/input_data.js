@@ -110,7 +110,7 @@ class InputData extends React.Component {
     }
 
     validateWhatsappMethod() {
-        return process.env.REACT_APP_VALIDATION_METHOD == '1' && this.state.canal == '19';
+        return process.env.REACT_APP_VALIDATION_METHOD == '1' && this.state.canal == '30';
     }
 
     failureResponseHandler(values, error) {
