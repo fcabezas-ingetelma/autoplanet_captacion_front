@@ -112,7 +112,7 @@ class EnvioWhatsapp extends React.Component {
                                                 });
                                         }
                                     } else {
-                                        window.location.href = `https://api.whatsapp.com/send?phone=569${values.cellphone}&text=${encodeURIComponent(shortUrl)}`; 
+                                        window.location.href = `https://api.whatsapp.com/send?phone=569${values.cellphone}&text=${encodeURIComponent('Ingresa tus datos en: ' + shortUrl)}`; 
                                     }
                                 }, 
                                 () => {

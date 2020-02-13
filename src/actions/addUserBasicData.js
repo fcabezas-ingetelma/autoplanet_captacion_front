@@ -2,49 +2,27 @@ import HttpRequester from '../http/sms/httpRequester';
 import * as CONSTANTS from '../utils/constants';
 
 const addUserBasicData = (payload, onSuccess, onFailure) => {
-    payload.codeToValidate = Math.floor(1000 + Math.random() * 9000);
-    payload.expires_at = Date.now() + 900000;
+    if(payload.validationMethod == CONSTANTS.SMS && payload.sendSMSValue) {
+        payload.codeToValidate = Math.floor(1000 + Math.random() * 9000);
+        payload.expires_at = Date.now() + 900000;
+    }
 
-    validatePhoneUsage(payload, 
+    createUser(payload, 
         () => {
-            createUser(payload, 
-                () => {
-                    if(payload.validationMethod == CONSTANTS.SMS) {
-                        sendSms(payload, onSuccess, onFailure);
-                    } else {
-                        onSuccess();
-                    }
-                }, 
-                () => {
-                    validateUserStatus(payload, onSuccess, onFailure);
-                }
-            );
+            if(payload.validationMethod == CONSTANTS.SMS && payload.sendSMSValue) {
+                sendSms(payload, onSuccess, onFailure);
+            } else {
+                onSuccess();
+            }
         }, 
-        (error) => {
-            onFailure(error);
-        });
+        () => {
+            validateUserStatus(payload, onSuccess, onFailure);
+        }
+    );
 
     return {
         type: 'add_user_basic_data',
         payload
-    }
-}
-
-const validatePhoneUsage = async (payload, onSuccess, onFailure) => {
-    let requester = new HttpRequester();
-    const response = await requester.sendGetRequest('/v1/user/validations/phone/' + payload.rut.split('-')[0] + "/" + payload.cellphone);
-    if(response && response.status == 200) {
-        var isValid = response.data.isValid;
-        var match = response.data.match;
-        if(!isValid && !match) {
-            //Rut doesn't match, another client is trying to put your phone
-            onFailure(CONSTANTS.PHONE_EXISTS_ERROR_MESSAGE);
-        } else {
-            //Available to change
-            onSuccess();
-        }
-    } else {
-        onFailure(CONSTANTS.PHONE_EXISTS_ERROR_MESSAGE);
     }
 }
 
@@ -111,7 +89,7 @@ const validateUserStatus = async (payload, onSuccess, onFailure) => {
         userStatusResponse.data && userStatusResponse.data.code) {
         switch (userStatusResponse.data.code) {
             case 150: //SMS Sended but no validated, must send again
-                if(payload.validationMethod == CONSTANTS.SMS) {
+                if(payload.validationMethod == CONSTANTS.SMS && payload.sendSMSValue) {
                     reSendSms(payload, onSuccess, onFailure);
                 } else {
                     const updateResponse = updateUserBasicData(payload);
@@ -150,12 +128,15 @@ const createUser = async (payload, onSuccess, onFailure) => {
         cellphone: payload.cellphone, 
         email: payload.email, 
         type: payload.clientType, 
-        sended_sms_code: payload.codeToValidate, 
         client_response: payload.confirmationChoice, 
         ip: payload.ip, 
         userAgent: payload.userAgent, 
         os: payload.os, 
         page: payload.page 
+    }
+
+    if(payload.codeToValidate) {
+        requestBody.sended_sms_code = payload.codeToValidate;
     }
 
     if(payload.attenderRut) {
