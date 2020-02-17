@@ -33,7 +33,7 @@ class ConfirmationSuccess extends React.Component {
                 canal: this.state.canal, 
                 canalPromotor: this.state.canalPromotor, 
             }
-            if(this.state.attenderRut || this.state.canal) {
+            if(this.state.rut && (this.state.attenderRut || this.state.canal)) {
                 this.props.updateAttendanceInfo(requestBody, 
                 () => {
                     this.props.createSolicitud(requestBody, 3, () => {}, () => {});
