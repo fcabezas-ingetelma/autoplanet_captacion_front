@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import dataStore from './store';
 
 import * as Sentry from '@sentry/browser';
+import LogRocket from 'logrocket';
 import dotenv from 'dotenv';
 
 import './index.css';
@@ -29,6 +30,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 dotenv.config();
 
 Sentry.init({dsn: process.env.REACT_APP_SENTRY_KEY});
+LogRocket.init(process.env.REACT_APP_LOGROCKET_KEY);
 
 const routing = (
     <Provider store={dataStore}>
