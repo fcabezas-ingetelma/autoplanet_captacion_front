@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom';
 import { validaRut, rutChecker, validaEmail, getUrlParam, decodeFromBase64 } from '../../utils/utils';
 import publicIp from 'public-ip';
 import {Form, Row, Col, Container, InputGroup, Button, Alert} from 'react-bootstrap';
+import LogRocket from 'logrocket';
 
 import dotenv from 'dotenv';
 
@@ -211,6 +212,10 @@ class InputData extends React.Component {
                             }
                             
                             if(isValid) {
+                                LogRocket.identify(values.rut, {
+                                    email: values.email, 
+                                    cellphone: values.cellphone
+                                });
                                 this.props.validatePhoneUsage(values, 
                                     () => {
                                         this.props.addUserBasicData(values, 
