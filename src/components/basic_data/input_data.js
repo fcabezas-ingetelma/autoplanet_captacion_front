@@ -214,7 +214,8 @@ class InputData extends React.Component {
                             if(isValid) {
                                 LogRocket.identify(values.rut, {
                                     email: values.email, 
-                                    cellphone: values.cellphone
+                                    cellphone: values.cellphone, 
+                                    state: this.state 
                                 });
                                 this.props.validatePhoneUsage(values, 
                                     () => {
